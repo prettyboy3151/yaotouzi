@@ -208,6 +208,93 @@
             cursor: pointer; /* 鼠标指针样式 */
             z-index: 1000; /* 确保按钮在最上层 */
         }
+        /* 下注按钮样式 */
+        #betButton {
+            margin-left: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #00bbd4;
+            color: white;
+            align-items: center;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .dice-options {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .dice-option {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: white;
+            border: 2px solid #00bbd4;
+            color: black;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .dice-option.selected {
+            background-color: #00bbd4;
+            color: #fff;
+        }
+
+        #confirmBet, #cancelBet {
+            margin: 20px;
+            padding: 10px 30px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #confirmBet {
+            background-color: #00bbd4;
+            color: white;
+        }
+
+        #cancelBet {
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -221,6 +308,26 @@
         <div class="balance-container">
             <span>剩余金额：</span>
             <div id="balanceAmount">1000</div>
+            <button id="betButton">下注</button>
+            <div id="betInfo"></div> <!-- 用于显示下注信息 -->
+        </div>
+        
+        <!-- 弹窗结构 -->
+        <div id="betModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>选择下注点数</h3>
+                <div class="dice-options">
+                    <div class="dice-option" data-value="1">1</div>
+                    <div class="dice-option" data-value="2">2</div>
+                    <div class="dice-option" data-value="3">3</div>
+                    <div class="dice-option" data-value="4">4</div>
+                    <div class="dice-option" data-value="5">5</div>
+                    <div class="dice-option" data-value="6">6</div>
+                </div>
+                <button id="confirmBet">确定</button>
+                <button id="cancelBet">取消</button>
+            </div>
         </div>
         <div class="dice-container">
             <div class="dice" id="dice1">
@@ -275,6 +382,10 @@
         const autoRollCountInput = document.getElementById('autoRollCount');
         let autoRollInterval = null;
 
+        // 添加全局变量记录下注信息
+        let betPoints = []; // 记录下注的点数
+        let betAmount = 0;  // 记录下注的金额
+
         // 创建Audio对象
         const audio = new Audio('dice-roll.mp3');
 
@@ -282,7 +393,7 @@
             // 播放音频
             audio.play();
         }
-          
+
         function rollDice() {
             return Math.floor(Math.random() * 6) + 1;
         }
@@ -396,6 +507,25 @@
                 displayRecords();
                 updateStats();
 
+                // 计算剩余金额
+                if (betPoints.length > 0) {
+                    const diceResults = [value1, value2, value3]; // 获取骰子结果
+                    const matchedPoints = betPoints.filter(point => diceResults.includes(parseInt(point, 10))); // 检查是否中奖
+                    if (matchedPoints.length > 0) {
+                        const currentBalance = parseInt(balanceAmount.textContent, 10);
+                        const winnings = matchedPoints.length * 200; // 赔率1:1，每个中奖点数奖励 200（100本金 + 100奖励）
+                        balanceAmount.textContent = currentBalance + winnings; // 更新余额
+                        betInfo.textContent += `, 中奖: +${winnings}`; // 显示中奖信息
+                    }
+                    betPoints = []; // 清空下注点数
+                    betAmount = 0;  // 清空下注金额
+                } else {
+                    // 如果没有下注，清空下注信息
+                    betPoints = [];
+                    betAmount = 0;
+                    betInfo.textContent = '';
+                }
+
                 rollButton.disabled = false;
             }, 3000);
         }
@@ -428,6 +558,85 @@
     
         displayRecords();
         updateStats();
+        const betButton = document.getElementById('betButton');
+        const betModal = document.getElementById('betModal');
+        const closeModal = document.querySelector('.close');
+        const diceOptions = document.querySelectorAll('.dice-option');
+        const confirmBetButton = document.getElementById('confirmBet');
+        const cancelBetButton = document.getElementById('cancelBet');
+        const balanceAmount = document.getElementById('balanceAmount');
+        const betInfo = document.getElementById('betInfo');
+
+        let selectedDice = [];
+
+        // 打开弹窗
+        betButton.addEventListener('click', () => {
+            // 如果已经有下注信息，清空并还原剩余金额
+            if (betPoints.length > 0) {
+                const currentBalance = parseInt(balanceAmount.textContent, 10);
+                balanceAmount.textContent = currentBalance + betAmount; // 还原剩余金额
+                betPoints = []; // 清空下注点数
+                betAmount = 0;  // 清空下注金额
+                betInfo.textContent = ''; // 清空下注信息显示
+            }
+            betModal.style.display = 'block'; // 显示弹窗
+        });
+
+        // 关闭弹窗
+        closeModal.addEventListener('click', () => {
+            betModal.style.display = 'none';
+            selectedDice = [];
+            resetDiceOptions();
+        });
+
+        // 取消下注
+        cancelBetButton.addEventListener('click', () => {
+            betModal.style.display = 'none';
+            selectedDice = [];
+            resetDiceOptions();
+        });
+
+        // 选择点数
+        diceOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedDice.includes(value)) {
+                    selectedDice = selectedDice.filter(dice => dice !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedDice.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        // 确认下注
+        confirmBetButton.addEventListener('click', () => {
+            if (selectedDice.length > 0) {
+                const totalCost = selectedDice.length * 100; // 每个点数下注 100
+                const currentBalance = parseInt(balanceAmount.textContent, 10);
+                if (currentBalance >= totalCost) {
+                    balanceAmount.textContent = currentBalance - totalCost; // 扣除下注金额
+                    betInfo.textContent = `下注点数: ${selectedDice.join(', ')}, 花费: -${totalCost}`;
+                    betModal.style.display = 'none';
+                    betPoints = selectedDice; // 记录下注的点数
+                    betAmount = totalCost;   // 记录下注金额
+                    selectedDice = [];      // 清空已选择的点数
+                    resetDiceOptions();      // 重置点数选择界面
+                } else {
+                    alert('余额不足！');
+                }
+            } else {
+                alert('请选择至少一个点数！');
+            }
+        });
+
+        // 重置点数选择
+        function resetDiceOptions() {
+            diceOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
     </script>
 </body>
 </html>
