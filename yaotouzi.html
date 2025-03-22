@@ -143,7 +143,7 @@
             background-color: #00bbd4;
             border: 0px solid #ccc;
             border-radius: 0px;
-            font-size: 14px;
+            font-size: 20px;
             font-weight: bold;
             color: white;
         }
@@ -294,6 +294,19 @@
 
         #cancelBet {
             color: black;
+        }
+        #balanceAmount {
+        color: #00bbd4; /* 金额数字的颜色 */
+        font-size: 14px; /* 字体大小 */
+        font-weight: lighter; /* 字体加粗 */
+        }
+
+        /* 下注信息样式 */
+        #betInfo {
+        color: black; /* 与剩余金额相同的颜色 */
+        font-size: 14px; /* 与剩余金额相同的字体大小 */
+        font-weight: lighter; /* 与剩余金额相同的字体加粗 */
+        margin-left: 10px; /* 与剩余金额的间距 */
         }
     </style>
 </head>
@@ -534,11 +547,52 @@
         function startAutoRoll(count) {
             let remaining = count;
             autoRollInterval = setInterval(() => {
-                if (remaining <= 0) {
+                if (remaining <= 0 || parseInt(balanceAmount.textContent, 10) <= 0) {
                     clearInterval(autoRollInterval);
                     rollButton.disabled = false;
+                    autoRollCountInput.value = 0; // 确保结束时次数输入框显示为0
                     return;
                 }
+
+                // 更新次数输入框的值（显示倒计时）
+                autoRollCountInput.value = remaining;
+
+                // 动态计算下注点数（出现次数小于等于3次的点数）
+                const recentRecords = JSON.parse(localStorage.getItem('diceRecords')) || [];
+                const recentDice = recentRecords.slice(-10).flatMap(record => [record.dice1, record.dice2, record.dice3]);
+
+                // 统计每个点数的出现次数
+                const diceCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+                recentDice.forEach(point => diceCount[point]++);
+
+                // 选择出现次数小于等于3次的点数
+                const pointsToBet = [1, 2, 3, 4, 5, 6].filter(point => diceCount[point] <= 2);
+
+                if (pointsToBet.length > 0) {
+                    const totalCost = pointsToBet.length * 100; // 每个点数下注100
+                    const currentBalance = parseInt(balanceAmount.textContent, 10);
+
+                    if (currentBalance >= totalCost) {
+                        balanceAmount.textContent = currentBalance - totalCost; // 扣除下注金额
+                        betInfo.textContent = `自动下注点数: ${pointsToBet.join(', ')}, 花费: -${totalCost}`;
+                        betPoints = pointsToBet; // 记录下注的点数
+                        betAmount = totalCost;  // 记录下注金额
+                    } else {
+                        // 余额不足，停止自动摇骰子
+                        clearInterval(autoRollInterval);
+                        rollButton.disabled = false;
+                        autoRollCountInput.value = 0; // 确保结束时次数输入框显示为0
+                        alert('余额不足，自动摇骰子停止！');
+                        return;
+                    }
+                } else {
+                    // 没有符合条件的点数，跳过下注
+                    betPoints = [];
+                    betAmount = 0;
+                    betInfo.textContent = '自动下注: 无符合条件点数，跳过下注';
+                }
+
+                // 摇骰子
                 rollOnce();
                 remaining--;
             }, 3500); // 每次摇骰子间隔 3.5 秒（3 秒动画 + 0.5 秒间隔）
