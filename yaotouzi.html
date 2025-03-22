@@ -20,6 +20,7 @@
             flex-direction: column;
             align-items: center;
             background-color: #fff;
+            padding-bottom: 0px; /* 为按钮留出空间 */
         }
         .stats-container {
             width: 100%;
@@ -27,7 +28,7 @@
             padding: 10px;
             box-sizing: border-box;
             background-color: #f9f9f9;
-            border-bottom: 5px solid #ccc;
+            border-bottom: 2px solid #ccc;
         }
         .stats-container h3 {
             text-align: center;
@@ -42,23 +43,66 @@
         .stats-item {
             font-size: 20px;
         }
+        .balance-container {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            border-bottom: 2px solid #ccc;
+            text-align: center;
+            display: flex; /* 使用 flex 布局实现横向排列 */
+            justify-content: left; /* 内容居中 */
+            align-items: center; /* 垂直居中 */
+            gap: 2px; /* 设置“剩余金额”和数字之间的间距 */
+        }
+
+        .balance-container span {
+            font-size: 14px;
+            font-weight: lighter;
+        }
+
+        #balanceAmount {
+            color: #00bbd4; /* 金额数字的颜色 */
+        }
         .dice-container {
             width: 100%;
             height: auto;
             display: grid; /* 使用 grid 布局 */
             grid-template-areas: "dice1 dice1 dice1"
-		             "dice2 . dice3";
-            grid-template-columns: 80px 30px; /* 设置两列布局 */
-            grid-template-rows: 150px 100px 60px; /* 设置自动行高 */
+                                "dice2 . dice3";
+            grid-template-columns: 60px 20px; /* 设置两列布局 */
+            grid-template-rows: 60px 70px 0px; /* 设置自动行高 */
             justify-content: center;
             align-items: center;
             gap: 0px; /* 设置骰子之间的间距 */
             perspective: 1000px;
+            margin-bottom: 10px; /* 与自动摇骰子复选框的距离 */
+            position: fixed; /* 固定定位 */
+            bottom: 100px; /* 距离页面底部 80px（按钮高度 60px + 10px 间距） */
+            left: 30%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            z-index: 1000; /* 确保在最上层 */
+        }
+        .auto-roll-container {
+            margin-top: 10px; /* 与骰子的距离 */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: fixed; /* 固定定位 */
+            bottom: 80px; /* 距离页面底部 60px（按钮高度 60px） */
+            left: 30%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            z-index: 1000; /* 确保在最上层 */
+        }
+        .auto-roll-container input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            font-size: 16px;
         }
         
         .dice {
-            width: 60px;
-            height: 60px;
+            width: 42px;
+            height: 42px;
             position: relative;
             transform-style: preserve-3d;
             transform: rotateX(0deg) rotateY(0deg);
@@ -99,16 +143,16 @@
             background-color: #00bbd4;
             border: 0px solid #ccc;
             border-radius: 0px;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: bold;
             color: white;
         }
-        .dice .front { transform: translateZ(30px); }
-        .dice .back { transform: rotateY(180deg) translateZ(30px); }
-        .dice .left { transform: rotateY(-90deg) translateZ(30px); }
-        .dice .right { transform: rotateY(90deg) translateZ(30px); }
-        .dice .top { transform: rotateX(90deg) translateZ(30px); }
-        .dice .bottom { transform: rotateX(-90deg) translateZ(30px); }
+        .dice .front { transform: translateZ(21px); }
+        .dice .back { transform: rotateY(180deg) translateZ(21px); }
+        .dice .left { transform: rotateY(-90deg) translateZ(21px); }
+        .dice .right { transform: rotateY(90deg) translateZ(21px); }
+        .dice .top { transform: rotateX(90deg) translateZ(21px); }
+        .dice .bottom { transform: rotateX(-90deg) translateZ(21px); }
 
         @keyframes roll {
             0% { transform: rotateX(0deg) rotateY(0deg); }
@@ -129,8 +173,8 @@
         .record-container {
             width: 100%;
             height: calc(100vh - 60px);
-            overflow-y: auto;
-            font-size: 24px;  /* Increased font size for history */
+            overflow-y: auto; /* 只增加竖向滚动条 */
+            font-size: 24px;  /* 保持原来的字体大小 */
         }
         .record-item {
             margin-bottom: 10px;
@@ -150,15 +194,33 @@
             width: 30px;
             height: 30px;
         }
+        
+        #rollButton {
+            position: fixed; /* 固定在页面底部 */
+            bottom: 5px; /* 距离页面底部 20px */
+            left: 30%; /* 水平居中 */
+            transform: translateX(-50%); /* 水平居中 */
+            width: 140px; /* 按钮宽度 */
+            height: 60px; /* 按钮高度 */
+            border-radius: 100px; /* 圆角 */
+            background-color: rgb(255, 193, 7); /* 按钮背景色 */
+            font-size: 16px; /* 字体大小 */
+            cursor: pointer; /* 鼠标指针样式 */
+            z-index: 1000; /* 确保按钮在最上层 */
+        }
     </style>
 </head>
 <body>
     <div class="left-container">
         <div class="stats-container">
-            <h3>最近10次结果统计</h3>
+            <h3>最近20次结果统计</h3>
             <div class="stats-grid" id="statsGrid">
                 <!-- 统计结果将显示在这里 -->
             </div>
+        </div>
+        <div class="balance-container">
+            <span>剩余金额：</span>
+            <div id="balanceAmount">1000</div>
         </div>
         <div class="dice-container">
             <div class="dice" id="dice1">
@@ -186,7 +248,15 @@
                 <div class="face bottom">5</div>
             </div>
         </div>
-        <button id="rollButton" style="width: 140px; height: 100px; border-radius: 100px; background-color: rgb(255, 193, 7)" onclick="playAudio()">开始摇骰子</button>
+        <div class="auto-roll-container">
+            <label>
+                <input type="checkbox" id="autoRollCheckbox"> 自动摇
+            </label>
+            <input type="number" id="autoRollCount" min="1" value="1" disabled>
+            次
+        </div>
+    </div>
+    <button id="rollButton" onclick="playAudio()">开始摇骰子</button>
     </div>
     <div class="right-container">
         <div class="record-container" id="recordContainer">
@@ -201,6 +271,9 @@
         const rollButton = document.getElementById('rollButton');
         const recordContainer = document.getElementById('recordContainer');
         const statsGrid = document.getElementById('statsGrid');
+        const autoRollCheckbox = document.getElementById('autoRollCheckbox');
+        const autoRollCountInput = document.getElementById('autoRollCount');
+        let autoRollInterval = null;
 
         // 创建Audio对象
         const audio = new Audio('dice-roll.mp3');
@@ -243,7 +316,7 @@
         function displayRecords() {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
             recordContainer.innerHTML = '';
-            records.slice(-10).forEach((record) => {
+            records.slice(-10).forEach((record) => { // 改为过去20期
                 const sortedDice = [record.dice1, record.dice2, record.dice3].sort((a, b) => a - b);
                 const recordItem = document.createElement('div');
                 recordItem.className = `record-item ${record.isTriple ? 'green' : record.size === '大' ? 'red' : 'yellow'}`;
@@ -263,15 +336,15 @@
     
         function updateStats() {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-            const recentRecords = records.slice(-10);
+            const recentRecords = records.slice(-10); // 改为过去20期
             const count = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-    
+
             recentRecords.forEach(record => {
                 count[record.dice1]++;
                 count[record.dice2]++;
                 count[record.dice3]++;
             });
-    
+
             statsGrid.innerHTML = `
                 <div class="stats-item">1️⃣: ${count[1]}</div>
                 <div class="stats-item">2️⃣: ${count[2]}</div>
@@ -281,13 +354,19 @@
                 <div class="stats-item">6️⃣: ${count[6]}</div>
             `;
         }
-    
-        rollButton.addEventListener('click', () => {
+
+        // 当复选框状态改变时，启用或禁用输入框
+        autoRollCheckbox.addEventListener('change', () => {
+            autoRollCountInput.disabled = !autoRollCheckbox.checked;
+        });
+
+        // 单次摇骰子
+        function rollOnce() {
             rollButton.disabled = true;
             dice1.style.animation = 'roll 3s infinite';
             dice2.style.animation = 'roll 3s infinite';
             dice3.style.animation = 'roll 3s infinite';
-    
+
             setTimeout(() => {
                 const value1 = rollDice();
                 const value2 = rollDice();
@@ -295,15 +374,15 @@
                 const sum = value1 + value2 + value3;
                 const size = getSize(sum);
                 const isTripleResult = isTriple(value1, value2, value3);
-    
+
                 updateDice(dice1, value1);
                 updateDice(dice2, value2);
                 updateDice(dice3, value3);
-    
+
                 dice1.style.animation = '';
                 dice2.style.animation = '';
                 dice3.style.animation = '';
-    
+
                 const record = {
                     dice1: value1,
                     dice2: value2,
@@ -312,13 +391,39 @@
                     size: size,
                     isTriple: isTripleResult
                 };
-    
+
                 saveRecord(record);
                 displayRecords();
                 updateStats();
-    
+
                 rollButton.disabled = false;
             }, 3000);
+        }
+
+        // 自动摇骰子
+        function startAutoRoll(count) {
+            let remaining = count;
+            autoRollInterval = setInterval(() => {
+                if (remaining <= 0) {
+                    clearInterval(autoRollInterval);
+                    rollButton.disabled = false;
+                    return;
+                }
+                rollOnce();
+                remaining--;
+            }, 3500); // 每次摇骰子间隔 3.5 秒（3 秒动画 + 0.5 秒间隔）
+        }
+
+        // 修改 rollButton 的点击事件
+        rollButton.addEventListener('click', () => {
+            if (autoRollCheckbox.checked) {
+                const count = parseInt(autoRollCountInput.value, 10);
+                if (count > 0) {
+                    startAutoRoll(count);
+                }
+            } else {
+                rollOnce();
+            }
         });
     
         displayRecords();
