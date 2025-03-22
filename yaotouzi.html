@@ -523,13 +523,26 @@
                 // 计算剩余金额
                 if (betPoints.length > 0) {
                     const diceResults = [value1, value2, value3]; // 获取骰子结果
-                    const matchedPoints = betPoints.filter(point => diceResults.includes(parseInt(point, 10))); // 检查是否中奖
-                    if (matchedPoints.length > 0) {
-                        const currentBalance = parseInt(balanceAmount.textContent, 10);
-                        const winnings = matchedPoints.length * 200; // 赔率1:1，每个中奖点数奖励 200（100本金 + 100奖励）
-                        balanceAmount.textContent = currentBalance + winnings; // 更新余额
-                        betInfo.textContent += `, 中奖: +${winnings}`; // 显示中奖信息
-                    }
+                    let totalWinnings = 0; // 总赢得的金额
+
+                    // 遍历每个下注的点数
+                    betPoints.forEach(point => {
+                        const count = diceResults.filter(result => result === parseInt(point, 10)).length; // 计算该点数在骰子结果中出现的次数
+
+                        if (count === 1) {
+                            totalWinnings += 200; // 出现1次，每下注100，增加200
+                        } else if (count === 2) {
+                            totalWinnings += 300; // 出现2次，每下注100，增加300
+                        } else if (count === 3) {
+                            totalWinnings += 400; // 出现3次，每下注100，增加400
+                        }
+                    });
+
+                    // 根据下注金额计算总赢得的金额
+                    const currentBalance = parseInt(balanceAmount.textContent, 10);
+                    balanceAmount.textContent = currentBalance + totalWinnings; // 更新余额
+                    betInfo.textContent += `, 中奖: +${totalWinnings}`; // 显示中奖信息
+
                     betPoints = []; // 清空下注点数
                     betAmount = 0;  // 清空下注金额
                 } else {
