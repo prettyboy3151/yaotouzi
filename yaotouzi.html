@@ -566,7 +566,7 @@
                 recentDice.forEach(point => diceCount[point]++);
 
                 // 选择出现次数小于等于3次的点数
-                const pointsToBet = [1, 2, 3, 4, 5, 6].filter(point => diceCount[point] <= 2);
+                const pointsToBet = [1, 2, 3, 4, 5, 6].filter(point => diceCount[point] <= 3);
 
                 if (pointsToBet.length > 0) {
                     const totalCost = pointsToBet.length * 100; // 每个点数下注100
