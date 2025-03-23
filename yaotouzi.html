@@ -427,6 +427,7 @@
         const autoRollCheckbox = document.getElementById('autoRollCheckbox');
         const autoRollCountInput = document.getElementById('autoRollCount');
         let autoRollInterval = null;
+        let remainingRolls = 0; // 剩余自动摇骰子次数
 
         // 添加全局变量记录下注信息
         let betPoints = []; // 记录下注的点数
@@ -647,43 +648,16 @@
                 betAmount = 0;
 
                 // 自动下注逻辑
-                if (autoRollCheckbox.checked) {
-                    const records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-                    const recentRecords = records.slice(-2); // 获取最近2次的结果
-
-                    const allNumbers = [1, 2, 3, 4, 5, 6];
-                    const appearedNumbers = new Set();
-
-                    // 遍历最近2次的结果，记录出现的点数
-                    recentRecords.forEach(record => {
-                        appearedNumbers.add(record.dice1);
-                        appearedNumbers.add(record.dice2);
-                        appearedNumbers.add(record.dice3);
-                    });
-
-                    // 找出没有出现过的点数
-                    const missingNumbers = allNumbers.filter(num => !appearedNumbers.has(num));
-
-                    if (missingNumbers.length > 0) {
-                        // 如果有未出现的点数，自动下注这些点数
-                        betPoints = missingNumbers.map(num => num.toString());
-                        betAmount = betPoints.length * 100; // 每个点数下注100
-
-                        // 更新下注信息
-                        document.getElementById('betPointsInfo').textContent = `单点下注: ${betPoints.join(', ')}, 花费: -${betAmount}`;
-                        document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
-                        document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
-                        document.getElementById('betTotalResultInfo').textContent = ''; // 清空输赢结果
-
-                        // 扣除下注金额
-                        const currentBalance = parseInt(balanceAmount.textContent, 10);
-                        balanceAmount.textContent = currentBalance - betAmount;
+                if (autoRollCheckbox.checked && remainingRolls > 0) {
+                    remainingRolls--; // 减少剩余次数
+                    autoRollCountInput.value = remainingRolls; // 更新输入框中的剩余次数
+                    if (remainingRolls > 0) {
+                        setTimeout(() => {
+                            rollButton.click(); // 模拟点击摇骰子按钮
+                        }, 1000); // 延迟1秒后继续
                     } else {
-                        // 如果所有点数都出现过，则不下注
-                        document.getElementById('betPointsInfo').textContent = '未下注';
-                        document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
-                        document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
-                        document.getElementById('betTotalResultInfo').textContent = ''; // 清空输赢结果
+                        autoRollCheckbox.checked = false; // 自动摇骰子结束，取消勾选
+                        autoRollCountInput.disabled = true; // 禁用输入框
                     }
                 }
 
@@ -696,10 +670,12 @@
             if (autoRollCheckbox.checked) {
                 const count = parseInt(autoRollCountInput.value, 10);
                 if (count > 0) {
-                    startAutoRoll(count);
+                    remainingRolls = count; // 设置剩余次数
+                    autoRollCountInput.disabled = true; // 禁用输入框
+                    rollOnce(); // 开始第一次摇骰子
                 }
             } else {
-                rollOnce();
+                rollOnce(); // 手动摇骰子
             }
         });
     
