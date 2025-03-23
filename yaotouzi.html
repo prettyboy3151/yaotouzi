@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>摇骰子游戏</title>
     <style>
         body {
@@ -49,11 +49,14 @@
             box-sizing: border-box;
             background-color: #f9f9f9;
             border-bottom: 2px solid #ccc;
-            text-align: center;
-            display: flex; /* 使用 flex 布局实现横向排列 */
-            justify-content: left; /* 内容居中 */
-            align-items: center; /* 垂直居中 */
-            gap: 2px; /* 设置“剩余金额”和数字之间的间距 */
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            gap: 5px; /* 设置行间距 */
+        }
+        .balance-info {
+            display: flex;
+            align-items: center; /* 剩余金额和下注按钮水平对齐 */
+            gap: 10px; /* 设置间距 */
         }
 
         .balance-container span {
@@ -62,7 +65,9 @@
         }
 
         #balanceAmount {
-            color: #00bbd4; /* 金额数字的颜色 */
+            color: #00bbd4;
+            font-size: 14px;
+            font-weight: lighter;
         }
         .dice-container {
             width: 100%;
@@ -216,7 +221,6 @@
             cursor: pointer;
             background-color: #00bbd4;
             color: white;
-            align-items: center;
             border: none;
             border-radius: 5px;
         }
@@ -241,6 +245,13 @@
             width: 300px;
             text-align: center;
             border-radius: 10px;
+        }
+        
+        /* 弹窗标题样式 */
+        .modal-content h3 {
+            font-size: 16px; /* 字体大小设置为 14px */
+            font-weight: lighter; /* 字体粗细设置为 light */
+            margin: 10px 0; /* 调整标题的上下间距 */
         }
 
         .close {
@@ -296,17 +307,25 @@
             color: black;
         }
         #balanceAmount {
-        color: #00bbd4; /* 金额数字的颜色 */
-        font-size: 14px; /* 字体大小 */
-        font-weight: lighter; /* 字体加粗 */
+            color: #00bbd4; /* 金额数字的颜色 */
+            font-size: 16px; /* 字体大小 */
+            font-weight: bold; /* 字体加粗 */
         }
 
         /* 下注信息样式 */
         #betInfo {
-        color: black; /* 与剩余金额相同的颜色 */
-        font-size: 14px; /* 与剩余金额相同的字体大小 */
-        font-weight: lighter; /* 与剩余金额相同的字体加粗 */
-        margin-left: 10px; /* 与剩余金额的间距 */
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* 设置行间距 */
+            font-size: 14px;
+            color: black;
+            text-align: left; /* 靠左对齐 */
+        }
+
+        #betPointsInfo,
+        #betSizeInfo,
+        #betResultInfo {
+            white-space: nowrap; /* 防止内容换行 */
         }
     </style>
 </head>
@@ -319,24 +338,44 @@
             </div>
         </div>
         <div class="balance-container">
-            <span>剩余金额：</span>
-            <div id="balanceAmount">1000</div>
-            <button id="betButton">下注</button>
-            <div id="betInfo"></div> <!-- 用于显示下注信息 -->
+            <div class="balance-info">
+                <span>剩余金额：</span>
+                <div id="balanceAmount">1000</div>
+                <button id="betButton">下注</button>
+            </div>
+            <div id="betInfo">
+                <div id="betPointsInfo"></div> <!-- 点数下注信息 -->
+                <div id="betSizeInfo"></div>   <!-- 大小下注信息 -->
+                <div id="betQuadInfo"></div>   <!-- 四联下注信息 -->
+                <div id="betTotalResultInfo"></div> <!-- 总的输赢结果 -->
+            </div>
         </div>
         
         <!-- 弹窗结构 -->
+        <!-- 在弹窗结构中增加四联选项 -->
         <div id="betModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <h3>选择下注点数</h3>
-                <div class="dice-options">
+                <div class="dice-options" id="pointOptions">
                     <div class="dice-option" data-value="1">1</div>
                     <div class="dice-option" data-value="2">2</div>
                     <div class="dice-option" data-value="3">3</div>
                     <div class="dice-option" data-value="4">4</div>
                     <div class="dice-option" data-value="5">5</div>
                     <div class="dice-option" data-value="6">6</div>
+                </div>
+                <h3>选择下注大小</h3>
+                <div class="dice-options" id="sizeOptions">
+                    <div class="dice-option" data-value="大">大</div>
+                    <div class="dice-option" data-value="小">小</div>
+                </div>
+                <h3>选择下注四联</h3>
+                <div class="dice-options" id="quadOptions">
+                    <div class="dice-option" data-value="6543">6543</div>
+                    <div class="dice-option" data-value="6532">6532</div>
+                    <div class="dice-option" data-value="5432">5432</div>
+                    <div class="dice-option" data-value="4321">4321</div>
                 </div>
                 <button id="confirmBet">确定</button>
                 <button id="cancelBet">取消</button>
@@ -397,6 +436,8 @@
 
         // 添加全局变量记录下注信息
         let betPoints = []; // 记录下注的点数
+        let betSizes = [];  // 记录下注的大小（支持多选）
+        let betQuads = [];  // 记录下注的四联（支持多选）
         let betAmount = 0;  // 记录下注的金额
 
         // 创建Audio对象
@@ -484,7 +525,7 @@
             autoRollCountInput.disabled = !autoRollCheckbox.checked;
         });
 
-        // 单次摇骰子
+        // 单次下注
         function rollOnce() {
             rollButton.disabled = true;
             dice1.style.animation = 'roll 3s infinite';
@@ -496,7 +537,7 @@
                 const value2 = rollDice();
                 const value3 = rollDice();
                 const sum = value1 + value2 + value3;
-                const size = getSize(sum);
+                const sizeResult = getSize(sum); // 计算大小
                 const isTripleResult = isTriple(value1, value2, value3);
 
                 updateDice(dice1, value1);
@@ -512,7 +553,7 @@
                     dice2: value2,
                     dice3: value3,
                     sum: sum,
-                    size: size,
+                    size: sizeResult,
                     isTriple: isTripleResult
                 };
 
@@ -520,95 +561,140 @@
                 displayRecords();
                 updateStats();
 
-                // 计算剩余金额
-                if (betPoints.length > 0) {
-                    const diceResults = [value1, value2, value3]; // 获取骰子结果
+                // 检查是否有下注
+                if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0) {
+                    // 如果没有下注，清空 betInfo 的内容
+                    document.getElementById('betPointsInfo').textContent = '';
+                    document.getElementById('betSizeInfo').textContent = '';
+                    document.getElementById('betQuadInfo').textContent = '';
+                    document.getElementById('betTotalResultInfo').textContent = '';
+                } else {
+                    // 如果有下注，计算输赢结果
+                    const currentBalance = parseInt(balanceAmount.textContent, 10);
                     let totalWinnings = 0; // 总赢得的金额
+                    let pointsWinnings = 0; // 单点赢得的金额
+                    let sizeWinnings = 0; // 大小赢得的金额
+                    let quadWinnings = 0; // 四联赢得的金额
 
-                    // 遍历每个下注的点数
-                    betPoints.forEach(point => {
-                        const count = diceResults.filter(result => result === parseInt(point, 10)).length; // 计算该点数在骰子结果中出现的次数
+                    // 检查单点下注的输赢
+                    if (betPoints.length > 0) {
+                        const diceResults = [value1, value2, value3]; // 获取骰子结果
 
-                        if (count === 1) {
-                            totalWinnings += 200; // 出现1次，每下注100，增加200
-                        } else if (count === 2) {
-                            totalWinnings += 300; // 出现2次，每下注100，增加300
-                        } else if (count === 3) {
-                            totalWinnings += 400; // 出现3次，每下注100，增加400
-                        }
+                        // 遍历每个下注的点数
+                        betPoints.forEach(point => {
+                            const count = diceResults.filter(result => result === parseInt(point, 10)).length; // 计算该点数在骰子结果中出现的次数
+
+                            if (count === 1) {
+                                pointsWinnings += 200; // 出现1次，每下注100，增加200
+                            } else if (count === 2) {
+                                pointsWinnings += 300; // 出现2次，每下注100，增加300
+                            } else if (count === 3) {
+                                pointsWinnings += 400; // 出现3次，每下注100，增加400
+                            }
+                        });
+                        totalWinnings += pointsWinnings;
+                    }
+
+                    // 检查大小下注的输赢
+                    if (betSizes.length > 0) {
+                        betSizes.forEach(size => {
+                            if (size === sizeResult) { // 如果大小和下注的大小一样
+                                sizeWinnings += 600; // 每下注300，增加600
+                                totalWinnings += sizeWinnings;
+                            }
+                        });
+                    }
+
+                    // 检查四联下注的输赢
+                    if (betQuads.length > 0) {
+                        betQuads.forEach(quad => {
+                            const quadNumbers = quad.split('').map(Number); // 将四联选项转换为数字数组
+                            const diceResults = [value1, value2, value3]; // 获取骰子结果
+
+                            // 检查骰子结果是否与四联选项中的三个数字一一对应
+                            const isQuadWin = diceResults.every(result => quadNumbers.includes(result)) 
+                                && quadNumbers.every(num => diceResults.includes(num));
+
+                            if (isQuadWin) {
+                                quadWinnings += 800; // 如果中奖，增加800
+                                totalWinnings += quadWinnings;
+                            }
+                        });
+                    }
+
+                    // 更新单点下注的输赢结果
+                    if (betPoints.length > 0) {
+                        document.getElementById('betPointsInfo').textContent += `, 结果: ${pointsWinnings > 0 ? '+' + pointsWinnings : '0'}`;
+                    }
+
+                    // 更新大小下注的输赢结果
+                    if (betSizes.length > 0) {
+                        document.getElementById('betSizeInfo').textContent += `, 结果: ${sizeWinnings > 0 ? '+' + sizeWinnings : '0'}`;
+                    }
+
+                    // 更新四联下注的输赢结果
+                    if (betQuads.length > 0) {
+                        document.getElementById('betQuadInfo').textContent += `, 结果: ${quadWinnings > 0 ? '+' + quadWinnings : '0'}`;
+                    }
+
+                    // 更新总的输赢结果
+                    document.getElementById('betTotalResultInfo').textContent = `总结果: ${totalWinnings > 0 ? '+' + totalWinnings : '0'}`;
+
+                    // 更新余额
+                    if (totalWinnings > 0) {
+                        balanceAmount.textContent = currentBalance + totalWinnings; // 更新余额
+                    }
+                }
+
+                // 清空下注信息
+                betPoints = [];
+                betSizes = [];
+                betQuads = [];
+                betAmount = 0;
+
+                // 自动下注逻辑
+                if (autoRollCheckbox.checked) {
+                    const records = JSON.parse(localStorage.getItem('diceRecords')) || [];
+                    const recentRecords = records.slice(-2); // 获取最近2次的结果
+
+                    const allNumbers = [1, 2, 3, 4, 5, 6];
+                    const appearedNumbers = new Set();
+
+                    // 遍历最近2次的结果，记录出现的点数
+                    recentRecords.forEach(record => {
+                        appearedNumbers.add(record.dice1);
+                        appearedNumbers.add(record.dice2);
+                        appearedNumbers.add(record.dice3);
                     });
 
-                    // 根据下注金额计算总赢得的金额
-                    const currentBalance = parseInt(balanceAmount.textContent, 10);
-                    balanceAmount.textContent = currentBalance + totalWinnings; // 更新余额
-                    betInfo.textContent += `, 中奖: +${totalWinnings}`; // 显示中奖信息
+                    // 找出没有出现过的点数
+                    const missingNumbers = allNumbers.filter(num => !appearedNumbers.has(num));
 
-                    betPoints = []; // 清空下注点数
-                    betAmount = 0;  // 清空下注金额
-                } else {
-                    // 如果没有下注，清空下注信息
-                    betPoints = [];
-                    betAmount = 0;
-                    betInfo.textContent = '';
+                    if (missingNumbers.length > 0) {
+                        // 如果有未出现的点数，自动下注这些点数
+                        betPoints = missingNumbers.map(num => num.toString());
+                        betAmount = betPoints.length * 100; // 每个点数下注100
+
+                        // 更新下注信息
+                        document.getElementById('betPointsInfo').textContent = `单点下注: ${betPoints.join(', ')}, 花费: -${betAmount}`;
+                        document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
+                        document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
+                        document.getElementById('betTotalResultInfo').textContent = ''; // 清空输赢结果
+
+                        // 扣除下注金额
+                        const currentBalance = parseInt(balanceAmount.textContent, 10);
+                        balanceAmount.textContent = currentBalance - betAmount;
+                    } else {
+                        // 如果所有点数都出现过，则不下注
+                        document.getElementById('betPointsInfo').textContent = '未下注';
+                        document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
+                        document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
+                        document.getElementById('betTotalResultInfo').textContent = ''; // 清空输赢结果
+                    }
                 }
 
                 rollButton.disabled = false;
             }, 3000);
-        }
-
-        // 自动摇骰子
-        function startAutoRoll(count) {
-            let remaining = count;
-            autoRollInterval = setInterval(() => {
-                if (remaining <= 0 || parseInt(balanceAmount.textContent, 10) <= 0) {
-                    clearInterval(autoRollInterval);
-                    rollButton.disabled = false;
-                    autoRollCountInput.value = 0; // 确保结束时次数输入框显示为0
-                    return;
-                }
-
-                // 更新次数输入框的值（显示倒计时）
-                autoRollCountInput.value = remaining;
-
-                // 动态计算下注点数（出现次数小于等于3次的点数）
-                const recentRecords = JSON.parse(localStorage.getItem('diceRecords')) || [];
-                const recentDice = recentRecords.slice(-10).flatMap(record => [record.dice1, record.dice2, record.dice3]);
-
-                // 统计每个点数的出现次数
-                const diceCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-                recentDice.forEach(point => diceCount[point]++);
-
-                // 选择出现次数小于等于3次的点数
-                const pointsToBet = [1, 2, 3, 4, 5, 6].filter(point => diceCount[point] <= 3);
-
-                if (pointsToBet.length > 0) {
-                    const totalCost = pointsToBet.length * 100; // 每个点数下注100
-                    const currentBalance = parseInt(balanceAmount.textContent, 10);
-
-                    if (currentBalance >= totalCost) {
-                        balanceAmount.textContent = currentBalance - totalCost; // 扣除下注金额
-                        betInfo.textContent = `自动下注点数: ${pointsToBet.join(', ')}, 花费: -${totalCost}`;
-                        betPoints = pointsToBet; // 记录下注的点数
-                        betAmount = totalCost;  // 记录下注金额
-                    } else {
-                        // 余额不足，停止自动摇骰子
-                        clearInterval(autoRollInterval);
-                        rollButton.disabled = false;
-                        autoRollCountInput.value = 0; // 确保结束时次数输入框显示为0
-                        alert('余额不足，自动摇骰子停止！');
-                        return;
-                    }
-                } else {
-                    // 没有符合条件的点数，跳过下注
-                    betPoints = [];
-                    betAmount = 0;
-                    betInfo.textContent = '自动下注: 无符合条件点数，跳过下注';
-                }
-
-                // 摇骰子
-                rollOnce();
-                remaining--;
-            }, 3500); // 每次摇骰子间隔 3.5 秒（3 秒动画 + 0.5 秒间隔）
         }
 
         // 修改 rollButton 的点击事件
@@ -625,48 +711,68 @@
     
         displayRecords();
         updateStats();
-        const betButton = document.getElementById('betButton');
-        const betModal = document.getElementById('betModal');
-        const closeModal = document.querySelector('.close');
-        const diceOptions = document.querySelectorAll('.dice-option');
+        // 获取元素
+        const pointOptions = document.querySelectorAll('#pointOptions .dice-option');
+        const sizeOptions = document.querySelectorAll('#sizeOptions .dice-option');
         const confirmBetButton = document.getElementById('confirmBet');
         const cancelBetButton = document.getElementById('cancelBet');
+        const betModal = document.getElementById('betModal');
+        const closeModal = document.querySelector('.close');
         const balanceAmount = document.getElementById('balanceAmount');
         const betInfo = document.getElementById('betInfo');
+        
+        // 获取四联选项
+        const quadOptions = document.querySelectorAll('#quadOptions .dice-option');
 
+        // 记录选择的四联
+        let selectedQuads = []; // 支持多选
+
+        // 选择四联
+        quadOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+
+                // 切换四联选择
+                if (selectedQuads.includes(value)) {
+                    selectedQuads = selectedQuads.filter(quad => quad !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedQuads.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        // 记录选择的点数和大小
         let selectedDice = [];
+        let selectedSizes = []; // 支持多选
 
         // 打开弹窗
         betButton.addEventListener('click', () => {
-            // 如果已经有下注信息，清空并还原剩余金额
-            if (betPoints.length > 0) {
-                const currentBalance = parseInt(balanceAmount.textContent, 10);
-                balanceAmount.textContent = currentBalance + betAmount; // 还原剩余金额
-                betPoints = []; // 清空下注点数
-                betAmount = 0;  // 清空下注金额
-                betInfo.textContent = ''; // 清空下注信息显示
-            }
+            // 清空之前的选择
+            selectedDice = [];
+            selectedSizes = [];
+            selectedQuads = []; // 重置四联选项
+            resetDiceOptions(); // 重置选项样式
             betModal.style.display = 'block'; // 显示弹窗
         });
 
         // 关闭弹窗
         closeModal.addEventListener('click', () => {
             betModal.style.display = 'none';
-            selectedDice = [];
-            resetDiceOptions();
         });
 
         // 取消下注
         cancelBetButton.addEventListener('click', () => {
             betModal.style.display = 'none';
-            selectedDice = [];
-            resetDiceOptions();
         });
 
         // 选择点数
-        diceOptions.forEach(option => {
+        pointOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
+
+                // 切换点数选择
                 if (selectedDice.includes(value)) {
                     selectedDice = selectedDice.filter(dice => dice !== value);
                     option.classList.remove('selected');
@@ -677,32 +783,103 @@
             });
         });
 
+        // 选择大小
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+
+                // 切换大小选择
+                if (selectedSizes.includes(value)) {
+                    selectedSizes = selectedSizes.filter(size => size !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedSizes.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
         // 确认下注
         confirmBetButton.addEventListener('click', () => {
-            if (selectedDice.length > 0) {
-                const totalCost = selectedDice.length * 100; // 每个点数下注 100
+            if (selectedDice.length > 0 || selectedSizes.length > 0 || selectedQuads.length > 0) {
+                // 计算总下注金额
+                const pointCost = selectedDice.length * 100; // 每个点数下注100
+                const sizeCost = selectedSizes.length * 300; // 每个大小下注300
+                const quadCost = selectedQuads.length * 100; // 每个四联下注100
+                const totalCost = pointCost + sizeCost + quadCost;
+
                 const currentBalance = parseInt(balanceAmount.textContent, 10);
+
                 if (currentBalance >= totalCost) {
                     balanceAmount.textContent = currentBalance - totalCost; // 扣除下注金额
-                    betInfo.textContent = `下注点数: ${selectedDice.join(', ')}, 花费: -${totalCost}`;
+
+                    // 更新单点下注信息
+                    if (selectedDice.length > 0) {
+                        document.getElementById('betPointsInfo').textContent = `单点下注: ${selectedDice.join(', ')}, 花费: -${pointCost}`;
+                    } else {
+                        document.getElementById('betPointsInfo').textContent = ''; // 清空单点下注信息
+                    }
+
+                    // 更新大小下注信息
+                    if (selectedSizes.length > 0) {
+                        document.getElementById('betSizeInfo').textContent = `大小下注: ${selectedSizes.join(', ')}, 花费: -${sizeCost}`;
+                    } else {
+                        document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
+                    }
+
+                    // 更新四联下注信息
+                    if (selectedQuads.length > 0) {
+                        document.getElementById('betQuadInfo').textContent = `四联下注: ${selectedQuads.join(', ')}, 花费: -${quadCost}`;
+                    } else {
+                        document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
+                    }
+
+                    // 清空输赢结果
+                    document.getElementById('betTotalResultInfo').textContent = '';
+
                     betModal.style.display = 'none';
                     betPoints = selectedDice; // 记录下注的点数
+                    betSizes = selectedSizes; // 记录下注的大小
+                    betQuads = selectedQuads; // 记录下注的四联
                     betAmount = totalCost;   // 记录下注金额
                     selectedDice = [];      // 清空已选择的点数
-                    resetDiceOptions();      // 重置点数选择界面
+                    selectedSizes = [];     // 清空已选择的大小
+                    selectedQuads = [];     // 清空已选择的四联
+                    resetDiceOptions();    // 重置点数选择界面
                 } else {
                     alert('余额不足！');
                 }
             } else {
-                alert('请选择至少一个点数！');
+                alert('请选择至少一个点数、大小或四联！');
             }
         });
 
-        // 重置点数选择
-        function resetDiceOptions() {
-            diceOptions.forEach(option => {
+        // 重置点数选项
+        function resetPointOptions() {
+            pointOptions.forEach(option => {
                 option.classList.remove('selected');
             });
+        }
+
+        // 重置大小选项
+        function resetSizeOptions() {
+            sizeOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
+        
+        // 重置四联选项
+        function resetQuadOptions() {
+            quadOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
+
+        // 重置所有选项
+        function resetDiceOptions() {
+            resetPointOptions();
+            resetSizeOptions();
+            resetQuadOptions(); // 增加重置四联选项的逻辑
         }
     </script>
 </body>
