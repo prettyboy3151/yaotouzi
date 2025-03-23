@@ -633,8 +633,14 @@
                         document.getElementById('betQuadInfo').textContent += `, 结果: ${quadWinnings > 0 ? '+' + quadWinnings : '0'}`;
                     }
 
-                    // 更新总的输赢结果
-                    document.getElementById('betTotalResultInfo').textContent = `总结果: ${totalWinnings > 0 ? '+' + totalWinnings : '0'}`;
+                    // 计算总花费
+					const totalCost = betAmount; // 总花费就是下注金额
+
+					// 计算盈利
+					const profit = totalWinnings - totalCost;
+
+					// 更新总的输赢结果、总花费和盈利
+					document.getElementById('betTotalResultInfo').textContent = `总结果: ${totalWinnings > 0 ? '+' + totalWinnings : '0'}, 总花费: -${totalCost}, 盈利: ${profit > 0 ? '+' + profit : profit}`;
 
                     // 更新余额
                     if (totalWinnings > 0) {
