@@ -335,7 +335,7 @@
         <div class="balance-container">
             <div class="balance-info">
                 <span>剩余金额：</span>
-                <div id="balanceAmount">1000</div>
+                <div id="balanceAmount">2000</div>
                 <button id="betButton">下注</button>
             </div>
             <div id="betInfo">
@@ -606,11 +606,10 @@
                         betQuads.forEach(quad => {
                             const quadNumbers = quad.split('').map(Number); // 将四联选项转换为数字数组
                             const diceResults = [value1, value2, value3]; // 获取骰子结果
-
-                            // 检查骰子结果是否与四联选项中的三个数字一一对应
-                            const isQuadWin = diceResults.every(result => quadNumbers.includes(result)) 
-                                && quadNumbers.every(num => diceResults.includes(num));
-
+                    
+                            // 检查骰子结果是否包含在四联选项中的三个数字中
+                            const isQuadWin = diceResults.every(result => quadNumbers.includes(result));
+                    
                             if (isQuadWin) {
                                 quadWinnings += 800; // 如果中奖，增加800
                                 totalWinnings += quadWinnings;
@@ -661,7 +660,7 @@
                     if (remainingRolls > 0) {
                         setTimeout(() => {
                             rollButton.click(); // 模拟点击摇骰子按钮
-                        }, 1000); // 延迟1秒后继续
+                        }, 500); // 延迟0.5秒后继续
                     } else {
                         autoRollCheckbox.checked = false; // 自动摇骰子结束，取消勾选
                         autoRollCountInput.disabled = true; // 禁用输入框
