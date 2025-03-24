@@ -607,6 +607,12 @@
                             const quadNumbers = quad.split('').map(Number); // 将四联选项转换为数字数组
                             const diceResults = [value1, value2, value3]; // 获取骰子结果
                     
+                            // 检查骰子结果是否有重复数字
+                            const hasDuplicates = new Set(diceResults).size !== diceResults.length;
+                            if (hasDuplicates) {
+                                return; // 有重复数字，直接返回，不中奖
+                            }
+                            
                             // 检查骰子结果是否包含在四联选项中的三个数字中
                             const isQuadWin = diceResults.every(result => quadNumbers.includes(result));
                     
