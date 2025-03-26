@@ -322,6 +322,13 @@
             color: black;
             text-align: left; /* 靠左对齐 */
         }
+		/* 防止按钮被选中 */
+		#rollButton {
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+}
     </style>
 </head>
 <body>
@@ -410,14 +417,16 @@
             次
         </div>
     </div>
-    <button id="rollButton">开始摇骰子</button>
+    <button id="rollButton" onclick="playAudio()">开始摇骰子</button>
     </div>
     <div class="right-container">
         <div class="record-container" id="recordContainer">
             <!-- 记录将显示在这里 -->
-        </div>
-    </div>
-
+        </div>		
+		<button id="muteButton" style="position: fixed; top: 10px; left: 99%; transform: translateX(-50%); z-index: 1000; background-color: #f0f0f0; border: none; padding: 5px 10px; border-radius: 5px;">🔊 静音</button>
+		</div>
+	</div>
+	
     <script>
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
@@ -438,11 +447,21 @@
 
         // 创建Audio对象
         const audio = new Audio('dice-roll.mp3');
+		
+		let isMuted = false;
+		const muteButton = document.getElementById('muteButton');
+		
+		// 静音按钮点击事件
+		muteButton.addEventListener('click', () => {
+			isMuted = !isMuted;
+			muteButton.textContent = isMuted ? "🔇 取消静音" : "🔊 静音";
+		});
 
         function playAudio() {
-            // 播放音频
-            audio.play();
-        }
+			if (!isMuted) {
+				audio.play();
+			}
+		}
 
         function rollDice() {
             return Math.floor(Math.random() * 6) + 1;
@@ -559,6 +578,10 @@
 				saveRecord(record);
 				displayRecords();
 				updateStats();
+				
+				rollButton.style.userSelect = 'none';
+				rollButton.style.webkitUserSelect = 'none';
+				rollButton.style.msUserSelect = 'none';
 
 				// 检查是否有下注
 				if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0) {
