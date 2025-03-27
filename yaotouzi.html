@@ -406,10 +406,6 @@
     </style>
 </head>
 <body>
-    <div id="wsStatus" style="text-align: center; padding: 5px; font-size: 12px;">
-    WebSocket状态: <span id="wsStatusText">未连接</span>
-    </div>
-    
     <div class="left-container">
         <div class="stats-container">
             <h3>最近10次结果统计</h3>
@@ -600,79 +596,6 @@
 	</div>
 	
     <script>
-        // 在脚本开头添加WebSocket相关变量
-        let socket;
-        let reconnectAttempts = 0;
-        const maxReconnectAttempts = 5;
-        const reconnectDelay = 3000; // 3秒
-
-        // 初始化WebSocket连接
-        function initWebSocket() {
-            // 使用公共测试WebSocket服务器（注意：不稳定，仅用于演示）
-            socket = new WebSocket('wss://echo.websocket.org');
-            
-            socket.onopen = function(e) {
-                console.log("WebSocket连接已建立");
-                document.getElementById('wsStatusText').textContent = "已连接";
-                document.getElementById('wsStatusText').style.color = "green";
-                reconnectAttempts = 0;
-            };
-            
-            socket.onclose = function(e) {
-                console.log("WebSocket连接关闭");
-                document.getElementById('wsStatusText').textContent = "已断开";
-                document.getElementById('wsStatusText').style.color = "red";
-                
-                if (reconnectAttempts < maxReconnectAttempts) {
-                    reconnectAttempts++;
-                    console.log(`尝试重新连接 (${reconnectAttempts}/${maxReconnectAttempts})...`);
-                    setTimeout(initWebSocket, reconnectDelay);
-                }
-            };
-            
-            socket.onerror = function(err) {
-                console.error("WebSocket错误:", err);
-                document.getElementById('wsStatusText').textContent = "错误";
-                document.getElementById('wsStatusText').style.color = "red";
-            };
-            
-            socket.onmessage = function(event) {
-                console.log("收到消息:", event.data);
-                // 这个页面不需要处理接收到的消息，只是发送方
-            };
-        }
-
-        // 修改saveRecord函数以通过WebSocket发送数据
-        function saveRecord(record) {
-            let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-            records.push(record);
-            localStorage.setItem('diceRecords', JSON.stringify(records));
-            
-            // 通过WebSocket发送新记录
-            if (socket && socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify({
-                    type: "diceRecord",
-                    data: record
-                }));
-                console.log("已通过WebSocket发送记录");
-            } else {
-                console.warn("WebSocket未连接，无法发送记录");
-            }
-        }
-
-        // 在页面加载时初始化WebSocket
-        window.addEventListener('load', function() {
-            initWebSocket();
-            
-            // 页面可见性变化时重新连接
-            document.addEventListener('visibilitychange', function() {
-                if (document.visibilityState === 'visible' && 
-                    (!socket || socket.readyState === WebSocket.CLOSED)) {
-                    initWebSocket();
-                }
-            });
-        });
-        
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
         const dice3 = document.getElementById('dice3');
