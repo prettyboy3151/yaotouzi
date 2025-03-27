@@ -389,6 +389,20 @@
             justify-content: space-around;
             margin: 10px 0;
         }
+        .select-all-btn {
+            margin: 5px 0 5px 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            background-color: #00bbd4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .select-all-btn:hover {
+            background-color: #0095a8;
+        }
     </style>
 </head>
 <body>
@@ -402,7 +416,7 @@
         <div class="balance-container">
             <div class="balance-info">
                 <span>剩余金额：</span>
-                <div id="balanceAmount">2000</div>
+                <div id="balanceAmount">5000</div>
                 <button id="betButton">下注</button>
             </div>
             <div id="betInfo">
@@ -420,7 +434,12 @@
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div class="modal-body">
-                    <h3>选择下注点数</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3>选择下注点数</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAll('pointOptions')">全选</button>
+                        </div>
+                    </div>                    
                     <div class="dice-options" id="pointOptions">
                         <div class="dice-option" data-value="1">1</div>
                         <div class="dice-option" data-value="2">2</div>
@@ -430,21 +449,38 @@
                         <div class="dice-option" data-value="6">6</div>
                     </div>
                     
-                    <h3>选择下注大小</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3>选择下注大小</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAll('sizeOptions')">全选</button>
+                        </div>
+                    </div>
                     <div class="dice-options" id="sizeOptions">
                         <div class="dice-option" data-value="大">大</div>
                         <div class="dice-option" data-value="小">小</div>
                     </div>
                     
-                    <h3>选择下注四联</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3>选择下注四联</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAll('quadOptions')">全选</button>
+                        </div>
+                    </div>
                     <div class="dice-options" id="quadOptions">
                         <div class="dice-option" data-value="6543">6543</div>
                         <div class="dice-option" data-value="6532">6532</div>
                         <div class="dice-option" data-value="5432">5432</div>
                         <div class="dice-option" data-value="4321">4321</div>
-                    </div>
+                    </div>                    
                     
-                    <h3>选择下注双型</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">选择下注双型</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAllBySize('doubleOptions', 'small')">全选小</button>
+                            <button class="select-all-btn" onclick="selectAllBySize('doubleOptions', 'big')">全选大</button>
+                            <button class="select-all-btn" onclick="selectAll('doubleOptions')">全选</button>
+                        </div>
+                    </div>
                     <div class="dice-options" id="doubleOptions">
                         <div class="dice-option" data-value="112">112</div>
                         <div class="dice-option" data-value="113">113</div>
@@ -476,9 +512,16 @@
                         <div class="dice-option" data-value="663">663</div>
                         <div class="dice-option" data-value="664">664</div>
                         <div class="dice-option" data-value="665">665</div>
-                    </div>
+                    </div>                    
                     
-                    <h3>选择下注单型</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">选择下注单型</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAllBySize('singleOptions', 'small')">全选小</button>
+                            <button class="select-all-btn" onclick="selectAllBySize('singleOptions', 'big')">全选大</button>
+                            <button class="select-all-btn" onclick="selectAll('singleOptions')">全选</button>
+                        </div>
+                    </div>
                     <div class="dice-options" id="singleOptions">
                         <div class="dice-option" data-value="126">126</div>
                         <div class="dice-option" data-value="135">135</div>
@@ -815,25 +858,29 @@
 
 					// 双型下注计算 (赔率1:50)
 					let doubleWinnings = 0;
-					let doubleReturn = 0;
-					if (betDoubles.length > 0) {
-						const doubleCost = betDoubles.length * 100;
-						totalCost += doubleCost;
-						const diceResults = [value1, value2, value3].sort().join('');
+                    let doubleReturn = 0;
+                    if (betDoubles.length > 0) {
+                        const doubleCost = betDoubles.length * 100;
+                        totalCost += doubleCost;
+                        
+                        // 获取排序后的骰子结果字符串（如"112"）
+                        const diceResults = [value1, value2, value3].sort().join('');
+                        
+                        betDoubles.forEach(double => {
+                            // 将下注的双型也排序比较（如"121"会变成"112"）
+                            const betDoubleSorted = double.split('').sort().join('');
+                            if (diceResults === betDoubleSorted) {
+                                doubleWinnings += 5100; // 本金100 + 盈利5000
+                                doubleReturn += 100;
+                            }
+                        });
 
-						betDoubles.forEach(double => {
-							if (diceResults === double) {
-								doubleWinnings += 5100; // 本金100 + 盈利5000
-								doubleReturn += 100;
-							}
-						});
-
-						document.getElementById('betDoubleInfo').textContent = 
-							`双型下注: ${betDoubles.join(', ')}, 花费: -${doubleCost}` + 
-							(doubleWinnings > 0 ? `, 收回: +${doubleReturn}, 盈利: +${doubleWinnings - doubleReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += doubleWinnings;
-						totalReturn += doubleReturn;
-					}
+                        document.getElementById('betDoubleInfo').textContent = 
+                            `双型下注: ${betDoubles.join(', ')}, 花费: -${doubleCost}` + 
+                            (doubleWinnings > 0 ? `, 收回: +${doubleReturn}, 盈利: +${doubleWinnings - doubleReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += doubleWinnings;
+                        totalReturn += doubleReturn;
+                    }
 
 					// 单型下注计算 (赔率1:30)
 					let singleWinnings = 0;
@@ -1178,6 +1225,88 @@
             resetQuadOptions();
             resetDoubleOptions();
             resetSingleOptions();
+        }
+        
+        // 根据大小切换全选状态（修改为互斥选择）
+        function selectAllBySize(optionType, sizeType) {
+            const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            
+            // 先取消所有选择
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 清空对应的选择数组
+            if (optionType === 'doubleOptions') {
+                selectedDoubles = [];
+            } else if (optionType === 'singleOptions') {
+                selectedSingles = [];
+            }
+            
+            // 只选中指定大小的选项
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                
+                if ((sizeType === 'big' && sum > 10) || 
+                    (sizeType === 'small' && sum <= 10)) {
+                    option.classList.add('selected');
+                    // 添加到对应的选择数组
+                    if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
+                        selectedDoubles.push(value);
+                    } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
+                        selectedSingles.push(value);
+                    }
+                }
+            });
+        }
+
+        // 切换全选状态
+        function selectAll(optionType) {
+            const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            
+            // 检查是否已经全部选中
+            let allSelected = true;
+            options.forEach(option => {
+                if (!option.classList.contains('selected')) {
+                    allSelected = false;
+                }
+            });
+            
+            // 根据当前状态决定是选中还是取消选中
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                
+                if (allSelected) {
+                    option.classList.remove('selected');
+                    // 从对应的选择数组中移除
+                    if (optionType === 'pointOptions') {
+                        selectedDice = selectedDice.filter(item => item !== value);
+                    } else if (optionType === 'sizeOptions') {
+                        selectedSizes = selectedSizes.filter(item => item !== value);
+                    } else if (optionType === 'quadOptions') {
+                        selectedQuads = selectedQuads.filter(item => item !== value);
+                    } else if (optionType === 'doubleOptions') {
+                        selectedDoubles = selectedDoubles.filter(item => item !== value);
+                    } else if (optionType === 'singleOptions') {
+                        selectedSingles = selectedSingles.filter(item => item !== value);
+                    }
+                } else {
+                    option.classList.add('selected');
+                    // 添加到对应的选择数组
+                    if (optionType === 'pointOptions' && !selectedDice.includes(value)) {
+                        selectedDice.push(value);
+                    } else if (optionType === 'sizeOptions' && !selectedSizes.includes(value)) {
+                        selectedSizes.push(value);
+                    } else if (optionType === 'quadOptions' && !selectedQuads.includes(value)) {
+                        selectedQuads.push(value);
+                    } else if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
+                        selectedDoubles.push(value);
+                    } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
+                        selectedSingles.push(value);
+                    }
+                }
+            });
         }
     </script>
 </body>
