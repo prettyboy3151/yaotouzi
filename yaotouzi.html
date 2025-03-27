@@ -675,13 +675,18 @@
 			dice3.style.animation = 'roll 3s infinite';
 
 			setTimeout(() => {
-				// 生成随机骰子结果
-				const value1 = rollDice();
-				const value2 = rollDice();
-				const value3 = rollDice();
-				const sum = value1 + value2 + value3;
-				const sizeResult = getSize(sum);
-				const isTripleResult = isTriple(value1, value2, value3);
+                // 生成随机骰子结果
+                const value1 = rollDice();
+                const value2 = rollDice();
+                const value3 = rollDice();
+                const sum = value1 + value2 + value3;
+                const isTripleResult = isTriple(value1, value2, value3);
+                
+                // 修改大小判断逻辑：如果是豹子，大小都不中
+                let sizeResult = '';
+                if (!isTripleResult) {
+                    sizeResult = getSize(sum); // 只有不是豹子时才判断大小
+                }
 
 				// 更新骰子显示
 				updateDice(dice1, value1);
@@ -756,24 +761,29 @@
 
 					// 大小下注计算
 					let sizeWinnings = 0;
-					let sizeReturn = 0;
-					if (betSizes.length > 0) {
-						const sizeCost = betSizes.length * 300;
-						totalCost += sizeCost;
+                    let sizeReturn = 0;
+                    if (betSizes.length > 0 && !isTripleResult) { // 只有当不是豹子时才计算大小下注
+                        const sizeCost = betSizes.length * 300;
+                        totalCost += sizeCost;
 
-						betSizes.forEach(size => {
-							if (size === sizeResult) {
-								sizeWinnings += 600; // 本金300 + 盈利300
-								sizeReturn += 300;
-							}
-						});
+                        betSizes.forEach(size => {
+                            if (size === sizeResult) {
+                                sizeWinnings += 600; // 本金300 + 盈利300
+                                sizeReturn += 300;
+                            }
+                        });
 
-						document.getElementById('betSizeInfo').textContent = 
-							`大小下注: ${betSizes.join(', ')}, 花费: -${sizeCost}` + 
-							(sizeWinnings > 0 ? `, 收回: +${sizeReturn}, 盈利: +${sizeWinnings - sizeReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += sizeWinnings;
-						totalReturn += sizeReturn;
-					}
+                        document.getElementById('betSizeInfo').textContent = 
+                            `大小下注: ${betSizes.join(', ')}, 花费: -${sizeCost}` + 
+                            (sizeWinnings > 0 ? `, 收回: +${sizeReturn}, 盈利: +${sizeWinnings - sizeReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += sizeWinnings;
+                        totalReturn += sizeReturn;
+                    } else if (betSizes.length > 0 && isTripleResult) {
+                        const sizeCost = betSizes.length * 300;
+                        totalCost += sizeCost;
+                        document.getElementById('betSizeInfo').textContent = 
+                            `大小下注: ${betSizes.join(', ')}, 花费: -${sizeCost}, 豹子通吃, 收回: +0, 盈利: +0`;
+                    }
 
 					// 四联下注计算
 					let quadWinnings = 0;
@@ -1117,12 +1127,14 @@
 					selectedSingles = [];  // 清空已选择的单型
 					resetDiceOptions();    // 重置点数选择界面
 				} else {
-					alert('余额不足！');
-				}
-			} else {
-				alert('请选择至少一个点数、大小、四联、双型或单型！');
-			}
-		});
+                    if (confirm('余额不足！是否重置金额为2000？')) {
+                        balanceAmount.textContent = 2000; // 重置金额为2000
+                    }
+                }
+            } else {
+                alert('请选择至少一个点数、大小、四联、双型或单型！');
+            }
+        });
 
         // 重置点数选项
         function resetPointOptions() {
