@@ -375,6 +375,74 @@
 	</div>
 
     <script>
+        // 添加从GitHub获取数据的函数
+        async function fetchRecordsFromGitHub() {
+            const REPO = 'your_username/your_repo'; // 替换为您的仓库路径
+            const BRANCH = 'main'; // 或您的分支名
+            const FILE_PATH = 'data/dice-records.json';
+            const rawUrl = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${FILE_PATH}`;
+            
+            try {
+                const response = await fetch(rawUrl);
+                if (!response.ok) throw new Error('网络响应不正常');
+                
+                const remoteRecords = await response.json();
+                const localRecords = JSON.parse(localStorage.getItem('diceRecords')) || [];
+                
+                // 合并记录，去重
+                const mergedRecords = [...localRecords, ...remoteRecords]
+                    .filter((record, index, self) => 
+                        index === self.findIndex(r => 
+                            r.dice1 === record.dice1 && 
+                            r.dice2 === record.dice2 && 
+                            r.dice3 === record.dice3
+                        )
+                    );
+                
+                // 保存到本地
+                localStorage.setItem('diceRecords', JSON.stringify(mergedRecords));
+                
+                // 更新显示
+                displayRecords();
+                updateStats();
+                
+                console.log('已从GitHub获取最新记录');
+                alert('数据已从GitHub同步完成！');
+            } catch (error) {
+                console.error('从GitHub获取数据失败:', error);
+                alert('同步失败，请稍后再试');
+            }
+        }
+
+        // 添加手动刷新按钮
+        function addRefreshButton() {
+            const btn = document.createElement('button');
+            btn.textContent = '手动同步数据';
+            btn.style.position = 'fixed';
+            btn.style.bottom = '70px';
+            btn.style.left = '50%';
+            btn.style.transform = 'translateX(-50%)';
+            btn.style.zIndex = '1000';
+            btn.style.padding = '10px 20px';
+            btn.style.backgroundColor = '#4CAF50';
+            btn.style.color = 'white';
+            btn.style.border = 'none';
+            btn.style.borderRadius = '5px';
+            
+            btn.addEventListener('click', fetchRecordsFromGitHub);
+            
+            document.body.appendChild(btn);
+        }
+
+        // 页面加载时初始化
+        window.addEventListener('load', function() {
+            addRefreshButton();
+            
+            // 初始加载本地记录
+            displayRecords();
+            updateStats();
+        });
+    
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
         const dice3 = document.getElementById('dice3');
