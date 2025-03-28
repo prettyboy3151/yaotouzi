@@ -270,13 +270,22 @@
             flex: 1;
             overflow-y: auto; /* 只有这个区域可以滚动 */
             padding-bottom: 10px;
+            padding-right: 17px; /* 为滚动条预留空间 */
+            margin-right: -17px; /* 负边距将滚动条拉到边框 */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: #888 #f1f1f1; /* Firefox */
         }
         
         /* 弹窗底部按钮区域 */
         .modal-footer {
-            padding-top: 15px;
+            padding-top: 0px; /* 减少上边距 */
+            padding-bottom: 0px; /* 减少下边距 */
             border-top: 1px solid #eee;
-            margin-top: 10px;
+            margin-top: 0px; /* 减少与上方内容的间距 */
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            gap: 20px; /* 按钮之间的间距 */
+            height: 80px; /* 自动高度 */
         }
 
         /* 选项容器样式 */
@@ -296,12 +305,12 @@
 
         .close {
             position: absolute;
-            right: 15px;
-            top: 10px;
-            color: #aaa;
+            right: 0px;
+            top: 0px;
+            color: #33333;
             float: right;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 32px;
+            font-weight: nomal;
             cursor: pointer;
         }
 
