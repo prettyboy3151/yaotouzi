@@ -596,46 +596,6 @@
 	</div>
 	
     <script>
-        // 添加同步到GitHub的函数
-        async function syncToGitHub(record) {
-            const REPO = 'your_username/your_repo'; // 替换为您的仓库路径
-            const BRANCH = 'main'; // 或您的分支名
-            const FILE_PATH = 'data/dice-records.json';
-            
-            try {
-                // 获取当前文件内容
-                const rawUrl = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${FILE_PATH}`;
-                const response = await fetch(rawUrl);
-                const currentContent = await response.text();
-                const records = JSON.parse(currentContent || '[]');
-                
-                // 添加新记录
-                records.push(record);
-                
-                // 这里需要一个服务端接口来实际更新GitHub文件
-                // 由于GitHub不允许直接从前端修改文件，我们需要其他方法：
-                console.log('请手动更新data/dice-records.json文件，内容为:', JSON.stringify(records, null, 2));
-                alert('请手动更新GitHub仓库中的data/dice-records.json文件');
-                
-            } catch (error) {
-                console.error('同步失败:', error);
-            }
-        }
-
-        // 修改saveRecord函数
-        function saveRecord(record) {
-            let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-            records.push(record);
-            localStorage.setItem('diceRecords', JSON.stringify(records));
-            
-            // 尝试同步到GitHub
-            syncToGitHub(record);
-            
-            // 显示当前记录
-            displayRecords();
-            updateStats();
-        }
-        
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
         const dice3 = document.getElementById('dice3');
