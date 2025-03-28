@@ -1226,42 +1226,105 @@
             resetDoubleOptions();
             resetSingleOptions();
         }
-        
-        // 根据大小切换全选状态（修改为互斥选择）
+
+        // 根据大小切换全选状态（保持切换功能，同时处理全选状态）
         function selectAllBySize(optionType, sizeType) {
             const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            let selectedArray;
             
-            // 先取消所有选择
-            options.forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            // 清空对应的选择数组
             if (optionType === 'doubleOptions') {
-                selectedDoubles = [];
+                selectedArray = selectedDoubles;
             } else if (optionType === 'singleOptions') {
-                selectedSingles = [];
+                selectedArray = selectedSingles;
             }
             
-            // 只选中指定大小的选项
-            options.forEach(option => {
-                const value = option.getAttribute('data-value');
-                const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+            // 检查当前是否是全选状态
+            const isAllSelected = options.length === selectedArray.length;
+            
+            // 如果是全选状态，直接选中对应大小的选项
+            if (isAllSelected) {
+                // 先取消所有选择
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                });
                 
-                if ((sizeType === 'big' && sum > 10) || 
-                    (sizeType === 'small' && sum <= 10)) {
-                    option.classList.add('selected');
-                    // 添加到对应的选择数组
-                    if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
-                        selectedDoubles.push(value);
-                    } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
-                        selectedSingles.push(value);
-                    }
+                // 清空对应的选择数组
+                if (optionType === 'doubleOptions') {
+                    selectedDoubles = [];
+                } else if (optionType === 'singleOptions') {
+                    selectedSingles = [];
                 }
-            });
+                
+                // 选中指定大小的选项
+                options.forEach(option => {
+                    const value = option.getAttribute('data-value');
+                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                    
+                    if ((sizeType === 'big' && sum > 10) || 
+                        (sizeType === 'small' && sum <= 10)) {
+                        option.classList.add('selected');
+                        if (optionType === 'doubleOptions') {
+                            selectedDoubles.push(value);
+                        } else if (optionType === 'singleOptions') {
+                            selectedSingles.push(value);
+                        }
+                    }
+                });
+            } else {
+                // 如果不是全选状态，使用原来的切换逻辑
+                let allSizeSelected = true;
+                options.forEach(option => {
+                    const value = option.getAttribute('data-value');
+                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                    
+                    const shouldBeSelected = (sizeType === 'big' && sum > 10) || 
+                                          (sizeType === 'small' && sum <= 10);
+                    
+                    if (shouldBeSelected && !selectedArray.includes(value)) {
+                        allSizeSelected = false;
+                    }
+                });
+                
+                // 根据当前状态决定是选中还是取消选中
+                options.forEach(option => {
+                    const value = option.getAttribute('data-value');
+                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                    
+                    const shouldBeSelected = (sizeType === 'big' && sum > 10) || 
+                                           (sizeType === 'small' && sum <= 10);
+                    
+                    if (shouldBeSelected) {
+                        if (allSizeSelected) {
+                            // 取消选中
+                            option.classList.remove('selected');
+                            if (optionType === 'doubleOptions') {
+                                selectedDoubles = selectedDoubles.filter(item => item !== value);
+                            } else if (optionType === 'singleOptions') {
+                                selectedSingles = selectedSingles.filter(item => item !== value);
+                            }
+                        } else {
+                            // 选中
+                            option.classList.add('selected');
+                            if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
+                                selectedDoubles.push(value);
+                            } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
+                                selectedSingles.push(value);
+                            }
+                        }
+                    } else {
+                        // 确保另一组选项被取消选中
+                        option.classList.remove('selected');
+                        if (optionType === 'doubleOptions') {
+                            selectedDoubles = selectedDoubles.filter(item => item !== value);
+                        } else if (optionType === 'singleOptions') {
+                            selectedSingles = selectedSingles.filter(item => item !== value);
+                        }
+                    }
+                });
+            }
         }
 
-        // 切换全选状态
+        // 切换全选状态（保持不变）
         function selectAll(optionType) {
             const options = document.querySelectorAll(`#${optionType} .dice-option`);
             
