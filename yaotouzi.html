@@ -34,7 +34,7 @@
             text-align: center;
             margin: 0 0 10px 0;
             font-size: 16px;
-	    font-weight: normal;
+            font-weight: normal;
         }
         .stats-grid {
             display: grid;
@@ -416,6 +416,20 @@
             justify-content: space-around;
             margin: 10px 0;
         }
+        #sizeOptions .dice-option {
+            width: calc(25% - 4px); /* 4个选项每行，减去边距 */
+            margin: 2px;
+            box-sizing: border-box;
+        }
+        
+        /* 围骰和全围选项区域 */
+        #tripleOptions, #allTripleOptions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+        
         .select-all-btn {
             margin: 5px 0 5px 5px;
             padding: 5px 10px;
@@ -521,6 +535,8 @@
                 <div id="betQuadInfo"></div>   <!-- 四联下注信息 -->
                 <div id="betDoubleInfo"></div>   <!-- 双型下注信息 -->
                 <div id="betSingleInfo"></div>   <!-- 单型下注信息 -->
+                <div id="betTripleInfo"></div>   <!-- 围骰下注信息 -->
+                <div id="betAllTripleInfo"></div>   <!-- 全围下注信息 -->
                 <div id="betTotalResultInfo"></div> <!-- 总的输赢结果 -->
             </div>
         </div>
@@ -554,6 +570,8 @@
                     <div class="dice-options" id="sizeOptions">
                         <div class="dice-option" data-value="大">大</div>
                         <div class="dice-option" data-value="小">小</div>
+                        <div class="dice-option" data-value="单">单</div>
+                        <div class="dice-option" data-value="双">双</div>
                     </div>
                     
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -640,6 +658,28 @@
                         <div class="dice-option" data-value="245">245</div>
                         <div class="dice-option" data-value="345">345</div>
                     </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">选择下注围骰</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAll('tripleOptions')">全选</button>
+                        </div>
+                    </div>
+                    <div class="dice-options" id="tripleOptions">
+                        <div class="dice-option" data-value="111">111</div>
+                        <div class="dice-option" data-value="222">222</div>
+                        <div class="dice-option" data-value="333">333</div>
+                        <div class="dice-option" data-value="444">444</div>
+                        <div class="dice-option" data-value="555">555</div>
+                        <div class="dice-option" data-value="666">666</div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">选择下注全围</h3>
+                    </div>
+                    <div class="dice-options" id="allTripleOptions">
+                        <div class="dice-option" data-value="allTriple">全围</div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button id="confirmBet">确定</button>
@@ -709,6 +749,8 @@
         let betQuads = [];  // 记录下注的四联（支持多选）
         let betDoubles = []; // 记录下注的双型（支持多选）
         let betSingles = []; // 记录下注的单型（支持多选）
+        let betTriples = []; // 记录下注的围骰（支持多选）
+        let betAllTriples = []; // 记录下注的全围（支持多选）
         let betAmount = 0;  // 记录下注的金额
 
         // 创建Audio对象
@@ -747,6 +789,10 @@
     
         function getSize(sum) {
             return sum > 10 ? '大' : '小';
+        }
+        
+        function getOddEven(sum) {
+            return sum % 2 === 1 ? '单' : '双';
         }
     
         function isTriple(dice1, dice2, dice3) {
@@ -904,8 +950,10 @@
                 
                 // 修改大小判断逻辑：如果是豹子，大小都不中
                 let sizeResult = '';
+                let oddEvenResult = '';
                 if (!isTripleResult) {
                     sizeResult = getSize(sum); // 只有不是豹子时才判断大小
+                    oddEvenResult = getOddEven(sum); // 只有不是豹子时才判断单双
                 }
 
 				// 更新骰子显示
@@ -936,12 +984,14 @@
 				rollButton.style.msUserSelect = 'none';
 
 				// 检查是否有下注
-				if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0 && betDoubles.length === 0 && betSingles.length === 0) {
+				if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0 && betDoubles.length === 0 && betSingles.length === 0 && betTriples.length === 0 && betAllTriples.length === 0) {
 					document.getElementById('betPointsInfo').textContent = '';
 					document.getElementById('betSizeInfo').textContent = '';
 					document.getElementById('betQuadInfo').textContent = '';
 					document.getElementById('betDoubleInfo').textContent = '';
 					document.getElementById('betSingleInfo').textContent = '';
+					document.getElementById('betTripleInfo').textContent = '';
+					document.getElementById('betAllTripleInfo').textContent = '';
 					document.getElementById('betTotalResultInfo').textContent = '';
 				} else {
 					const currentBalance = parseInt(balanceAmount.textContent, 10);
@@ -982,19 +1032,19 @@
 					// 大小下注计算
 					let sizeWinnings = 0;
                     let sizeReturn = 0;
-                    if (betSizes.length > 0 && !isTripleResult) { // 只有当不是豹子时才计算大小下注
+                    if (betSizes.length > 0 && !isTripleResult) { // 只有当不是豹子时才计算大小单双下注
                         const sizeCost = betSizes.length * 300;
                         totalCost += sizeCost;
 
                         betSizes.forEach(size => {
-                            if (size === sizeResult) {
+                            if (size === sizeResult || size === oddEvenResult) {
                                 sizeWinnings += 600; // 本金300 + 盈利300
                                 sizeReturn += 300;
                             }
                         });
 
                         document.getElementById('betSizeInfo').textContent = 
-                            `大小下注: ${betSizes.join(', ')}, 花费: -${sizeCost}` + 
+                            `大小单双下注: ${betSizes.join(', ')}, 花费: -${sizeCost}` + 
                             (sizeWinnings > 0 ? `, 收回: +${sizeReturn}, 盈利: +${sizeWinnings - sizeReturn}` : `, 收回: +0, 盈利: +0`);
                         totalWinnings += sizeWinnings;
                         totalReturn += sizeReturn;
@@ -1002,7 +1052,7 @@
                         const sizeCost = betSizes.length * 300;
                         totalCost += sizeCost;
                         document.getElementById('betSizeInfo').textContent = 
-                            `大小下注: ${betSizes.join(', ')}, 花费: -${sizeCost}, 豹子通吃, 收回: +0, 盈利: +0`;
+                            `大小单双下注: ${betSizes.join(', ')}, 花费: -${sizeCost}, 豹子通吃, 收回: +0, 盈利: +0`;
                     }
 
 					// 四联下注计算
@@ -1080,6 +1130,55 @@
 						totalWinnings += singleWinnings;
 						totalReturn += singleReturn;
 					}
+					
+					// 围骰下注计算 (赔率1:150)
+					let tripleWinnings = 0;
+					let tripleReturn = 0;
+					if (betTriples.length > 0 && isTripleResult) {
+						const tripleCost = betTriples.length * 100;
+						totalCost += tripleCost;
+						const diceResult = value1.toString().repeat(3); // 如"111"
+						
+						betTriples.forEach(triple => {
+							if (triple === diceResult) {
+								tripleWinnings += 15100; // 本金100 + 盈利15000
+								tripleReturn += 100;
+							}
+						});
+						
+						document.getElementById('betTripleInfo').textContent = 
+							`围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}` + 
+							(tripleWinnings > 0 ? `, 收回: +${tripleReturn}, 盈利: +${tripleWinnings - tripleReturn}` : `, 收回: +0, 盈利: +0`);
+						totalWinnings += tripleWinnings;
+						totalReturn += tripleReturn;
+					} else if (betTriples.length > 0) {
+						const tripleCost = betTriples.length * 100;
+						totalCost += tripleCost;
+						document.getElementById('betTripleInfo').textContent = 
+							`围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}, 收回: +0, 盈利: +0`;
+					}
+					
+					// 全围下注计算 (赔率1:24)
+					let allTripleWinnings = 0;
+					let allTripleReturn = 0;
+					if (betAllTriples.length > 0 && isTripleResult) {
+						const allTripleCost = betAllTriples.length * 100;
+						totalCost += allTripleCost;
+						
+						allTripleWinnings += 2500; // 本金100 + 盈利2400
+						allTripleReturn += 100;
+						
+						document.getElementById('betAllTripleInfo').textContent = 
+							`全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}` + 
+							`, 收回: +${allTripleReturn}, 盈利: +${allTripleWinnings - allTripleReturn}`;
+						totalWinnings += allTripleWinnings;
+						totalReturn += allTripleReturn;
+					} else if (betAllTriples.length > 0) {
+						const allTripleCost = betAllTriples.length * 100;
+						totalCost += allTripleCost;
+						document.getElementById('betAllTripleInfo').textContent = 
+							`全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}, 收回: +0, 盈利: +0`;
+					}
 
 					// 计算净盈利（总收回 + 总盈利 - 总花费）
 					totalProfit = (totalReturn + (totalWinnings - totalReturn)) - totalCost;
@@ -1097,6 +1196,8 @@
 					betQuads = [];
 					betDoubles = [];
 					betSingles = [];
+					betTriples = [];
+					betAllTriples = [];
 					betAmount = 0;
 				}
 
@@ -1140,6 +1241,8 @@
         const quadOptions = document.querySelectorAll('#quadOptions .dice-option');
         const doubleOptions = document.querySelectorAll('#doubleOptions .dice-option');
         const singleOptions = document.querySelectorAll('#singleOptions .dice-option');
+        const tripleOptions = document.querySelectorAll('#tripleOptions .dice-option');
+        const allTripleOptions = document.querySelectorAll('#allTripleOptions .dice-option');
         const confirmBetButton = document.getElementById('confirmBet');
         const cancelBetButton = document.getElementById('cancelBet');
         const betModal = document.getElementById('betModal');
@@ -1150,6 +1253,8 @@
         // 记录选择的双型和单型
         let selectedDoubles = []; // 支持多选
         let selectedSingles = []; // 支持多选
+        let selectedTriples = []; // 支持多选
+        let selectedAllTriples = []; // 支持多选
 
         // 选择双型
         doubleOptions.forEach(option => {
@@ -1182,16 +1287,43 @@
                 }
             });
         });
-
-        // 记录选择的点数和大小
-        let selectedDice = [];
-        let selectedSizes = []; // 支持多选
-        let selectedQuads = []; // 支持多选
+        
+        // 选择围骰
+        tripleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                
+                // 切换围骰选择
+                if (selectedTriples.includes(value)) {
+                    selectedTriples = selectedTriples.filter(triple => triple !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedTriples.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
+        // 选择全围
+        allTripleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                
+                // 切换全围选择
+                if (selectedAllTriples.includes(value)) {
+                    selectedAllTriples = selectedAllTriples.filter(allTriple => allTriple !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedAllTriples.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
 
         // 打开弹窗
 		betButton.addEventListener('click', () => {
 			// 检查是否有未结算的下注信息
-			if (betPoints.length > 0 || betSizes.length > 0 || betQuads.length > 0 || betDoubles.length > 0 || betSingles.length > 0) {
+			if (betPoints.length > 0 || betSizes.length > 0 || betQuads.length > 0 || betDoubles.length > 0 || betSingles.length > 0 || betTriples.length > 0 || betAllTriples.length > 0) {
 				// 如果有未结算的下注信息，清空下注信息并返还金额
 				const currentBalance = parseInt(balanceAmount.textContent, 10);
 				balanceAmount.textContent = currentBalance + betAmount; // 返还已扣除的金额
@@ -1202,6 +1334,8 @@
 				betQuads = [];
 				betDoubles = [];
 				betSingles = [];
+				betTriples = [];
+				betAllTriples = [];
 				betAmount = 0;
 
 				// 清空下注信息显示
@@ -1210,6 +1344,8 @@
 				document.getElementById('betQuadInfo').textContent = '';
 				document.getElementById('betDoubleInfo').textContent = '';
 				document.getElementById('betSingleInfo').textContent = '';
+				document.getElementById('betTripleInfo').textContent = '';
+				document.getElementById('betAllTripleInfo').textContent = '';
 				document.getElementById('betTotalResultInfo').textContent = '';
 			}
 
@@ -1219,6 +1355,8 @@
 			selectedQuads = [];
 			selectedDoubles = [];
 			selectedSingles = [];
+			selectedTriples = [];
+			selectedAllTriples = [];
 			resetDiceOptions(); // 重置选项样式
 			betModal.style.display = 'block'; // 显示弹窗
 		});
@@ -1283,14 +1421,16 @@
 
         // 确认下注
         confirmBetButton.addEventListener('click', () => {
-			if (selectedDice.length > 0 || selectedSizes.length > 0 || selectedQuads.length > 0 || selectedDoubles.length > 0 || selectedSingles.length > 0) {
+			if (selectedDice.length > 0 || selectedSizes.length > 0 || selectedQuads.length > 0 || selectedDoubles.length > 0 || selectedSingles.length > 0 || selectedTriples.length > 0 || selectedAllTriples.length > 0) {
 				// 计算总下注金额
 				const pointCost = selectedDice.length * 100; // 每个点数下注100
 				const sizeCost = selectedSizes.length * 300; // 每个大小下注300
 				const quadCost = selectedQuads.length * 100; // 每个四联下注100
 				const doubleCost = selectedDoubles.length * 100; // 每个双型下注100
 				const singleCost = selectedSingles.length * 100; // 每个单型下注100
-				const totalCost = pointCost + sizeCost + quadCost + doubleCost + singleCost;
+				const tripleCost = selectedTriples.length * 100; // 每个围骰下注100
+				const allTripleCost = selectedAllTriples.length * 100; // 每个全围下注100
+				const totalCost = pointCost + sizeCost + quadCost + doubleCost + singleCost + tripleCost + allTripleCost;
 
 				const currentBalance = parseInt(balanceAmount.textContent, 10);
 
@@ -1329,6 +1469,20 @@
 					} else {
 						document.getElementById('betSingleInfo').textContent = ''; // 清空单型下注信息
 					}
+					
+					// 更新围骰下注信息
+					if (selectedTriples.length > 0) {
+						document.getElementById('betTripleInfo').textContent = `围骰下注: ${selectedTriples.join(', ')}, 花费: -${tripleCost}`;
+					} else {
+						document.getElementById('betTripleInfo').textContent = ''; // 清空围骰下注信息
+					}
+					
+					// 更新全围下注信息
+					if (selectedAllTriples.length > 0) {
+						document.getElementById('betAllTripleInfo').textContent = `全围下注: ${selectedAllTriples.join(', ')}, 花费: -${allTripleCost}`;
+					} else {
+						document.getElementById('betAllTripleInfo').textContent = ''; // 清空全围下注信息
+					}
 
 					// 清空输赢结果
 					document.getElementById('betTotalResultInfo').textContent = '';
@@ -1339,6 +1493,8 @@
 					betQuads = selectedQuads; // 记录下注的四联
 					betDoubles = selectedDoubles; // 记录下注的双型
 					betSingles = selectedSingles; // 记录下注的单型
+					betTriples = selectedTriples; // 记录下注的围骰
+					betAllTriples = selectedAllTriples; // 记录下注的全围
 					betAmount = totalCost;   // 记录下注金额
 
 					// 显示预扣除后的金额
@@ -1349,6 +1505,8 @@
 					selectedQuads = [];     // 清空已选择的四联
 					selectedDoubles = [];  // 清空已选择的双型
 					selectedSingles = [];  // 清空已选择的单型
+					selectedTriples = []; // 清空已选择的围骰
+					selectedAllTriples = []; // 清空已选择的全围
 					resetDiceOptions();    // 重置点数选择界面
 				} else {
                     if (confirm('余额不足！是否重置金额为10000？')) {
@@ -1356,7 +1514,7 @@
                     }
                 }
             } else {
-                alert('请选择至少一个点数、大小、四联、双型或单型！');
+                alert('请选择至少一个点数、大小、四联、双型、单型、围骰或全围！');
             }
         });
 
@@ -1394,6 +1552,20 @@
                 option.classList.remove('selected');
             });
         }
+        
+        // 重置围骰选项
+        function resetTripleOptions() {
+            tripleOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
+        
+        // 重置全围选项
+        function resetAllTripleOptions() {
+            allTripleOptions.forEach(option => {
+                option.classList.remove('selected');
+            });
+        }
 
         // 重置所有选项
         function resetDiceOptions() {
@@ -1402,6 +1574,8 @@
             resetQuadOptions();
             resetDoubleOptions();
             resetSingleOptions();
+            resetTripleOptions();
+            resetAllTripleOptions();
         }
 
         // 根据大小切换全选状态（保持切换功能，同时处理全选状态）
@@ -1530,6 +1704,10 @@
                         selectedDoubles = selectedDoubles.filter(item => item !== value);
                     } else if (optionType === 'singleOptions') {
                         selectedSingles = selectedSingles.filter(item => item !== value);
+                    } else if (optionType === 'tripleOptions') {
+                        selectedTriples = selectedTriples.filter(item => item !== value);
+                    } else if (optionType === 'allTripleOptions') {
+                        selectedAllTriples = selectedAllTriples.filter(item => item !== value);
                     }
                 } else {
                     option.classList.add('selected');
@@ -1544,6 +1722,10 @@
                         selectedDoubles.push(value);
                     } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
                         selectedSingles.push(value);
+                    } else if (optionType === 'tripleOptions' && !selectedTriples.includes(value)) {
+                        selectedTriples.push(value);
+                    } else if (optionType === 'allTripleOptions' && !selectedAllTriples.includes(value)) {
+                        selectedAllTriples.push(value);
                     }
                 }
             });
