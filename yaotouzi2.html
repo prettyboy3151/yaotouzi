@@ -15,7 +15,7 @@
             overflow: hidden;
         }
         .left-container {
-            width: 70%;
+            width: 65%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -33,14 +33,19 @@
         .stats-container h3 {
             text-align: center;
             margin: 0 0 10px 0;
-			font-size: 14px
+            font-size: 14px
         }
         .stats-grid {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 10px;
-			text-align: center;
-		}
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+        }
+        .stats-grid2 {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            text-align: center;
+        }
         .stats-item {
             font-size: 16px;
         }
@@ -131,16 +136,20 @@
             align-items: center;
             padding: 10px;
             box-sizing: border-box;
+            flex-wrap: wrap;
         }
         .record-container {
             width: 100%;
             height: calc(100vh - 60px);
             overflow-y: auto; /* 只增加竖向滚动条 */
-            font-size: 24px;  /* 保持原来的字体大小 */
+            font-size: 18px;  /* 调整字体大小以适应更多内容 */
         }
         .record-item {
             margin-bottom: 10px;
             padding: 5px;
+            display: block; /* 改为block以显示为单行 */
+            text-align: left; /* 左对齐 */
+            white-space: nowrap; /* 防止换行 */
         }
         .record-item.red { color: red; }
         .record-item.yellow { color: yellow; }
@@ -173,68 +182,68 @@
 
         /* 弹窗样式 */
         .modal {
-			display: none;
-			position: fixed;
-			z-index: 1001;
-			left: 0; /* 弹窗靠左对齐 */
-			top: 0;
-			width: 46%;
-			height: 100%;
-			background-color: transparent; /* 去掉蒙版 */
-		}
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0; /* 弹窗靠左对齐 */
+            top: 0;
+            width: 46%;
+            height: 100%;
+            background-color: transparent; /* 去掉蒙版 */
+        }
 
-		.modal-content {
-			background-color: #fff;
-			margin: 15% 0 0 0px; /* 弹窗靠左对齐，距离顶部15%，距离左侧0px */
-			padding: 20px;
-			border: 1px solid #888;
-			width: 100%;
-			text-align: center;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影以增强视觉效果 */
-		}
+        .modal-content {
+            background-color: #fff;
+            margin: 15% 0 0 0px; /* 弹窗靠左对齐，距离顶部15%，距离左侧0px */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影以增强视觉效果 */
+        }
 
-		.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
-			cursor: pointer;
-		}
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-		.close:hover {
-			color: black;
-		}
+        .close:hover {
+            color: black;
+        }
 
-		/* 数字按键样式 */
-		.number-buttons {
-			display: flex;
-			flex-direction: column; /* 设置为垂直排列 */
-			justify-content: space-around;
-			margin-bottom: 20px;
-		}
+        /* 数字按键样式 */
+        .number-buttons {
+            display: flex;
+            flex-direction: column; /* 设置为垂直排列 */
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
 
-		.number-row {
-			display: flex;
-			justify-content: space-around;
-			margin-bottom: 10px; /* 行与行之间的间距 */
-		}
+        .number-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px; /* 行与行之间的间距 */
+        }
 
-		.number-button {
-			width: 50px; /* 加大按钮宽度 */
-			height: 50px; /* 加大按钮高度 */
-			text-align: center;
-			background-color: #00bbd4;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			font-size: 24px; /* 加大字体大小 */
-			cursor: pointer;
-		}
+        .number-button {
+            width: 50px; /* 加大按钮宽度 */
+            height: 50px; /* 加大按钮高度 */
+            text-align: center;
+            background-color: #00bbd4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 24px; /* 加大字体大小 */
+            cursor: pointer;
+        }
 
-		.number-button:hover {
-			background-color: #0097a7;
-		}
+        .number-button:hover {
+            background-color: #0097a7;
+        }
 
         /* 输入框容器 */
         .input-container {
@@ -265,50 +274,80 @@
         .clear-icon:hover {
             color: #000;
         }
-		.missing-numbers {
-			text-align: center; /* 居中显示 */
-			font-size: 18px; /* 字体大小 */
-			margin: 10px 0; /* 上下间距 */
-			padding: 0; /* 去掉内边距 */
-			border: none; /* 去掉边框 */
-		}
+        .missing-numbers {
+            text-align: center; /* 居中显示 */
+            font-size: 18px; /* 字体大小 */
+            margin: 10px 0; /* 上下间距 */
+            padding: 0; /* 去掉内边距 */
+            border: none; /* 去掉边框 */
+        }
+        
+        /* 新增：按钮容器样式 */
+        .button-container {
+            display: inline-block;
+            justify-content: center;
+            gap: 10px;
+            margin-top: -20px;
+            width: 100%;
+        }
+        
+        .record-left, .record-right {
+            display: inline; /* 改为内联显示 */
+        }
+        
+        .control-button {
+            position: fixed;
+            left: 98%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #muteButton {
+            top: 10px;
+        }
+
+        #clearButton {
+            top: 100px;
+        }
     </style>
 </head>
 <body>
     <div class="left-container">
         <div class="stats-container">
-			<h3>最近10次结果统计</h3>
-			<div class="stats-grid" id="statsGrid">
-				<!-- 统计结果将显示在这里 -->
-			</div>
-			<!-- 分割线 -->
-			<hr class="stats-divider">
-			
-			<h3>最近2次未出现的点数</h3>
-			<div class="stats-grid" id="missingStatsGrid">
-				<!-- 最近2次未出现的点数将显示在这里 -->
-			</div>
-			<!-- 分割线 -->
-			<hr class="stats-divider">
-			
-			<!-- 连续N次未出现统计栏 -->
-			<h3>连续N次未出现</h3>
-			<div class="stats-grid" id="continuousMissingStatsGrid">
-				<!-- 连续未出现的点数将显示在这里 -->
-			</div>
-			<!-- 分割线 -->
-			<hr class="stats-divider">
-			
-			<!-- 双型连续N次未出现统计栏 -->
-			<h3>双型连续N次未出现</h3>
-			<div class="stats-grid" id="doubleTypeMissingStatsGrid">
-				<!-- 双型连续未出现的点数将显示在这里 -->
-			</div>
-		</div>
+            <h3>最近10次结果统计</h3>
+            <div class="stats-grid" id="statsGrid">
+                <!-- 统计结果将显示在这里 -->
+            </div>
+            <!-- 分割线 -->
+            <hr class="stats-divider">
+            
+            <h3>最近2次未出现的点数</h3>
+            <div class="stats-grid2" id="missingStatsGrid">
+                <!-- 最近2次未出现的点数将显示在这里 -->
+            </div>
+            <!-- 分割线 -->
+            <hr class="stats-divider">
+            
+            <!-- 连续N次未出现统计栏 -->
+            <h3>连续N次未出现</h3>
+            <div class="stats-grid" id="continuousMissingStatsGrid">
+                <!-- 连续未出现的点数将显示在这里 -->
+            </div>
+            <!-- 分割线 -->
+            <hr class="stats-divider">
+            
+            <!-- 双型连续N次未出现统计栏 -->
+            <h3>双型连续N次未出现</h3>
+            <div class="stats-grid" id="doubleTypeMissingStatsGrid">
+                <!-- 双型连续未出现的点数将显示在这里 -->
+            </div>
+        </div>
 
-        <!-- 刷新按钮：在摇骰子按钮上方 -->
-        <button id="refreshButton" style="margin-top: 0px;">刷新</button>
-        
         <!-- 骰子容器 -->
         <div class="dice-container">
             <div class="dice" id="dice1">
@@ -341,38 +380,42 @@
     </div>
     <div class="right-container">
         <div class="record-container" id="recordContainer">
+        </div>
+        <button id="refreshButton" class="control-button">🔄 刷新</button>
+        <button id="clearButton" class="control-button">🗑️ 清空</button>
+        </div>
             <!-- 记录将显示在这里 -->
         </div>
     </div>
 
     <!-- 手动输入点数的弹窗 -->
-	<div id="inputModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<button id="deleteLastRecord" style="width: 50%; background: none; border: none; color: blue; font-size: 14px; text-align: center; margin-bottom: 0px; padding: 5px;">删除</button>
-			<h3 style="font-size: 16px;">请输入三个骰子的点数</h3> <!-- 缩小标题字体大小 -->
-			<!-- 输入框容器 -->
-			<div class="input-container">
-				<input type="text" id="diceInput" placeholder="例如：123" maxlength="3" style="width: 60%;"> <!-- 缩短输入框宽度 -->
-				<!-- 清空图标 -->
-				<span class="clear-icon" id="clearInput">×</span>
-			</div>
-			<!-- 数字按键 -->
-			<div class="number-buttons">
-				<div class="number-row">
-					<button class="number-button" data-value="1">1</button>
-					<button class="number-button" data-value="2">2</button>
-					<button class="number-button" data-value="3">3</button>
-				</div>
-				<div class="number-row">
-					<button class="number-button" data-value="4">4</button>
-					<button class="number-button" data-value="5">5</button>
-					<button class="number-button" data-value="6">6</button>
-				</div>
-			</div>
-			<button id="confirmInput" style="width: 100px; height: 50px;">确定</button>
-		</div>
-	</div>
+    <div id="inputModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <button id="deleteLastRecord" style="width: 50%; background: none; border: none; color: blue; font-size: 14px; text-align: center; margin-bottom: 0px; padding: 5px;">删除</button>
+            <h3 style="font-size: 16px;">请输入三个骰子的点数</h3> <!-- 缩小标题字体大小 -->
+            <!-- 输入框容器 -->
+            <div class="input-container">
+                <input type="text" id="diceInput" placeholder="例如：123" maxlength="3" style="width: 60%;"> <!-- 缩短输入框宽度 -->
+                <!-- 清空图标 -->
+                <span class="clear-icon" id="clearInput">×</span>
+            </div>
+            <!-- 数字按键 -->
+            <div class="number-buttons">
+                <div class="number-row">
+                    <button class="number-button" data-value="1">1</button>
+                    <button class="number-button" data-value="2">2</button>
+                    <button class="number-button" data-value="3">3</button>
+                </div>
+                <div class="number-row">
+                    <button class="number-button" data-value="4">4</button>
+                    <button class="number-button" data-value="5">5</button>
+                    <button class="number-button" data-value="6">6</button>
+                </div>
+            </div>
+            <button id="confirmInput" style="width: 100px; height: 50px;">确定</button>
+        </div>
+    </div>
 
     <script>
         const dice1 = document.getElementById('dice1');
@@ -418,55 +461,59 @@
         });
 
         // 确认输入的点数
-		confirmInputButton.addEventListener('click', () => {
-			const inputValue = diceInput.value.trim();
-			if (inputValue.length === 3 && /^\d{3}$/.test(inputValue)) {
-				const value1 = parseInt(inputValue[0], 10);
-				const value2 = parseInt(inputValue[1], 10);
-				const value3 = parseInt(inputValue[2], 10);
+        confirmInputButton.addEventListener('click', () => {
+            const inputValue = diceInput.value.trim();
+            if (inputValue.length === 3 && /^\d{3}$/.test(inputValue)) {
+                const value1 = parseInt(inputValue[0], 10);
+                const value2 = parseInt(inputValue[1], 10);
+                const value3 = parseInt(inputValue[2], 10);
 
-				if (value1 >= 1 && value1 <= 6 && value2 >= 1 && value2 <= 6 && value3 >= 1 && value3 <= 6) {
-					updateDice(dice1, value1);
-					updateDice(dice2, value2);
-					updateDice(dice3, value3);
+                if (value1 >= 1 && value1 <= 6 && value2 >= 1 && value2 <= 6 && value3 >= 1 && value3 <= 6) {
+                    updateDice(dice1, value1);
+                    updateDice(dice2, value2);
+                    updateDice(dice3, value3);
 
-					const sum = value1 + value2 + value3;
-					const size = getSize(sum);
-					const isTripleResult = isTriple(value1, value2, value3);
+                    const sum = value1 + value2 + value3;
+                    const size = getSize(sum);
+                    const isTripleResult = isTriple(value1, value2, value3);
+                    const oddEven = getOddEven(sum);
+                    const diceType = getDiceType(value1, value2, value3);
 
-					const record = {
-						dice1: value1,
-						dice2: value2,
-						dice3: value3,
-						sum: sum,
-						size: size,
-						isTriple: isTripleResult
-					};
+                    const record = {
+                        dice1: value1,
+                        dice2: value2,
+                        dice3: value3,
+                        sum: sum,
+                        size: size,
+                        isTriple: isTripleResult,
+                        oddEven: oddEven,
+                        diceType: diceType
+                    };
 
-					saveRecord(record);
-					displayRecords();
-					updateStats();
+                    saveRecord(record);
+                    displayRecords();
+                    updateStats();
 
-					diceInput.value = ''; // 清空输入框
-					inputModal.style.display = 'none'; // 关闭弹窗
-				} else {
-					alert('请输入1到6之间的有效点数！');
-				}
-			} else {
-				alert('请输入3个数字（例如：123）！');
-			}
-		});
-		
-		// 监听整个文档的点击事件
-		document.addEventListener('click', (event) => {
-			const modal = document.getElementById('inputModal');
-			const modalContent = document.querySelector('.modal-content');
+                    diceInput.value = ''; // 清空输入框
+                    inputModal.style.display = 'none'; // 关闭弹窗
+                } else {
+                    alert('请输入1到6之间的有效点数！');
+                }
+            } else {
+                alert('请输入3个数字（例如：123）！');
+            }
+        });
+        
+        // 监听整个文档的点击事件
+        document.addEventListener('click', (event) => {
+            const modal = document.getElementById('inputModal');
+            const modalContent = document.querySelector('.modal-content');
 
-			// 检查点击的目标是否在弹窗之外
-			if (event.target === modal) {
-				modal.style.display = 'none';
-			}
-		});
+            // 检查点击的目标是否在弹窗之外
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
 
         function updateDice(diceElement, value) {
             const faces = diceElement.querySelectorAll('.face');
@@ -487,6 +534,53 @@
         function isTriple(dice1, dice2, dice3) {
             return dice1 === dice2 && dice2 === dice3;
         }
+        
+        // 判断单双
+        function getOddEven(sum) {
+            return sum % 2 === 0 ? '双' : '单';
+        }
+        
+        // 判断单四/纯单/双型
+        function getDiceType(dice1, dice2, dice3) {
+            const counts = {};
+            counts[dice1] = (counts[dice1] || 0) + 1;
+            counts[dice2] = (counts[dice2] || 0) + 1;
+            counts[dice3] = (counts[dice3] || 0) + 1;
+            
+            const values = Object.values(counts);
+            
+            if (values.includes(3)) {
+                return ''; // 三个相同不显示类型
+            } else if (values.includes(2)) {
+                return '双型'; // 有两个相同
+            } else {
+                // 判断是否为单四（检查是否属于四联选项）
+                const uniqueValues = [...new Set([dice1, dice2, dice3])].sort();
+                
+                // 四联选项的数字组合
+                const siLianGroups = [
+                    [1, 2, 3], // 123组合
+                    [2, 3, 4], // 234组合
+                    [3, 4, 5], // 345组合
+                    [4, 5, 6], // 456组合
+                    [1, 2, 4], // 456组合
+                    [1, 3, 4], // 456组合
+                    [2, 3, 5], // 456组合
+                    [2, 4, 5], // 456组合
+                    [2, 3, 6], // 456组合
+                    [2, 5, 6], // 456组合
+                    [3, 5, 6], // 456组合
+                    [3, 4, 6], // 456组合
+                ];
+                
+                // 检查当前点数是否是任一四联组合的子集
+                const isSiLian = siLianGroups.some(group => {
+                    return uniqueValues.every(val => group.includes(val));
+                });
+                
+                return isSiLian ? '单四' : '纯单';
+            }
+        }
     
         function saveRecord(record) {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
@@ -506,12 +600,18 @@
                 const recordItem = document.createElement('div');
                 recordItem.className = `record-item ${record.isTriple ? 'green' : record.size === '大' ? 'red' : 'yellow'}`;
                 
+                // 创建单行文本内容
+                let recordText;
+                
                 if (record.isTriple) {
-                    recordItem.textContent = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]}`;
+                    // 如果是三个相同，只显示点数
+                    recordText = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]}`;
                 } else {
-                    recordItem.textContent = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]}    ${record.sum}    ${record.size}`;
+                    // 如果不是三个相同，显示完整信息
+                    recordText = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]} ${record.sum} ${record.size} ${record.oddEven} ${record.diceType}`;
                 }
                 
+                recordItem.textContent = recordText;
                 recordContainer.appendChild(recordItem);
             });
             
@@ -522,127 +622,127 @@
         // 初始化显示
         displayRecords();
     
-		function updateStats() {
-			let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-			const recentRecords = records.slice(-10); // 最近10次结果
-			const count = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+        function updateStats() {
+            let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
+            const recentRecords = records.slice(-10); // 最近10次结果
+            const count = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
-			// 统计最近10次结果中每个点数出现的次数
-			recentRecords.forEach(record => {
-				count[record.dice1]++;
-				count[record.dice2]++;
-				count[record.dice3]++;
-			});
+            // 统计最近10次结果中每个点数出现的次数
+            recentRecords.forEach(record => {
+                count[record.dice1]++;
+                count[record.dice2]++;
+                count[record.dice3]++;
+            });
 
-			// 更新最近10次结果统计
-			statsGrid.innerHTML = `
-				<div class="stats-item">1️⃣: ${count[1]}</div>
-				<div class="stats-item">2️⃣: ${count[2]}</div>
-				<div class="stats-item">3️⃣: ${count[3]}</div>
-				<div class="stats-item">4️⃣: ${count[4]}</div>
-				<div class="stats-item">5️⃣: ${count[5]}</div>
-				<div class="stats-item">6️⃣: ${count[6]}</div>
-			`;
+            // 更新最近10次结果统计
+            statsGrid.innerHTML = `
+                <div class="stats-item">1️⃣: ${count[1]}</div>
+                <div class="stats-item">2️⃣: ${count[2]}</div>
+                <div class="stats-item">3️⃣: ${count[3]}</div>
+                <div class="stats-item">4️⃣: ${count[4]}</div>
+                <div class="stats-item">5️⃣: ${count[5]}</div>
+                <div class="stats-item">6️⃣: ${count[6]}</div>
+            `;
 
-			// 计算最近2次未出现的点数
-			const lastTwoRecords = records.slice(-2);
-			const appearedNumbers = new Set();
-			lastTwoRecords.forEach(record => {
-				appearedNumbers.add(record.dice1);
-				appearedNumbers.add(record.dice2);
-				appearedNumbers.add(record.dice3);
-			});
+            // 计算最近2次未出现的点数
+            const lastTwoRecords = records.slice(-2);
+            const appearedNumbers = new Set();
+            lastTwoRecords.forEach(record => {
+                appearedNumbers.add(record.dice1);
+                appearedNumbers.add(record.dice2);
+                appearedNumbers.add(record.dice3);
+            });
 
-			const allNumbers = new Set([1, 2, 3, 4, 5, 6]);
-			const missingNumbers = [...allNumbers].filter(num => !appearedNumbers.has(num));
+            const allNumbers = new Set([1, 2, 3, 4, 5, 6]);
+            const missingNumbers = [...allNumbers].filter(num => !appearedNumbers.has(num));
 
-			// 更新最近2次未出现的点数显示，只显示未出现的点数，并用两个空格隔开
-			missingStatsGrid.innerHTML = `
-				<div class="missing-numbers">
-					${missingNumbers.join('  ')}
-				</div>
-			`;
+            // 更新最近2次未出现的点数显示，只显示未出现的点数，并用两个空格隔开
+            missingStatsGrid.innerHTML = `
+                <div class="missing-numbers">
+                    ${missingNumbers.join('  ')}
+                </div>
+            `;
 
-			// 计算最近10期内连续未出现的次数（包含最新一期）
-			const continuousMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+            // 计算最近10期内连续未出现的次数（包含最新一期）
+            const continuousMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
-			// 从最新记录开始倒序遍历
-			for (let num = 1; num <= 6; num++) {
-				let continuousCount = 0;
-				for (let i = recentRecords.length - 1; i >= 0; i--) {
-					const record = recentRecords[i];
-					const currentNumbers = new Set([record.dice1, record.dice2, record.dice3]);
+            // 从最新记录开始倒序遍历
+            for (let num = 1; num <= 6; num++) {
+                let continuousCount = 0;
+                for (let i = recentRecords.length - 1; i >= 0; i--) {
+                    const record = recentRecords[i];
+                    const currentNumbers = new Set([record.dice1, record.dice2, record.dice3]);
 
-					if (!currentNumbers.has(num)) {
-						continuousCount++; // 如果未出现，计数加1
-					} else {
-						break; // 如果出现，停止计数
-					}
-				}
-				continuousMissingCounts[num] = continuousCount;
-			}
+                    if (!currentNumbers.has(num)) {
+                        continuousCount++; // 如果未出现，计数加1
+                    } else {
+                        break; // 如果出现，停止计数
+                    }
+                }
+                continuousMissingCounts[num] = continuousCount;
+            }
 
-			// 更新连续N次未出现的点数显示
-			const continuousMissingStatsGrid = document.getElementById('continuousMissingStatsGrid');
-			continuousMissingStatsGrid.innerHTML = `
-				<div class="stats-item">1️⃣: ${continuousMissingCounts[1]}</div>
-				<div class="stats-item">2️⃣: ${continuousMissingCounts[2]}</div>
-				<div class="stats-item">3️⃣: ${continuousMissingCounts[3]}</div>
-				<div class="stats-item">4️⃣: ${continuousMissingCounts[4]}</div>
-				<div class="stats-item">5️⃣: ${continuousMissingCounts[5]}</div>
-				<div class="stats-item">6️⃣: ${continuousMissingCounts[6]}</div>
-			`;
-			
-			// 计算双型连续未出现的次数（排除三个相同的情况）
-			const doubleTypeMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-			for (let num = 1; num <= 6; num++) {
-				let found = false;
-				let count = 0;
-				for (let i = records.length - 1; i >= 0; i--) {
-					const record = records[i];
-					const diceValues = [record.dice1, record.dice2, record.dice3];
-					
-					// 检查是否是当前数字的双型（有两个当前数字且不是三个相同）
-					const countNum = diceValues.filter(v => v === num).length;
-					const isCurrentNumDoubleType = countNum === 2; // 必须是恰好两个
-					
-					if (isCurrentNumDoubleType) {
-						found = true;
-						break;
-					}
-					count++;
-				}
-				doubleTypeMissingCounts[num] = found ? count : records.length;
-			}
-			
-			doubleTypeMissingStatsGrid.innerHTML = `
-				<div class="stats-item">1️⃣: ${doubleTypeMissingCounts[1]}</div>
-				<div class="stats-item">2️⃣: ${doubleTypeMissingCounts[2]}</div>
-				<div class="stats-item">3️⃣: ${doubleTypeMissingCounts[3]}</div>
-				<div class="stats-item">4️⃣: ${doubleTypeMissingCounts[4]}</div>
-				<div class="stats-item">5️⃣: ${doubleTypeMissingCounts[5]}</div>
-				<div class="stats-item">6️⃣: ${doubleTypeMissingCounts[6]}</div>
-			`;
-		}
+            // 更新连续N次未出现的点数显示
+            const continuousMissingStatsGrid = document.getElementById('continuousMissingStatsGrid');
+            continuousMissingStatsGrid.innerHTML = `
+                <div class="stats-item">1️⃣: ${continuousMissingCounts[1]}</div>
+                <div class="stats-item">2️⃣: ${continuousMissingCounts[2]}</div>
+                <div class="stats-item">3️⃣: ${continuousMissingCounts[3]}</div>
+                <div class="stats-item">4️⃣: ${continuousMissingCounts[4]}</div>
+                <div class="stats-item">5️⃣: ${continuousMissingCounts[5]}</div>
+                <div class="stats-item">6️⃣: ${continuousMissingCounts[6]}</div>
+            `;
+            
+            // 计算双型连续未出现的次数（排除三个相同的情况）
+            const doubleTypeMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+            for (let num = 1; num <= 6; num++) {
+                let found = false;
+                let count = 0;
+                for (let i = records.length - 1; i >= 0; i--) {
+                    const record = records[i];
+                    const diceValues = [record.dice1, record.dice2, record.dice3];
+                    
+                    // 检查是否是当前数字的双型（有两个当前数字且不是三个相同）
+                    const countNum = diceValues.filter(v => v === num).length;
+                    const isCurrentNumDoubleType = countNum === 2; // 必须是恰好两个
+                    
+                    if (isCurrentNumDoubleType) {
+                        found = true;
+                        break;
+                    }
+                    count++;
+                }
+                doubleTypeMissingCounts[num] = found ? count : records.length;
+            }
+            
+            doubleTypeMissingStatsGrid.innerHTML = `
+                <div class="stats-item">1️⃣: ${doubleTypeMissingCounts[1]}</div>
+                <div class="stats-item">2️⃣: ${doubleTypeMissingCounts[2]}</div>
+                <div class="stats-item">3️⃣: ${doubleTypeMissingCounts[3]}</div>
+                <div class="stats-item">4️⃣: ${doubleTypeMissingCounts[4]}</div>
+                <div class="stats-item">5️⃣: ${doubleTypeMissingCounts[5]}</div>
+                <div class="stats-item">6️⃣: ${doubleTypeMissingCounts[6]}</div>
+            `;
+        }
         displayRecords();
         updateStats();
-		
-		// 获取删除按钮
-		const deleteLastRecordButton = document.getElementById('deleteLastRecord');
+        
+        // 获取删除按钮
+        const deleteLastRecordButton = document.getElementById('deleteLastRecord');
 
-		// 删除最新一次记录的函数
-		function deleteLastRecord() {
-			let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-			if (records.length > 0) {
-				records.pop(); // 删除最后一条记录
-				localStorage.setItem('diceRecords', JSON.stringify(records));
-				displayRecords(); // 刷新记录显示
-				updateStats(); // 刷新统计显示
-			}	
-		}
+        // 删除最新一次记录的函数
+        function deleteLastRecord() {
+            let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
+            if (records.length > 0) {
+                records.pop(); // 删除最后一条记录
+                localStorage.setItem('diceRecords', JSON.stringify(records));
+                displayRecords(); // 刷新记录显示
+                updateStats(); // 刷新统计显示
+            }    
+        }
 
-		// 为删除按钮添加点击事件
-		deleteLastRecordButton.addEventListener('click', deleteLastRecord);
+        // 为删除按钮添加点击事件
+        deleteLastRecordButton.addEventListener('click', deleteLastRecord);
         
         // 获取刷新按钮
         const refreshButton = document.getElementById('refreshButton');
@@ -650,6 +750,16 @@
         // 刷新页面
         refreshButton.addEventListener('click', () => {
             location.reload();
+        });
+        
+        // 获取清空按钮
+        const clearButton = document.getElementById('clearButton');
+        
+        // 清空所有记录
+        clearButton.addEventListener('click', () => {
+            localStorage.removeItem('diceRecords');
+            displayRecords();
+            updateStats();
         });
     </script>
 </body>
