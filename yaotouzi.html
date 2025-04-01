@@ -861,7 +861,7 @@
         
         function updateStats() {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-            const recentRecords = records.slice(-9);
+            const recentRecords = records.slice(-100);
             
             // 类型统计
             const typeCounts = {
