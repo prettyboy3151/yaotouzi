@@ -15,12 +15,12 @@
             overflow: hidden;
         }
         .left-container {
-            width: 63%;
+            width: 58%;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color: #fff;
-            padding-bottom: 0px; /* 为按钮留出空间 */
+            padding-bottom: 0px;
         }
         .stats-container {
             width: 100%;
@@ -42,10 +42,15 @@
             gap: 10px;
             text-align: center;
         }
-        .stats-item {
-            font-size: 18px;
+        .stats-grid2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            text-align: center;
         }
-        
+        .stats-item {
+            font-size: 16px;
+        }
         .balance-container {
             width: 100%;
             padding: 10px;
@@ -56,14 +61,12 @@
             flex-direction: column;
             gap: 5px;
         }
-        
         .balance-info {
             display: flex;
             align-items: center;
             gap: 10px;
-            white-space: nowrap; /* Prevent text wrapping */
+            white-space: nowrap;
         }
-
         #betInfo {
             display: flex;
             flex-direction: column;
@@ -75,52 +78,50 @@
             overflow-y: auto;
             padding-right: 5px;
         }
-
         .balance-container span {
             font-size: 14px;
             font-weight: normal;
         }
-
         #balanceAmount {
             color: #00bbd4;
             font-size: 18px;
-            font-weight: lighter;
+            font-weight: bold;
+            margin-right: 10px;
         }
         .dice-container {
             width: 100%;
             height: auto;
-            display: grid; /* 使用 grid 布局 */
+            display: grid;
             grid-template-areas: "dice1 dice2 dice3";
-            grid-template-columns: 60px; /* 设置一列布局 */
-            grid-template-rows: 60px 70px 0px; /* 设置自动行高 */
+            grid-template-columns: 60px;
+            grid-template-rows: 60px 70px 0px;
             justify-content: center;
             align-items: center;
-            gap: 0px; /* 设置骰子之间的间距 */
+            gap: 0px;
             perspective: 1000px;
-            margin-bottom: 10px; /* 与自动摇骰子复选框的距离 */
-            position: fixed; /* 固定定位 */
-            bottom: 40px; /* 距离页面底部 80px（按钮高度 60px + 10px 间距） */
-            left: 30%; /* 水平居中 */
-            transform: translateX(-50%); /* 水平居中 */
-            z-index: 1000; /* 确保在最上层 */
+            margin-bottom: 10px;
+            position: fixed;
+            bottom: 40px;
+            left: 30%;
+            transform: translateX(-50%);
+            z-index: 1000;
         }
         .auto-roll-container {
-            margin-top: 10px; /* 与骰子的距离 */
+            margin-top: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-            position: fixed; /* 固定定位 */
-            bottom: 80px; /* 距离页面底部 60px（按钮高度 60px） */
-            left: 30%; /* 水平居中 */
-            transform: translateX(-50%); /* 水平居中 */
-            z-index: 1000; /* 确保在最上层 */
+            position: fixed;
+            bottom: 80px;
+            left: 30%;
+            transform: translateX(-50%);
+            z-index: 1000;
         }
         .auto-roll-container input[type="number"] {
             width: 60px;
             padding: 5px;
             font-size: 16px;
         }
-        
         .dice {
             width: 42px;
             height: 42px;
@@ -130,28 +131,24 @@
             background-color: white;
             margin: 10px;
         }
-        
         #dice1 {
-            grid-area: dice1; /* 设置骰子1的位置 */
-            justify-self: center; /* 使骰子1靠中 */
+            grid-area: dice1;
+            justify-self: center;
         }
-        
         #dice2 {
-            grid-area: dice2; /* 设置骰子2的位置 */
-            justify-self: end; /* 使骰子2靠右 */
+            grid-area: dice2;
+            justify-self: end;
         }
-        
         #dice3 {
-            grid-area: dice3; /* 设置骰子3的位置 */
-            justify-self: start; /* 使骰子3靠左 */
+            grid-area: dice3;
+            justify-self: start;
         }
-        
         button {
             margin-top: 10px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            grid-column: span 3; /* 按钮跨两列 */
+            grid-column: span 3;
             justify-self: center;
         }
         .dice .face {
@@ -174,11 +171,9 @@
         .dice .right { transform: rotateY(90deg) translateZ(21px); }
         .dice .top { transform: rotateX(90deg) translateZ(21px); }
         .dice .bottom { transform: rotateX(-90deg) translateZ(21px); }
-
         @keyframes roll {
             0% { transform: rotateX(0deg) rotateY(0deg); }
             100% { transform: rotateX(720deg) rotateY(720deg); }
-
         }
         .right-container {
             width: 50%;
@@ -188,14 +183,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
+            padding-left: 0px;
             box-sizing: border-box;
         }
         .record-container {
             width: 100%;
-            height: calc(100vh - 60px);
-            overflow-y: auto; /* 只增加竖向滚动条 */
-            font-size: 24px;  /* 保持原来的字体大小 */
+            height: calc(100vh - 30px);
+            overflow-y: auto;
+            font-size: 14px;
         }
         .record-item {
             margin-bottom: 10px;
@@ -204,32 +199,23 @@
         .record-item.red { color: red; }
         .record-item.yellow { color: yellow; }
         .record-item.green { color: green; }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
         .dice-image {
             width: 30px;
             height: 30px;
         }
-        
         #rollButton {
-            position: fixed; /* 固定在页面底部 */
-            bottom: 5px; /* 距离页面底部 20px */
-            left: 30%; /* 水平居中 */
-            transform: translateX(-50%); /* 水平居中 */
-            width: 140px; /* 按钮宽度 */
-            height: 60px; /* 按钮高度 */
-            border-radius: 100px; /* 圆角 */
-            background-color: rgb(255, 193, 7); /* 按钮背景色 */
-            font-size: 16px; /* 字体大小 */
-            cursor: pointer; /* 鼠标指针样式 */
-            z-index: 1000; /* 确保按钮在最上层 */
+            position: fixed;
+            bottom: 5px;
+            left: 30%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 60px;
+            border-radius: 100px;
+            background-color: rgb(255, 193, 7);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1000;
         }
-        /* 下注按钮样式 */
         #betButton {
             margin-left: 5px;
             margin-top: 0px;
@@ -241,8 +227,10 @@
             border: none;
             border-radius: 5px;
         }
-
-        /* 弹窗样式 */
+        #betButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -253,58 +241,48 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
         }
-
         .modal-content {
             background-color: #fff;
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 300px; /* 稍微加宽一点 */
-            max-height: 70vh; /* 使用视口高度单位 */
+            width: 300px;
+            max-height: 70vh;
             display: flex;
             flex-direction: column;
             border-radius: 10px;
-            position: relative; /* 为关闭按钮定位 */
+            position: relative;
         }
-
-        /* 弹窗主体内容区域 */
         .modal-body {
             flex: 1;
-            overflow-y: auto; /* 只有这个区域可以滚动 */
+            overflow-y: auto;
             padding-bottom: 10px;
-            padding-right: 17px; /* 为滚动条预留空间 */
-            margin-right: -17px; /* 负边距将滚动条拉到边框 */
-            scrollbar-width: thin; /* Firefox */
-            scrollbar-color: #888 #f1f1f1; /* Firefox */
+            padding-right: 17px;
+            margin-right: -17px;
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
         }
-        
-        /* 弹窗底部按钮区域 */
         .modal-footer {
-            padding-top: 0px; /* 减少上边距 */
-            padding-bottom: 0px; /* 减少下边距 */
+            padding-top: 0px;
+            padding-bottom: 0px;
             border-top: 1px solid #eee;
-            margin-top: 0px; /* 减少与上方内容的间距 */
+            margin-top: 0px;
             display: flex;
-            justify-content: center; /* 水平居中 */
-            gap: 20px; /* 按钮之间的间距 */
-            height: 80px; /* 自动高度 */
+            justify-content: center;
+            gap: 20px;
+            height: 80px;
         }
-
-        /* 选项容器样式 */
         .dice-options {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             margin: 10px 0;
         }
-        
-        /* 弹窗标题样式 */
         .modal-content h3 {
-            font-size: 16px; /* 字体大小设置为 14px */
-            font-weight: normal /* 字体粗细设置为 light */
-            margin: 10px 0; /* 调整标题的上下间距 */
+            font-size: 16px;
+            font-weight: normal;
+            margin: 10px 0;
         }
-
         .close {
             position: absolute;
             right: 0px;
@@ -315,18 +293,9 @@
             font-weight: nomal;
             cursor: pointer;
         }
-
         .close:hover {
             color: black;
         }
-
-        .dice-options {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-
         .dice-option {
             width: 40px;
             height: 40px;
@@ -339,12 +308,10 @@
             cursor: pointer;
             margin: 2px;
         }
-
         .dice-option.selected {
             background-color: #00bbd4;
             color: #fff;
         }
-
         #confirmBet, #cancelBet {
             margin: 20px;
             padding: 10px 30px;
@@ -353,63 +320,58 @@
             border: none;
             border-radius: 5px;
         }
-
         #confirmBet {
             background-color: #00bbd4;
             color: white;
         }
-
         #cancelBet {
             color: black;
         }
-       #balanceAmount {
-            color: #00bbd4;
-            font-size: 18px;
-            font-weight: bold;
-            margin-right: 10px;
+        #rollButton {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
-
-        /* 下注信息样式 */
-        #betInfo {
-            display: flex;
-            flex-direction: column;
-            gap: 8px; /* 设置行间距 */
-            font-size: 14px;
-            color: black;
-            text-align: left; /* 靠左对齐 */
-        }
-		/* 防止按钮被选中 */
-		#rollButton {
-			user-select: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-        }
-        
-        /* 单点选项区域 - 固定一行显示 */
         #pointOptions {
             display: flex;
-            justify-content: space-between; /* 均匀分布在一行 */
-            flex-wrap: nowrap; /* 禁止换行 */
+            justify-content: space-between;
+            flex-wrap: nowrap;
             margin: 10px 0;
         }
-
-        /* 双型和单型选项区域 - 每行5个选项 */
-        #doubleOptions, #singleOptions {
+        #doubleOptions {
             display: flex;
             flex-wrap: wrap;
-            justify-content: flex-start; /* 左对齐 */
+            justify-content: flex-start;
             margin: 10px 0;
         }
-
-        #doubleOptions .dice-option, 
-        #singleOptions .dice-option {
-            width: calc(20% - 4px); /* 5个选项每行，减去边距 */
+        #doubleOptions .dice-option {
+            width: calc(20% - 4px);
             margin: 2px;
             box-sizing: border-box;
         }
-
-        /* 大小和四联选项保持原有布局 */
+        #singleOptions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin: 10px 0;
+        }
+        #singleOptions .dice-option {
+            width: calc(20% - 4px);
+            margin: 2px;
+            box-sizing: border-box;
+        }
+        #pairOptions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin: 10px 0;
+        }
+        #pairOptions .dice-option {
+            width: calc(16.666% - 4px);
+            margin: 2px;
+            box-sizing: border-box;
+        }
         #sizeOptions, #quadOptions {
             display: flex;
             flex-wrap: wrap;
@@ -417,19 +379,16 @@
             margin: 10px 0;
         }
         #sizeOptions .dice-option {
-            width: calc(25% - 4px); /* 4个选项每行，减去边距 */
+            width: calc(25% - 4px);
             margin: 2px;
             box-sizing: border-box;
         }
-        
-        /* 围骰和全围选项区域 */
         #tripleOptions, #allTripleOptions {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
             margin: 10px 0;
         }
-        
         .select-all-btn {
             margin: 5px 0 5px 5px;
             padding: 5px 10px;
@@ -440,37 +399,29 @@
             border: none;
             border-radius: 5px;
         }
-
         .select-all-btn:hover {
             background-color: #0095a8;
         }
-        
-        /* 滑动容器样式 */
         .stats-container {
             overflow: hidden;
             position: relative;
         }
-
         .stats-slider {
             display: flex;
             transition: transform 0.3s ease;
-            width: 400%; /* 4个面板 */
+            width: 400%;
         }
-
         .stats-slide {
             width: 25%;
             flex-shrink: 0;
             padding: 0 10px;
             box-sizing: border-box;
         }
-
-        /* 导航点样式 */
         .stats-nav {
             display: flex;
             justify-content: center;
             margin-bottom: 10px;
         }
-
         .stats-nav-btn {
             width: 8px;
             height: 8px;
@@ -479,44 +430,43 @@
             margin: 0 4px;
             cursor: pointer;
         }
-
         .stats-nav-btn.active {
             background-color: #00bbd4;
+        }
+        .record-number {
+            color: #999;
+            font-size: 14px;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
     <div class="left-container">
         <div class="stats-container">
-            <!-- 添加导航点 -->
             <div class="stats-nav">
                 <div class="stats-nav-btn active" data-slide="0"></div>
                 <div class="stats-nav-btn" data-slide="1"></div>
                 <div class="stats-nav-btn" data-slide="2"></div>
                 <div class="stats-nav-btn" data-slide="3"></div>
+                <div class="stats-nav-btn" data-slide="4"></div>
             </div>
-            
-            <!-- 滑动容器 -->
             <div class="stats-slider" id="statsSlider">
-                <!-- 面板1：新增统计 -->
+                <div class="stats-slide">
+                    <h3>最近10次类型出现次数</h3>
+                    <div class="stats-grid2" id="typeStatsGrid"></div>
+                </div>
                 <div class="stats-slide">
                     <h3>最近2次未出现的点数</h3>
                     <div class="stats-item" id="missingStatsGrid"></div>
                 </div>
-                
-                <!-- 面板2：原有统计 -->
                 <div class="stats-slide">
                     <h3>最近10次结果统计</h3>
                     <div class="stats-grid" id="statsGrid"></div>
                 </div>                
-                
-                <!-- 面板3：新增统计 -->
                 <div class="stats-slide">
                     <h3>连续N次未出现</h3>
                     <div class="stats-grid" id="continuousMissingStatsGrid"></div>
                 </div>
-                
-                <!-- 面板4：新增统计 -->
                 <div class="stats-slide">
                     <h3>双型连续N次未出现</h3>
                     <div class="stats-grid" id="doubleTypeMissingStatsGrid"></div>
@@ -530,18 +480,17 @@
                 <button id="betButton">下注</button>
             </div>
             <div id="betInfo">
-                <div id="betPointsInfo"></div> <!-- 点数下注信息 -->
-                <div id="betSizeInfo"></div>   <!-- 大小下注信息 -->
-                <div id="betQuadInfo"></div>   <!-- 四联下注信息 -->
-                <div id="betDoubleInfo"></div>   <!-- 双型下注信息 -->
-                <div id="betSingleInfo"></div>   <!-- 单型下注信息 -->
-                <div id="betTripleInfo"></div>   <!-- 围骰下注信息 -->
-                <div id="betAllTripleInfo"></div>   <!-- 全围下注信息 -->
-                <div id="betTotalResultInfo"></div> <!-- 总的输赢结果 -->
+                <div id="betPointsInfo"></div>
+                <div id="betSizeInfo"></div>
+                <div id="betQuadInfo"></div>
+                <div id="betDoubleInfo"></div>
+                <div id="betSingleInfo"></div>
+                <div id="betPairInfo"></div>
+                <div id="betTripleInfo"></div>
+                <div id="betAllTripleInfo"></div>
+                <div id="betTotalResultInfo"></div>
             </div>
         </div>
-        
-        <!-- 弹窗结构 -->
         <div id="betModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -560,7 +509,6 @@
                         <div class="dice-option" data-value="5">5</div>
                         <div class="dice-option" data-value="6">6</div>
                     </div>
-                    
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3>选择下注大小</h3>
                         <div>
@@ -573,7 +521,6 @@
                         <div class="dice-option" data-value="单">单</div>
                         <div class="dice-option" data-value="双">双</div>
                     </div>
-                    
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3>选择下注四联</h3>
                         <div>
@@ -586,13 +533,16 @@
                         <div class="dice-option" data-value="5432">5432</div>
                         <div class="dice-option" data-value="4321">4321</div>
                     </div>                    
-                    
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0;">选择下注双型</h3>
-                        <div>
+                        <div><h3 style="margin: 0;">选择下注双型</h3>                        
                             <button class="select-all-btn" onclick="selectAllBySize('doubleOptions', 'small')">全选小</button>
                             <button class="select-all-btn" onclick="selectAllBySize('doubleOptions', 'big')">全选大</button>
-                            <button class="select-all-btn" onclick="selectAll('doubleOptions')">全选</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(1)">全选1</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(2)">全选2</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(3)">全选3</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(4)">全选4</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(5)">全选5</button>
+                            <button class="select-all-btn" onclick="selectDoubleByNumber(6)">全选6</button>
                         </div>
                     </div>
                     <div class="dice-options" id="doubleOptions">
@@ -627,13 +577,20 @@
                         <div class="dice-option" data-value="664">664</div>
                         <div class="dice-option" data-value="665">665</div>
                     </div>                    
-                    
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0;">选择下注单型</h3>
-                        <div>
+                        <div><h3 style="margin: 0;">选择下注单型</h3>                        
                             <button class="select-all-btn" onclick="selectAllBySize('singleOptions', 'small')">全选小</button>
                             <button class="select-all-btn" onclick="selectAllBySize('singleOptions', 'big')">全选大</button>
-                            <button class="select-all-btn" onclick="selectAll('singleOptions')">全选</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(1)">全选1</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(2)">全选2</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(3)">全选3</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(4)">全选4</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(5)">全选5</button>
+                            <button class="select-all-btn" onclick="selectSingleByNumber(6)">全选6</button>
+                            <button class="select-all-btn" onclick="selectSiLian()">单四</button>
+                            <button class="select-all-btn" onclick="selectPureSingle()">纯单</button>
+                            <button class="select-all-btn" onclick="filterBySize('singleOptions', 'small')">筛选小</button>
+                            <button class="select-all-btn" onclick="filterBySize('singleOptions', 'big')">筛选大</button>
                         </div>
                     </div>
                     <div class="dice-options" id="singleOptions">
@@ -658,7 +615,20 @@
                         <div class="dice-option" data-value="245">245</div>
                         <div class="dice-option" data-value="345">345</div>
                     </div>
-                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">选择下注对子</h3>
+                        <div>
+                            <button class="select-all-btn" onclick="selectAll('pairOptions')">全选</button>
+                        </div>
+                    </div>
+                    <div class="dice-options" id="pairOptions">
+                        <div class="dice-option" data-value="11">11</div>
+                        <div class="dice-option" data-value="22">22</div>
+                        <div class="dice-option" data-value="33">33</div>
+                        <div class="dice-option" data-value="44">44</div>
+                        <div class="dice-option" data-value="55">55</div>
+                        <div class="dice-option" data-value="66">66</div>
+                    </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0;">选择下注围骰</h3>
                         <div>
@@ -673,7 +643,6 @@
                         <div class="dice-option" data-value="555">555</div>
                         <div class="dice-option" data-value="666">666</div>
                     </div>
-                    
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0;">选择下注全围</h3>
                     </div>
@@ -725,13 +694,13 @@
     </div>
     <div class="right-container">
         <div class="record-container" id="recordContainer">
-            <!-- 记录将显示在这里 -->
         </div>		
 		<button id="muteButton" style="position: fixed; top: 10px; left: 98%; transform: translateX(-50%); z-index: 1000; background-color: #f0f0f0; border: none; padding: 5px 8px; border-radius: 5px;">🔊 静音</button>
 		</div>
 	</div>
 	
     <script>
+        // 游戏变量声明
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
         const dice3 = document.getElementById('dice3');
@@ -741,52 +710,50 @@
         const autoRollCheckbox = document.getElementById('autoRollCheckbox');
         const autoRollCountInput = document.getElementById('autoRollCount');
         let autoRollInterval = null;
-        let remainingRolls = 0; // 剩余自动摇骰子次数
+        let remainingRolls = 0;
 
-        // 添加全局变量记录下注信息
-        let betPoints = []; // 记录下注的点数
-        let betSizes = [];  // 记录下注的大小（支持多选）
-        let betQuads = [];  // 记录下注的四联（支持多选）
-        let betDoubles = []; // 记录下注的双型（支持多选）
-        let betSingles = []; // 记录下注的单型（支持多选）
-        let betTriples = []; // 记录下注的围骰（支持多选）
-        let betAllTriples = []; // 记录下注的全围（支持多选）
-        let betAmount = 0;  // 记录下注的金额
+        // 下注相关变量
+        let betPoints = [];
+        let betSizes = [];
+        let betQuads = [];
+        let betDoubles = [];
+        let betSingles = [];
+        let betPairs = [];
+        let betTriples = [];
+        let betAllTriples = [];
+        let betAmount = 0;
+        
+        // 选择状态变量
+        let selectedDice = [];
+        let selectedSizes = [];
+        let selectedQuads = [];
+        let selectedDoubles = [];
+        let selectedSingles = [];
+        let selectedPairs = [];
+        let selectedTriples = [];
+        let selectedAllTriples = [];
 
-        // 创建Audio对象
+        // 音频控制
         const audio = new Audio('dice-roll.mp3');
-		
-		let isMuted = false;
-		const muteButton = document.getElementById('muteButton');
-		
-		// 静音按钮点击事件
-		muteButton.addEventListener('click', () => {
-			isMuted = !isMuted;
-			muteButton.textContent = isMuted ? "🔇 取消静音" : "🔊 静音";
-		});
-
-        function playAudio() {
-			if (!isMuted) {
-				audio.play();
-			}
-		}
-
+        let isMuted = false;
+        const muteButton = document.getElementById('muteButton');
+        
+        // 骰子功能函数
         function rollDice() {
             return Math.floor(Math.random() * 6) + 1;
         }
-    
+
         function updateDice(diceElement, value) {
             const faces = diceElement.querySelectorAll('.face');
-            
-            // 更新每一面的数字
-            faces[0].textContent = value; // 前面
-            faces[1].textContent = 7 - value; // 后面（骰子对面之和为7）
-            faces[2].textContent = value === 2 ? 3 : value === 5 ? 4 : value; // 左面
-            faces[3].textContent = value === 3 ? 4 : value === 4 ? 3 : value; // 右面
-            faces[4].textContent = value === 6 ? 2 : value === 1 ? 5 : value; // 上面
-            faces[5].textContent = value === 1 ? 5 : value === 6 ? 2 : value; // 下面
+            faces[0].textContent = value;
+            faces[1].textContent = 7 - value;
+            faces[2].textContent = value === 2 ? 3 : value === 5 ? 4 : value;
+            faces[3].textContent = value === 3 ? 4 : value === 4 ? 3 : value;
+            faces[4].textContent = value === 6 ? 2 : value === 1 ? 5 : value;
+            faces[5].textContent = value === 1 ? 5 : value === 6 ? 2 : value;
         }
-    
+
+        // 游戏逻辑函数
         function getSize(sum) {
             return sum > 10 ? '大' : '小';
         }
@@ -794,41 +761,136 @@
         function getOddEven(sum) {
             return sum % 2 === 1 ? '单' : '双';
         }
-    
+
         function isTriple(dice1, dice2, dice3) {
             return dice1 === dice2 && dice2 === dice3;
         }
-    
+        
+        function isPair(dice1, dice2, dice3) {
+            return (dice1 === dice2) || (dice1 === dice3) || (dice2 === dice3);
+        }
+        
+        function getPairValue(dice1, dice2, dice3) {
+            if (dice1 === dice2) return dice1;
+            if (dice1 === dice3) return dice1;
+            if (dice2 === dice3) return dice2;
+            return null;
+        }
+
+        function getDiceType(dice1, dice2, dice3) {
+            const counts = {};
+            counts[dice1] = (counts[dice1] || 0) + 1;
+            counts[dice2] = (counts[dice2] || 0) + 1;
+            counts[dice3] = (counts[dice3] || 0) + 1;
+            
+            const values = Object.values(counts);
+            
+            if (values.includes(3)) {
+                return ''; // 三个相同不显示类型
+            } else if (values.includes(2)) {
+                return '双型'; // 有两个相同
+            } else {
+                // 判断是否为单四（检查是否属于四联选项）
+                const uniqueValues = [...new Set([dice1, dice2, dice3])].sort();
+                
+                // 四联选项的数字组合
+                const siLianGroups = [
+                    [1, 2, 3], // 123组合
+                    [2, 3, 4], // 234组合
+                    [3, 4, 5], // 345组合
+                    [4, 5, 6], // 456组合
+                    [1, 2, 4], // 456组合
+                    [1, 3, 4], // 456组合
+                    [2, 3, 5], // 456组合
+                    [2, 4, 5], // 456组合
+                    [2, 3, 6], // 456组合
+                    [2, 5, 6], // 456组合
+                    [3, 5, 6], // 456组合
+                    [3, 4, 6], // 456组合
+                ];
+                
+                // 检查当前点数是否是任一四联组合的子集
+                const isSiLian = siLianGroups.some(group => {
+                    return uniqueValues.every(val => group.includes(val));
+                });
+                
+                return isSiLian ? '单四' : '纯单';
+            }
+        }
+        
+        // 记录和统计功能
         function saveRecord(record) {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
+            record.oddEven = getOddEven(record.sum);
+            record.diceType = getDiceType(record.dice1, record.dice2, record.dice3);
             records.push(record);
+            
+            // 限制最大记录数为1000条
+            if (records.length > 1000) {
+                records = records.slice(-1000);
+            }
+            
             localStorage.setItem('diceRecords', JSON.stringify(records));
         }
-    
+
         function displayRecords() {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
             recordContainer.innerHTML = '';
-            records.slice(-10).forEach((record) => {
+            
+            // 保持原始顺序（最新记录在最下方）
+            records.forEach((record, index) => {
                 const sortedDice = [record.dice1, record.dice2, record.dice3].sort((a, b) => a - b);
                 const recordItem = document.createElement('div');
                 recordItem.className = `record-item ${record.isTriple ? 'green' : record.size === '大' ? 'red' : 'yellow'}`;
                 
-                if (record.isTriple) {
-                    // 如果是三个相同的点数，只显示点数
-                    recordItem.textContent = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]}`;
-                } else {
-                    // 否则显示点数、和与大小
-                    recordItem.textContent = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]}    ${record.sum}    ${record.size}`;
-                }
+                // 计算期数序号（从1开始）
+                const recordNumber = records.length - index;
                 
+                if (record.isTriple) {
+                    recordItem.innerHTML = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]} <span class="record-number">#${recordNumber}</span>`;
+                } else {
+                    recordItem.innerHTML = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]} ${record.sum} ${record.size} ${record.oddEven} ${record.diceType} <span class="record-number">#${recordNumber}</span>`;
+                }
+                    
                 recordContainer.appendChild(recordItem);
             });
+            
+            // 滚动到底部显示最新记录
             recordContainer.scrollTop = recordContainer.scrollHeight;
         }
-    
+        
         function updateStats() {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
-            const recentRecords = records.slice(-10);
+            const recentRecords = records.slice(-4);
+            
+            // 类型统计
+            const typeCounts = {
+                '双型': 0,
+                '单四': 0,
+                '纯单': 0,
+                '围骰': 0
+            };
+            
+            recentRecords.forEach(record => {
+                const diceType = getDiceType(record.dice1, record.dice2, record.dice3);
+                if (record.isTriple) {
+                    typeCounts['围骰']++;
+                } else if (diceType === '双型') {
+                    typeCounts['双型']++;
+                } else if (diceType === '单四') {
+                    typeCounts['单四']++;
+                } else if (diceType === '纯单') {
+                    typeCounts['纯单']++;
+                }
+            });
+            
+            document.getElementById('typeStatsGrid').innerHTML = `
+                <div class="stats-item">双型: ${typeCounts['双型']}</div>
+                <div class="stats-item">单四: ${typeCounts['单四']}</div>
+                <div class="stats-item">纯单: ${typeCounts['纯单']}</div>
+                <div class="stats-item">围骰: ${typeCounts['围骰']}</div>
+            `;
+            
             const count = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
             recentRecords.forEach(record => {
@@ -845,200 +907,460 @@
                 <div class="stats-item">5️⃣: ${count[5]}</div>
                 <div class="stats-item">6️⃣: ${count[6]}</div>
             `;
-            // 计算最近2次未出现的点数
-			const lastTwoRecords = records.slice(-2);
-			const appearedNumbers = new Set();
-			lastTwoRecords.forEach(record => {
-				appearedNumbers.add(record.dice1);
-				appearedNumbers.add(record.dice2);
-				appearedNumbers.add(record.dice3);
-			});
+            
+            const lastTwoRecords = records.slice(-2);
+            const appearedNumbers = new Set();
+            lastTwoRecords.forEach(record => {
+                appearedNumbers.add(record.dice1);
+                appearedNumbers.add(record.dice2);
+                appearedNumbers.add(record.dice3);
+            });
 
-			const allNumbers = new Set([1, 2, 3, 4, 5, 6]);
-			const missingNumbers = [...allNumbers].filter(num => !appearedNumbers.has(num));
+            const allNumbers = new Set([1, 2, 3, 4, 5, 6]);
+            const missingNumbers = [...allNumbers].filter(num => !appearedNumbers.has(num));
 
-			// 更新最近2次未出现的点数显示，只显示未出现的点数，并用两个空格隔开
-			missingStatsGrid.innerHTML = `
-				<div class="missing-numbers">
-					${missingNumbers.join('  ')}
-				</div>
-			`;
+            document.getElementById('missingStatsGrid').innerHTML = `
+                <div class="missing-numbers">
+                    ${missingNumbers.join('  ')}
+                </div>
+            `;
 
-			// 计算最近10期内连续未出现的次数（包含最新一期）
-			const continuousMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+            const continuousMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
 
-			// 从最新记录开始倒序遍历
-			for (let num = 1; num <= 6; num++) {
-				let continuousCount = 0;
-				for (let i = recentRecords.length - 1; i >= 0; i--) {
-					const record = recentRecords[i];
-					const currentNumbers = new Set([record.dice1, record.dice2, record.dice3]);
+            for (let num = 1; num <= 6; num++) {
+                let continuousCount = 0;
+                for (let i = recentRecords.length - 1; i >= 0; i--) {
+                    const record = recentRecords[i];
+                    const currentNumbers = new Set([record.dice1, record.dice2, record.dice3]);
 
-					if (!currentNumbers.has(num)) {
-						continuousCount++; // 如果未出现，计数加1
-					} else {
-						break; // 如果出现，停止计数
-					}
-				}
-				continuousMissingCounts[num] = continuousCount;
-			}
+                    if (!currentNumbers.has(num)) {
+                        continuousCount++;
+                    } else {
+                        break;
+                    }
+                }
+                continuousMissingCounts[num] = continuousCount;
+            }
 
-			// 更新连续N次未出现的点数显示
-			const continuousMissingStatsGrid = document.getElementById('continuousMissingStatsGrid');
-			continuousMissingStatsGrid.innerHTML = `
-				<div class="stats-item">1️⃣: ${continuousMissingCounts[1]}</div>
-				<div class="stats-item">2️⃣: ${continuousMissingCounts[2]}</div>
-				<div class="stats-item">3️⃣: ${continuousMissingCounts[3]}</div>
-				<div class="stats-item">4️⃣: ${continuousMissingCounts[4]}</div>
-				<div class="stats-item">5️⃣: ${continuousMissingCounts[5]}</div>
-				<div class="stats-item">6️⃣: ${continuousMissingCounts[6]}</div>
-			`;
-			
-			// 计算双型连续未出现的次数（排除三个相同的情况）
-			const doubleTypeMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
-			for (let num = 1; num <= 6; num++) {
-				let found = false;
-				let count = 0;
-				for (let i = records.length - 1; i >= 0; i--) {
-					const record = records[i];
-					const diceValues = [record.dice1, record.dice2, record.dice3];
-					
-					// 检查是否是当前数字的双型（有两个当前数字且不是三个相同）
-					const countNum = diceValues.filter(v => v === num).length;
-					const isCurrentNumDoubleType = countNum === 2; // 必须是恰好两个
-					
-					if (isCurrentNumDoubleType) {
-						found = true;
-						break;
-					}
-					count++;
-				}
-				doubleTypeMissingCounts[num] = found ? count : records.length;
-			}
-			
-			doubleTypeMissingStatsGrid.innerHTML = `
-				<div class="stats-item">1️⃣: ${doubleTypeMissingCounts[1]}</div>
-				<div class="stats-item">2️⃣: ${doubleTypeMissingCounts[2]}</div>
-				<div class="stats-item">3️⃣: ${doubleTypeMissingCounts[3]}</div>
-				<div class="stats-item">4️⃣: ${doubleTypeMissingCounts[4]}</div>
-				<div class="stats-item">5️⃣: ${doubleTypeMissingCounts[5]}</div>
-				<div class="stats-item">6️⃣: ${doubleTypeMissingCounts[6]}</div>
-			`;
-		}
-        displayRecords();
-        updateStats();
+            document.getElementById('continuousMissingStatsGrid').innerHTML = `
+                <div class="stats-item">1️⃣: ${continuousMissingCounts[1]}</div>
+                <div class="stats-item">2️⃣: ${continuousMissingCounts[2]}</div>
+                <div class="stats-item">3️⃣: ${continuousMissingCounts[3]}</div>
+                <div class="stats-item">4️⃣: ${continuousMissingCounts[4]}</div>
+                <div class="stats-item">5️⃣: ${continuousMissingCounts[5]}</div>
+                <div class="stats-item">6️⃣: ${continuousMissingCounts[6]}</div>
+            `;
+            
+            const doubleTypeMissingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+            for (let num = 1; num <= 6; num++) {
+                let found = false;
+                let count = 0;
+                for (let i = records.length - 1; i >= 0; i--) {
+                    const record = records[i];
+                    const diceValues = [record.dice1, record.dice2, record.dice3];
+                    
+                    const countNum = diceValues.filter(v => v === num).length;
+                    const isCurrentNumDoubleType = countNum === 2;
+                    
+                    if (isCurrentNumDoubleType) {
+                        found = true;
+                        break;
+                    }
+                    count++;
+                }
+                doubleTypeMissingCounts[num] = found ? count : records.length;
+            }
+            
+            document.getElementById('doubleTypeMissingStatsGrid').innerHTML = `
+                <div class="stats-item">1️⃣: ${doubleTypeMissingCounts[1]}</div>
+                <div class="stats-item">2️⃣: ${doubleTypeMissingCounts[2]}</div>
+                <div class="stats-item">3️⃣: ${doubleTypeMissingCounts[3]}</div>
+                <div class="stats-item">4️⃣: ${doubleTypeMissingCounts[4]}</div>
+                <div class="stats-item">5️⃣: ${doubleTypeMissingCounts[5]}</div>
+                <div class="stats-item">6️⃣: ${doubleTypeMissingCounts[6]}</div>
+            `;
+        }
 
-        // 当复选框状态改变时，启用或禁用输入框
-        autoRollCheckbox.addEventListener('change', () => {
-            autoRollCountInput.disabled = !autoRollCheckbox.checked;
-        });
+        // 下注选择功能
+        function selectDoubleByNumber(number) {
+            const options = document.querySelectorAll('#doubleOptions .dice-option');
+            const targetNumber = number.toString();
+            
+            let allSelected = true;
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (value.split(targetNumber).length-1 >= 2 && !selectedDoubles.includes(value)) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (value.split(targetNumber).length-1 >= 2) {
+                    if (allSelected) {
+                        option.classList.remove('selected');
+                        selectedDoubles = selectedDoubles.filter(item => item !== value);
+                    } else if (!selectedDoubles.includes(value)) {
+                        option.classList.add('selected');
+                        selectedDoubles.push(value);
+                    }
+                }
+            });
+        }
 
-        // 单次下注
-		function rollOnce() {
-			rollButton.disabled = true;
-			dice1.style.animation = 'roll 3s infinite';
-			dice2.style.animation = 'roll 3s infinite';
-			dice3.style.animation = 'roll 3s infinite';
+        function selectSingleByNumber(number) {
+            const options = document.querySelectorAll('#singleOptions .dice-option');
+            const targetNumber = number.toString();
+            
+            let allSelected = true;
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (value.includes(targetNumber) && !selectedSingles.includes(value)) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (value.includes(targetNumber)) {
+                    if (allSelected) {
+                        option.classList.remove('selected');
+                        selectedSingles = selectedSingles.filter(item => item !== value);
+                    } else if (!selectedSingles.includes(value)) {
+                        option.classList.add('selected');
+                        selectedSingles.push(value);
+                    }
+                }
+            });
+        }
 
-			setTimeout(() => {
-                // 生成随机骰子结果
+        function selectSiLian() {
+            const siLianGroups = ['123','124','134','234','235','245','345','256','236','356','346','456'];
+            const options = document.querySelectorAll('#singleOptions .dice-option');
+            
+            let allSelected = true;
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (siLianGroups.includes(value) && !selectedSingles.includes(value)) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (siLianGroups.includes(value)) {
+                    if (allSelected) {
+                        option.classList.remove('selected');
+                        selectedSingles = selectedSingles.filter(item => item !== value);
+                    } else if (!selectedSingles.includes(value)) {
+                        option.classList.add('selected');
+                        selectedSingles.push(value);
+                    }
+                }
+            });
+        }
+        
+        function selectPureSingle() {
+            const siLianGroups = ['123','124','134','234','235','245','345','256','236','356','346','456'];
+            const options = document.querySelectorAll('#singleOptions .dice-option');
+            
+            let allSelected = true;
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (!siLianGroups.includes(value) && !selectedSingles.includes(value)) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                if (!siLianGroups.includes(value)) {
+                    if (allSelected) {
+                        option.classList.remove('selected');
+                        selectedSingles = selectedSingles.filter(item => item !== value);
+                    } else if (!selectedSingles.includes(value)) {
+                        option.classList.add('selected');
+                        selectedSingles.push(value);
+                    }
+                }
+            });
+        }
+
+        function selectAllBySize(optionType, sizeType) {
+            const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            let selectedArray = optionType === 'doubleOptions' ? selectedDoubles : selectedSingles;
+            
+            let allSelected = true;
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                const shouldBeSelected = (sizeType === 'big' && sum > 10) || (sizeType === 'small' && sum <= 10);
+                
+                if (shouldBeSelected && !selectedArray.includes(value)) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                const shouldBeSelected = (sizeType === 'big' && sum > 10) || (sizeType === 'small' && sum <= 10);
+                
+                if (shouldBeSelected) {
+                    if (allSelected) {
+                        option.classList.remove('selected');
+                        if (optionType === 'doubleOptions') {
+                            selectedDoubles = selectedDoubles.filter(item => item !== value);
+                        } else {
+                            selectedSingles = selectedSingles.filter(item => item !== value);
+                        }
+                    } else {
+                        option.classList.add('selected');
+                        if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
+                            selectedDoubles.push(value);
+                        } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
+                            selectedSingles.push(value);
+                        }
+                    }
+                }
+            });
+        }
+
+        function filterBySize(optionType, sizeType) {
+            const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            let selectedArray = optionType === 'doubleOptions' ? selectedDoubles : selectedSingles;
+            
+            // 先取消所有选项的选中状态
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 根据大小筛选并选中符合条件的选项
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                const shouldBeSelected = (sizeType === 'big' && sum > 10) || (sizeType === 'small' && sum <= 10);
+                
+                if (shouldBeSelected && selectedArray.includes(value)) {
+                    option.classList.add('selected');
+                } else {
+                    // 从选中数组中移除不符合条件的选项
+                    if (optionType === 'doubleOptions') {
+                        selectedDoubles = selectedDoubles.filter(item => item !== value);
+                    } else {
+                        selectedSingles = selectedSingles.filter(item => item !== value);
+                    }
+                }
+            });
+        }
+        
+        function selectAll(optionType) {
+            const options = document.querySelectorAll(`#${optionType} .dice-option`);
+            
+            let allSelected = true;
+            options.forEach(option => {
+                if (!option.classList.contains('selected')) {
+                    allSelected = false;
+                }
+            });
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value');
+                
+                if (allSelected) {
+                    option.classList.remove('selected');
+                    if (optionType === 'pointOptions') selectedDice = [];
+                    else if (optionType === 'sizeOptions') selectedSizes = [];
+                    else if (optionType === 'quadOptions') selectedQuads = [];
+                    else if (optionType === 'pairOptions') selectedPairs = [];
+                    else if (optionType === 'tripleOptions') selectedTriples = [];
+                    else if (optionType === 'allTripleOptions') selectedAllTriples = [];
+                } else {
+                    option.classList.add('selected');
+                    if (optionType === 'pointOptions' && !selectedDice.includes(value)) 
+                        selectedDice.push(value);
+                    else if (optionType === 'sizeOptions' && !selectedSizes.includes(value)) 
+                        selectedSizes.push(value);
+                    else if (optionType === 'quadOptions' && !selectedQuads.includes(value)) 
+                        selectedQuads.push(value);
+                    else if (optionType === 'pairOptions' && !selectedPairs.includes(value)) 
+                        selectedPairs.push(value);
+                    else if (optionType === 'tripleOptions' && !selectedTriples.includes(value)) 
+                        selectedTriples.push(value);
+                    else if (optionType === 'allTripleOptions' && !selectedAllTriples.includes(value)) 
+                        selectedAllTriples.push(value);
+                }
+            });
+        }
+
+        function resetPointOptions() {
+            document.querySelectorAll('#pointOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedDice = [];
+        }
+
+        function resetSizeOptions() {
+            document.querySelectorAll('#sizeOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedSizes = [];
+        }
+        
+        function resetQuadOptions() {
+            document.querySelectorAll('#quadOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedQuads = [];
+        }
+
+        function resetDoubleOptions() {
+            document.querySelectorAll('#doubleOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedDoubles = [];
+        }
+
+        function resetSingleOptions() {
+            document.querySelectorAll('#singleOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedSingles = [];
+        }
+        
+        function resetPairOptions() {
+            document.querySelectorAll('#pairOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedPairs = [];
+        }
+        
+        function resetTripleOptions() {
+            document.querySelectorAll('#tripleOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedTriples = [];
+        }
+        
+        function resetAllTripleOptions() {
+            document.querySelectorAll('#allTripleOptions .dice-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            selectedAllTriples = [];
+        }
+
+        function resetDiceOptions() {
+            resetPointOptions();
+            resetSizeOptions();
+            resetQuadOptions();
+            resetDoubleOptions();
+            resetSingleOptions();
+            resetPairOptions();
+            resetTripleOptions();
+            resetAllTripleOptions();
+        }
+
+        function rollOnce() {
+            rollButton.disabled = true;
+            dice1.style.animation = 'roll 3s infinite';
+            dice2.style.animation = 'roll 3s infinite';
+            dice3.style.animation = 'roll 3s infinite';
+
+            setTimeout(() => {
                 const value1 = rollDice();
                 const value2 = rollDice();
                 const value3 = rollDice();
                 const sum = value1 + value2 + value3;
                 const isTripleResult = isTriple(value1, value2, value3);
+                const isPairResult = isPair(value1, value2, value3);
+                const pairValue = isPairResult ? getPairValue(value1, value2, value3) : null;
                 
-                // 修改大小判断逻辑：如果是豹子，大小都不中
                 let sizeResult = '';
                 let oddEvenResult = '';
                 if (!isTripleResult) {
-                    sizeResult = getSize(sum); // 只有不是豹子时才判断大小
-                    oddEvenResult = getOddEven(sum); // 只有不是豹子时才判断单双
+                    sizeResult = getSize(sum);
+                    oddEvenResult = getOddEven(sum);
                 }
 
-				// 更新骰子显示
-				updateDice(dice1, value1);
-				updateDice(dice2, value2);
-				updateDice(dice3, value3);
+                updateDice(dice1, value1);
+                updateDice(dice2, value2);
+                updateDice(dice3, value3);
 
-				// 停止动画
-				dice1.style.animation = '';
-				dice2.style.animation = '';
-				dice3.style.animation = '';
+                dice1.style.animation = '';
+                dice2.style.animation = '';
+                dice3.style.animation = '';
 
-				// 保存记录
-				const record = {
-					dice1: value1,
-					dice2: value2,
-					dice3: value3,
-					sum: sum,
-					size: sizeResult,
-					isTriple: isTripleResult
-				};
-				saveRecord(record);
-				displayRecords();
-				updateStats();
-				
-				rollButton.style.userSelect = 'none';
-				rollButton.style.webkitUserSelect = 'none';
-				rollButton.style.msUserSelect = 'none';
+                const record = {
+                    dice1: value1,
+                    dice2: value2,
+                    dice3: value3,
+                    sum: sum,
+                    size: sizeResult,
+                    isTriple: isTripleResult
+                };
+                saveRecord(record);
+                displayRecords();
+                updateStats();
+                
+                if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0 && 
+                    betDoubles.length === 0 && betSingles.length === 0 && betPairs.length === 0 && 
+                    betTriples.length === 0 && betAllTriples.length === 0) {
+                    
+                    document.getElementById('betPointsInfo').textContent = '';
+                    document.getElementById('betSizeInfo').textContent = '';
+                    document.getElementById('betQuadInfo').textContent = '';
+                    document.getElementById('betDoubleInfo').textContent = '';
+                    document.getElementById('betSingleInfo').textContent = '';
+                    document.getElementById('betPairInfo').textContent = '';
+                    document.getElementById('betTripleInfo').textContent = '';
+                    document.getElementById('betAllTripleInfo').textContent = '';
+                    document.getElementById('betTotalResultInfo').textContent = '';
+                } else {
+                    const currentBalance = parseInt(document.getElementById('balanceAmount').textContent, 10);
+                    let totalWinnings = 0;
+                    let totalReturn = 0;
+                    let totalProfit = 0;
+                    let totalCost = 0;
 
-				// 检查是否有下注
-				if (betPoints.length === 0 && betSizes.length === 0 && betQuads.length === 0 && betDoubles.length === 0 && betSingles.length === 0 && betTriples.length === 0 && betAllTriples.length === 0) {
-					document.getElementById('betPointsInfo').textContent = '';
-					document.getElementById('betSizeInfo').textContent = '';
-					document.getElementById('betQuadInfo').textContent = '';
-					document.getElementById('betDoubleInfo').textContent = '';
-					document.getElementById('betSingleInfo').textContent = '';
-					document.getElementById('betTripleInfo').textContent = '';
-					document.getElementById('betAllTripleInfo').textContent = '';
-					document.getElementById('betTotalResultInfo').textContent = '';
-				} else {
-					const currentBalance = parseInt(balanceAmount.textContent, 10);
-					let totalWinnings = 0;  // 总盈利（包含本金）
-					let totalReturn = 0;    // 总收回本金
-					let totalProfit = 0;    // 总净盈利（盈利部分）
-					let totalCost = 0;     // 总下注花费
+                    // 单点下注结算
+                    let pointsWinnings = 0;
+                    let pointsReturn = 0;
+                    if (betPoints.length > 0) {
+                        const diceResults = [value1, value2, value3];
+                        const pointCost = betPoints.length * 100;
+                        totalCost += pointCost;
 
-					// 单点下注计算
-					let pointsWinnings = 0;
-					let pointsReturn = 0;
-					if (betPoints.length > 0) {
-						const diceResults = [value1, value2, value3];
-						const pointCost = betPoints.length * 100;
-						totalCost += pointCost;
+                        betPoints.forEach(point => {
+                            const count = diceResults.filter(result => result === parseInt(point, 10)).length;
+                            if (count === 1) {
+                                pointsWinnings += 200;
+                                pointsReturn += 100;
+                            } else if (count === 2) {
+                                pointsWinnings += 300;
+                                pointsReturn += 100;
+                            } else if (count === 3) {
+                                pointsWinnings += 400;
+                                pointsReturn += 100;
+                            }
+                        });
 
-						betPoints.forEach(point => {
-							const count = diceResults.filter(result => result === parseInt(point, 10)).length;
-							if (count === 1) {
-								pointsWinnings += 200; // 本金100 + 盈利100
-								pointsReturn += 100;
-							} else if (count === 2) {
-								pointsWinnings += 300; // 本金100 + 盈利200
-								pointsReturn += 100;
-							} else if (count === 3) {
-								pointsWinnings += 400; // 本金100 + 盈利300
-								pointsReturn += 100;
-							}
-						});
+                        document.getElementById('betPointsInfo').textContent = 
+                            `单点下注: ${betPoints.join(', ')}, 花费: -${pointCost}` + 
+                            (pointsWinnings > 0 ? `, 收回: +${pointsReturn}, 盈利: +${pointsWinnings - pointsReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += pointsWinnings;
+                        totalReturn += pointsReturn;
+                    }
 
-						document.getElementById('betPointsInfo').textContent = 
-							`单点下注: ${betPoints.join(', ')}, 花费: -${pointCost}` + 
-							(pointsWinnings > 0 ? `, 收回: +${pointsReturn}, 盈利: +${pointsWinnings - pointsReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += pointsWinnings;
-						totalReturn += pointsReturn;
-					}
-
-					// 大小下注计算
-					let sizeWinnings = 0;
+                    // 大小单双下注结算
+                    let sizeWinnings = 0;
                     let sizeReturn = 0;
-                    if (betSizes.length > 0 && !isTripleResult) { // 只有当不是豹子时才计算大小单双下注
+                    if (betSizes.length > 0 && !isTripleResult) {
                         const sizeCost = betSizes.length * 300;
                         totalCost += sizeCost;
 
                         betSizes.forEach(size => {
                             if (size === sizeResult || size === oddEvenResult) {
-                                sizeWinnings += 600; // 本金300 + 盈利300
+                                sizeWinnings += 600;
                                 sizeReturn += 300;
                             }
                         });
@@ -1055,49 +1377,47 @@
                             `大小单双下注: ${betSizes.join(', ')}, 花费: -${sizeCost}, 豹子通吃, 收回: +0, 盈利: +0`;
                     }
 
-					// 四联下注计算
-					let quadWinnings = 0;
-					let quadReturn = 0;
-					if (betQuads.length > 0) {
-						const quadCost = betQuads.length * 100;
-						totalCost += quadCost;
+                    // 四联下注结算
+                    let quadWinnings = 0;
+                    let quadReturn = 0;
+                    if (betQuads.length > 0) {
+                        const quadCost = betQuads.length * 100;
+                        totalCost += quadCost;
 
-						betQuads.forEach(quad => {
-							const quadNumbers = quad.split('').map(Number);
-							const diceResults = [value1, value2, value3];
-							const hasDuplicates = new Set(diceResults).size !== diceResults.length;
-							
-							if (!hasDuplicates) {
-								const isQuadWin = diceResults.every(result => quadNumbers.includes(result));
-								if (isQuadWin) {
-									quadWinnings += 800; // 本金100 + 盈利700
-									quadReturn += 100;
-								}
-							}
-						});
+                        betQuads.forEach(quad => {
+                            const quadNumbers = quad.split('').map(Number);
+                            const diceResults = [value1, value2, value3];
+                            const hasDuplicates = new Set(diceResults).size !== diceResults.length;
+                            
+                            if (!hasDuplicates) {
+                                const isQuadWin = diceResults.every(result => quadNumbers.includes(result));
+                                if (isQuadWin) {
+                                    quadWinnings += 800;
+                                    quadReturn += 100;
+                                }
+                            }
+                        });
 
-						document.getElementById('betQuadInfo').textContent = 
-							`四联下注: ${betQuads.join(', ')}, 花费: -${quadCost}` + 
-							(quadWinnings > 0 ? `, 收回: +${quadReturn}, 盈利: +${quadWinnings - quadReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += quadWinnings;
-						totalReturn += quadReturn;
-					}
+                        document.getElementById('betQuadInfo').textContent = 
+                            `四联下注: ${betQuads.join(', ')}, 花费: -${quadCost}` + 
+                            (quadWinnings > 0 ? `, 收回: +${quadReturn}, 盈利: +${quadWinnings - quadReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += quadWinnings;
+                        totalReturn += quadReturn;
+                    }
 
-					// 双型下注计算 (赔率1:50)
-					let doubleWinnings = 0;
+                    // 双型下注结算
+                    let doubleWinnings = 0;
                     let doubleReturn = 0;
                     if (betDoubles.length > 0) {
                         const doubleCost = betDoubles.length * 100;
                         totalCost += doubleCost;
                         
-                        // 获取排序后的骰子结果字符串（如"112"）
                         const diceResults = [value1, value2, value3].sort().join('');
                         
                         betDoubles.forEach(double => {
-                            // 将下注的双型也排序比较（如"121"会变成"112"）
                             const betDoubleSorted = double.split('').sort().join('');
                             if (diceResults === betDoubleSorted) {
-                                doubleWinnings += 5100; // 本金100 + 盈利5000
+                                doubleWinnings += 5100;
                                 doubleReturn += 100;
                             }
                         });
@@ -1109,138 +1429,175 @@
                         totalReturn += doubleReturn;
                     }
 
-					// 单型下注计算 (赔率1:30)
-					let singleWinnings = 0;
-					let singleReturn = 0;
-					if (betSingles.length > 0) {
-						const singleCost = betSingles.length * 100;
-						totalCost += singleCost;
-						const diceResults = [value1, value2, value3].sort().join('');
+                    // 单型下注结算
+                    let singleWinnings = 0;
+                    let singleReturn = 0;
+                    if (betSingles.length > 0) {
+                        const singleCost = betSingles.length * 100;
+                        totalCost += singleCost;
+                        const diceResults = [value1, value2, value3].sort().join('');
 
-						betSingles.forEach(single => {
-							if (diceResults === single) {
-								singleWinnings += 3100; // 本金100 + 盈利3000
-								singleReturn += 100;
-							}
-						});
+                        betSingles.forEach(single => {
+                            if (diceResults === single) {
+                                singleWinnings += 3100;
+                                singleReturn += 100;
+                            }
+                        });
 
-						document.getElementById('betSingleInfo').textContent = 
-							`单型下注: ${betSingles.join(', ')}, 花费: -${singleCost}` + 
-							(singleWinnings > 0 ? `, 收回: +${singleReturn}, 盈利: +${singleWinnings - singleReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += singleWinnings;
-						totalReturn += singleReturn;
-					}
-					
-					// 围骰下注计算 (赔率1:150)
-					let tripleWinnings = 0;
-					let tripleReturn = 0;
-					if (betTriples.length > 0 && isTripleResult) {
-						const tripleCost = betTriples.length * 100;
-						totalCost += tripleCost;
-						const diceResult = value1.toString().repeat(3); // 如"111"
-						
-						betTriples.forEach(triple => {
-							if (triple === diceResult) {
-								tripleWinnings += 15100; // 本金100 + 盈利15000
-								tripleReturn += 100;
-							}
-						});
-						
-						document.getElementById('betTripleInfo').textContent = 
-							`围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}` + 
-							(tripleWinnings > 0 ? `, 收回: +${tripleReturn}, 盈利: +${tripleWinnings - tripleReturn}` : `, 收回: +0, 盈利: +0`);
-						totalWinnings += tripleWinnings;
-						totalReturn += tripleReturn;
-					} else if (betTriples.length > 0) {
-						const tripleCost = betTriples.length * 100;
-						totalCost += tripleCost;
-						document.getElementById('betTripleInfo').textContent = 
-							`围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}, 收回: +0, 盈利: +0`;
-					}
-					
-					// 全围下注计算 (赔率1:24)
-					let allTripleWinnings = 0;
-					let allTripleReturn = 0;
-					if (betAllTriples.length > 0 && isTripleResult) {
-						const allTripleCost = betAllTriples.length * 100;
-						totalCost += allTripleCost;
-						
-						allTripleWinnings += 2500; // 本金100 + 盈利2400
-						allTripleReturn += 100;
-						
-						document.getElementById('betAllTripleInfo').textContent = 
-							`全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}` + 
-							`, 收回: +${allTripleReturn}, 盈利: +${allTripleWinnings - allTripleReturn}`;
-						totalWinnings += allTripleWinnings;
-						totalReturn += allTripleReturn;
-					} else if (betAllTriples.length > 0) {
-						const allTripleCost = betAllTriples.length * 100;
-						totalCost += allTripleCost;
-						document.getElementById('betAllTripleInfo').textContent = 
-							`全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}, 收回: +0, 盈利: +0`;
-					}
+                        document.getElementById('betSingleInfo').textContent = 
+                            `单型下注: ${betSingles.join(', ')}, 花费: -${singleCost}` + 
+                            (singleWinnings > 0 ? `, 收回: +${singleReturn}, 盈利: +${singleWinnings - singleReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += singleWinnings;
+                        totalReturn += singleReturn;
+                    }
+                    
+                    // 对子下注结算
+                    let pairWinnings = 0;
+                    let pairReturn = 0;
+                    if (betPairs.length > 0 && isPairResult && !isTripleResult) {
+                        const pairCost = betPairs.length * 100;
+                        totalCost += pairCost;
+                        
+                        betPairs.forEach(pair => {
+                            if (pairValue && pair === pairValue.toString() + pairValue.toString()) {
+                                pairWinnings += 900;
+                                pairReturn += 100;
+                            }
+                        });
+                        
+                        document.getElementById('betPairInfo').textContent = 
+                            `对子下注: ${betPairs.join(', ')}, 花费: -${pairCost}` + 
+                            (pairWinnings > 0 ? `, 收回: +${pairReturn}, 盈利: +${pairWinnings - pairReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += pairWinnings;
+                        totalReturn += pairReturn;
+                    } else if (betPairs.length > 0) {
+                        const pairCost = betPairs.length * 100;
+                        totalCost += pairCost;
+                        document.getElementById('betPairInfo').textContent = 
+                            `对子下注: ${betPairs.join(', ')}, 花费: -${pairCost}, 收回: +0, 盈利: +0`;
+                    }
+                    
+                    // 围骰下注结算
+                    let tripleWinnings = 0;
+                    let tripleReturn = 0;
+                    if (betTriples.length > 0 && isTripleResult) {
+                        const tripleCost = betTriples.length * 100;
+                        totalCost += tripleCost;
+                        const diceResult = value1.toString().repeat(3);
+                        
+                        betTriples.forEach(triple => {
+                            if (triple === diceResult) {
+                                tripleWinnings += 15100;
+                                tripleReturn += 100;
+                            }
+                        });
+                        
+                        document.getElementById('betTripleInfo').textContent = 
+                            `围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}` + 
+                            (tripleWinnings > 0 ? `, 收回: +${tripleReturn}, 盈利: +${tripleWinnings - tripleReturn}` : `, 收回: +0, 盈利: +0`);
+                        totalWinnings += tripleWinnings;
+                        totalReturn += tripleReturn;
+                    } else if (betTriples.length > 0) {
+                        const tripleCost = betTriples.length * 100;
+                        totalCost += tripleCost;
+                        document.getElementById('betTripleInfo').textContent = 
+                            `围骰下注: ${betTriples.join(', ')}, 花费: -${tripleCost}, 收回: +0, 盈利: +0`;
+                    }
+                    
+                    // 全围下注结算
+                    let allTripleWinnings = 0;
+                    let allTripleReturn = 0;
+                    if (betAllTriples.length > 0 && isTripleResult) {
+                        const allTripleCost = betAllTriples.length * 100;
+                        totalCost += allTripleCost;
+                        
+                        allTripleWinnings += 2500;
+                        allTripleReturn += 100;
+                        
+                        document.getElementById('betAllTripleInfo').textContent = 
+                            `全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}` + 
+                            `, 收回: +${allTripleReturn}, 盈利: +${allTripleWinnings - allTripleReturn}`;
+                        totalWinnings += allTripleWinnings;
+                        totalReturn += allTripleReturn;
+                    } else if (betAllTriples.length > 0) {
+                        const allTripleCost = betAllTriples.length * 100;
+                        totalCost += allTripleCost;
+                        document.getElementById('betAllTripleInfo').textContent = 
+                            `全围下注: ${betAllTriples.join(', ')}, 花费: -${allTripleCost}, 收回: +0, 盈利: +0`;
+                    }
 
-					// 计算净盈利（总收回 + 总盈利 - 总花费）
-					totalProfit = (totalReturn + (totalWinnings - totalReturn)) - totalCost;
+                    totalProfit = (totalReturn + (totalWinnings - totalReturn)) - totalCost;
 
-					// 更新余额（当前余额 + 总收回 + 总盈利）
-					balanceAmount.textContent = currentBalance + totalReturn + (totalWinnings - totalReturn);
+                    document.getElementById('balanceAmount').textContent = currentBalance + totalReturn + (totalWinnings - totalReturn);
 
-					// 显示总结果
-					document.getElementById('betTotalResultInfo').textContent = 
-						`总花费: -${totalCost} | 总收回: +${totalReturn} | 总盈利: +${totalWinnings - totalReturn} | 净利: ${totalProfit >= 0 ? '+' + totalProfit : totalProfit}`;
+                    document.getElementById('betTotalResultInfo').textContent = 
+                        `总花费: -${totalCost} | 总收回: +${totalReturn} | 总盈利: +${totalWinnings - totalReturn} | 净利: ${totalProfit >= 0 ? '+' + totalProfit : totalProfit}`;
 
-					// 清空下注信息
-					betPoints = [];
-					betSizes = [];
-					betQuads = [];
-					betDoubles = [];
-					betSingles = [];
-					betTriples = [];
-					betAllTriples = [];
-					betAmount = 0;
-				}
+                    // 清空下注
+                    betPoints = [];
+                    betSizes = [];
+                    betQuads = [];
+                    betDoubles = [];
+                    betSingles = [];
+                    betPairs = [];
+                    betTriples = [];
+                    betAllTriples = [];
+                    betAmount = 0;
+                }
 
-				// 自动下注逻辑
-				if (autoRollCheckbox.checked && remainingRolls > 0) {
-					remainingRolls--;
-					autoRollCountInput.value = remainingRolls;
-					if (remainingRolls > 0) {
-						setTimeout(() => {
-							rollButton.click();
-						}, 500);
-					} else {
-						autoRollCheckbox.checked = false;
-						autoRollCountInput.disabled = true;
-					}
-				}
+                if (autoRollCheckbox.checked && remainingRolls > 0) {
+                    remainingRolls--;
+                    autoRollCountInput.value = remainingRolls;
+                    if (remainingRolls > 0) {
+                        setTimeout(() => {
+                            rollButton.click();
+                        }, 500);
+                    } else {
+                        autoRollCheckbox.checked = false;
+                        autoRollCountInput.disabled = true;
+                    }
+                }
 
-				rollButton.disabled = false;
-			}, 3000);
-		}
+                rollButton.disabled = false;
+            }, 3000);
+        }
 
-        // 修改 rollButton 的点击事件
+        // 事件监听器
         rollButton.addEventListener('click', () => {
             if (autoRollCheckbox.checked) {
                 const count = parseInt(autoRollCountInput.value, 10);
                 if (count > 0) {
-                    remainingRolls = count; // 设置剩余次数
-                    autoRollCountInput.disabled = true; // 禁用输入框
-                    rollOnce(); // 开始第一次摇骰子
+                    remainingRolls = count;
+                    autoRollCountInput.disabled = true;
+                    rollOnce();
                 }
             } else {
-                rollOnce(); // 手动摇骰子
+                rollOnce();
             }
         });
-    
-        displayRecords();
-        updateStats();
-        // 获取元素
+
+        autoRollCheckbox.addEventListener('change', () => {
+            autoRollCountInput.disabled = !autoRollCheckbox.checked;
+        });
+
+        muteButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            muteButton.textContent = isMuted ? "🔇 取消静音" : "🔊 静音";
+        });
+
+        function playAudio() {
+            if (!isMuted) {
+                audio.play();
+            }
+        }
+
+        // 下注模态框相关
         const pointOptions = document.querySelectorAll('#pointOptions .dice-option');
         const sizeOptions = document.querySelectorAll('#sizeOptions .dice-option');
         const quadOptions = document.querySelectorAll('#quadOptions .dice-option');
         const doubleOptions = document.querySelectorAll('#doubleOptions .dice-option');
         const singleOptions = document.querySelectorAll('#singleOptions .dice-option');
+        const pairOptions = document.querySelectorAll('#pairOptions .dice-option');
         const tripleOptions = document.querySelectorAll('#tripleOptions .dice-option');
         const allTripleOptions = document.querySelectorAll('#allTripleOptions .dice-option');
         const confirmBetButton = document.getElementById('confirmBet');
@@ -1248,135 +1605,11 @@
         const betModal = document.getElementById('betModal');
         const closeModal = document.querySelector('.close');
         const balanceAmount = document.getElementById('balanceAmount');
-        const betInfo = document.getElementById('betInfo');
-        
-        // 记录选择的双型和单型
-        let selectedDoubles = []; // 支持多选
-        let selectedSingles = []; // 支持多选
-        let selectedTriples = []; // 支持多选
-        let selectedAllTriples = []; // 支持多选
 
-        // 选择双型
-        doubleOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-
-                // 切换双型选择
-                if (selectedDoubles.includes(value)) {
-                    selectedDoubles = selectedDoubles.filter(double => double !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedDoubles.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-
-        // 选择单型
-        singleOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-
-                // 切换单型选择
-                if (selectedSingles.includes(value)) {
-                    selectedSingles = selectedSingles.filter(single => single !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedSingles.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-        
-        // 选择围骰
-        tripleOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-                
-                // 切换围骰选择
-                if (selectedTriples.includes(value)) {
-                    selectedTriples = selectedTriples.filter(triple => triple !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedTriples.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-        
-        // 选择全围
-        allTripleOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-                
-                // 切换全围选择
-                if (selectedAllTriples.includes(value)) {
-                    selectedAllTriples = selectedAllTriples.filter(allTriple => allTriple !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedAllTriples.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-
-        // 打开弹窗
-		betButton.addEventListener('click', () => {
-			// 检查是否有未结算的下注信息
-			if (betPoints.length > 0 || betSizes.length > 0 || betQuads.length > 0 || betDoubles.length > 0 || betSingles.length > 0 || betTriples.length > 0 || betAllTriples.length > 0) {
-				// 如果有未结算的下注信息，清空下注信息并返还金额
-				const currentBalance = parseInt(balanceAmount.textContent, 10);
-				balanceAmount.textContent = currentBalance + betAmount; // 返还已扣除的金额
-
-				// 清空下注信息
-				betPoints = [];
-				betSizes = [];
-				betQuads = [];
-				betDoubles = [];
-				betSingles = [];
-				betTriples = [];
-				betAllTriples = [];
-				betAmount = 0;
-
-				// 清空下注信息显示
-				document.getElementById('betPointsInfo').textContent = '';
-				document.getElementById('betSizeInfo').textContent = '';
-				document.getElementById('betQuadInfo').textContent = '';
-				document.getElementById('betDoubleInfo').textContent = '';
-				document.getElementById('betSingleInfo').textContent = '';
-				document.getElementById('betTripleInfo').textContent = '';
-				document.getElementById('betAllTripleInfo').textContent = '';
-				document.getElementById('betTotalResultInfo').textContent = '';
-			}
-
-			// 清空之前的选择
-			selectedDice = [];
-			selectedSizes = [];
-			selectedQuads = [];
-			selectedDoubles = [];
-			selectedSingles = [];
-			selectedTriples = [];
-			selectedAllTriples = [];
-			resetDiceOptions(); // 重置选项样式
-			betModal.style.display = 'block'; // 显示弹窗
-		});
-
-        // 关闭弹窗
-        closeModal.addEventListener('click', () => {
-            betModal.style.display = 'none';
-        });
-
-        // 取消下注
-        cancelBetButton.addEventListener('click', () => {
-            betModal.style.display = 'none';
-        });
-
-        // 选择点数
+        // 点数选择
         pointOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
-
-                // 切换点数选择
                 if (selectedDice.includes(value)) {
                     selectedDice = selectedDice.filter(dice => dice !== value);
                     option.classList.remove('selected');
@@ -1387,12 +1620,10 @@
             });
         });
 
-        // 选择大小
+        // 大小选择
         sizeOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
-
-                // 切换大小选择
                 if (selectedSizes.includes(value)) {
                     selectedSizes = selectedSizes.filter(size => size !== value);
                     option.classList.remove('selected');
@@ -1403,12 +1634,10 @@
             });
         });
 
-        // 选择四联
+        // 四联选择
         quadOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const value = option.getAttribute('data-value');
-
-                // 切换四联选择
                 if (selectedQuads.includes(value)) {
                     selectedQuads = selectedQuads.filter(quad => quad !== value);
                     option.classList.remove('selected');
@@ -1419,349 +1648,326 @@
             });
         });
 
+        // 双型选择
+        doubleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedDoubles.includes(value)) {
+                    selectedDoubles = selectedDoubles.filter(double => double !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedDoubles.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        // 单型选择
+        singleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedSingles.includes(value)) {
+                    selectedSingles = selectedSingles.filter(single => single !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedSingles.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
+        // 对子选择
+        pairOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedPairs.includes(value)) {
+                    selectedPairs = selectedPairs.filter(pair => pair !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedPairs.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
+        // 围骰选择
+        tripleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedTriples.includes(value)) {
+                    selectedTriples = selectedTriples.filter(triple => triple !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedTriples.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
+        // 全围选择
+        allTripleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+                if (selectedAllTriples.includes(value)) {
+                    selectedAllTriples = selectedAllTriples.filter(allTriple => allTriple !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedAllTriples.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        //点击下注
+        betButton.addEventListener('click', () => {
+			if (betPoints.length > 0 || betSizes.length > 0 || betQuads.length > 0 || betDoubles.length > 0 || betSingles.length > 0 || betPairs.length > 0 || betTriples.length > 0 || betAllTriples.length > 0) {
+				const currentBalance = parseInt(balanceAmount.textContent, 10);
+				balanceAmount.textContent = currentBalance + betAmount;
+
+				betPoints = [];
+				betSizes = [];
+				betQuads = [];
+				betDoubles = [];
+				betSingles = [];
+				betPairs = [];
+				betTriples = [];
+				betAllTriples = [];
+				betAmount = 0;
+
+				document.getElementById('betPointsInfo').textContent = '';
+				document.getElementById('betSizeInfo').textContent = '';
+				document.getElementById('betQuadInfo').textContent = '';
+				document.getElementById('betDoubleInfo').textContent = '';
+				document.getElementById('betSingleInfo').textContent = '';
+				document.getElementById('betPairInfo').textContent = '';
+				document.getElementById('betTripleInfo').textContent = '';
+				document.getElementById('betAllTripleInfo').textContent = '';
+				document.getElementById('betTotalResultInfo').textContent = '';
+			}
+
+			selectedDice = [];
+			selectedSizes = [];
+			selectedQuads = [];
+			selectedDoubles = [];
+			selectedSingles = [];
+			selectedPairs = [];
+			selectedTriples = [];
+			selectedAllTriples = [];
+			resetDiceOptions();
+			betModal.style.display = 'block';
+		});
+
+        closeModal.addEventListener('click', () => {
+            betModal.style.display = 'none';
+        });
+
+        cancelBetButton.addEventListener('click', () => {
+            betModal.style.display = 'none';
+        });
+
+        pointOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+
+                if (selectedDice.includes(value)) {
+                    selectedDice = selectedDice.filter(dice => dice !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedDice.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+
+                if (selectedSizes.includes(value)) {
+                    selectedSizes = selectedSizes.filter(size => size !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedSizes.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+
+        quadOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const value = option.getAttribute('data-value');
+
+                if (selectedQuads.includes(value)) {
+                    selectedQuads = selectedQuads.filter(quad => quad !== value);
+                    option.classList.remove('selected');
+                } else {
+                    selectedQuads.push(value);
+                    option.classList.add('selected');
+                }
+            });
+        });
+        
         // 确认下注
         confirmBetButton.addEventListener('click', () => {
-			if (selectedDice.length > 0 || selectedSizes.length > 0 || selectedQuads.length > 0 || selectedDoubles.length > 0 || selectedSingles.length > 0 || selectedTriples.length > 0 || selectedAllTriples.length > 0) {
-				// 计算总下注金额
-				const pointCost = selectedDice.length * 100; // 每个点数下注100
-				const sizeCost = selectedSizes.length * 300; // 每个大小下注300
-				const quadCost = selectedQuads.length * 100; // 每个四联下注100
-				const doubleCost = selectedDoubles.length * 100; // 每个双型下注100
-				const singleCost = selectedSingles.length * 100; // 每个单型下注100
-				const tripleCost = selectedTriples.length * 100; // 每个围骰下注100
-				const allTripleCost = selectedAllTriples.length * 100; // 每个全围下注100
-				const totalCost = pointCost + sizeCost + quadCost + doubleCost + singleCost + tripleCost + allTripleCost;
+            if (selectedDice.length > 0 || selectedSizes.length > 0 || selectedQuads.length > 0 || 
+                selectedDoubles.length > 0 || selectedSingles.length > 0 || selectedPairs.length > 0 || 
+                selectedTriples.length > 0 || selectedAllTriples.length > 0) {
+                
+                const pointCost = selectedDice.length * 100;
+                const sizeCost = selectedSizes.length * 300;
+                const quadCost = selectedQuads.length * 100;
+                const doubleCost = selectedDoubles.length * 100;
+                const singleCost = selectedSingles.length * 100;
+                const pairCost = selectedPairs.length * 100;
+                const tripleCost = selectedTriples.length * 100;
+                const allTripleCost = selectedAllTriples.length * 100;
+                const totalCost = pointCost + sizeCost + quadCost + doubleCost + singleCost + pairCost + tripleCost + allTripleCost;
 
-				const currentBalance = parseInt(balanceAmount.textContent, 10);
+                const currentBalance = parseInt(balanceAmount.textContent, 10);
 
-				if (currentBalance >= totalCost) {
-					// 更新单点下注信息
-					if (selectedDice.length > 0) {
-						document.getElementById('betPointsInfo').textContent = `单点下注: ${selectedDice.join(', ')}, 花费: -${pointCost}`;
-					} else {
-						document.getElementById('betPointsInfo').textContent = ''; // 清空单点下注信息
-					}
+                if (currentBalance >= totalCost) {
+                    // 更新下注信息显示
+                    if (selectedDice.length > 0) {
+                        document.getElementById('betPointsInfo').textContent = `单点下注: ${selectedDice.join(', ')}, 花费: -${pointCost}`;
+                    } else {
+                        document.getElementById('betPointsInfo').textContent = '';
+                    }
 
-					// 更新大小下注信息
-					if (selectedSizes.length > 0) {
-						document.getElementById('betSizeInfo').textContent = `大小下注: ${selectedSizes.join(', ')}, 花费: -${sizeCost}`;
-					} else {
-						document.getElementById('betSizeInfo').textContent = ''; // 清空大小下注信息
-					}
+                    if (selectedSizes.length > 0) {
+                        document.getElementById('betSizeInfo').textContent = `大小下注: ${selectedSizes.join(', ')}, 花费: -${sizeCost}`;
+                    } else {
+                        document.getElementById('betSizeInfo').textContent = '';
+                    }
 
-					// 更新四联下注信息
-					if (selectedQuads.length > 0) {
-						document.getElementById('betQuadInfo').textContent = `四联下注: ${selectedQuads.join(', ')}, 花费: -${quadCost}`;
-					} else {
-						document.getElementById('betQuadInfo').textContent = ''; // 清空四联下注信息
-					}
+                    if (selectedQuads.length > 0) {
+                        document.getElementById('betQuadInfo').textContent = `四联下注: ${selectedQuads.join(', ')}, 花费: -${quadCost}`;
+                    } else {
+                        document.getElementById('betQuadInfo').textContent = '';
+                    }
 
-					// 更新双型下注信息
-					if (selectedDoubles.length > 0) {
-						document.getElementById('betDoubleInfo').textContent = `双型下注: ${selectedDoubles.join(', ')}, 花费: -${doubleCost}`;
-					} else {
-						document.getElementById('betDoubleInfo').textContent = ''; // 清空双型下注信息
-					}
+                    if (selectedDoubles.length > 0) {
+                        document.getElementById('betDoubleInfo').textContent = `双型下注: ${selectedDoubles.join(', ')}, 花费: -${doubleCost}`;
+                    } else {
+                        document.getElementById('betDoubleInfo').textContent = '';
+                    }
 
-					// 更新单型下注信息
-					if (selectedSingles.length > 0) {
-						document.getElementById('betSingleInfo').textContent = `单型下注: ${selectedSingles.join(', ')}, 花费: -${singleCost}`;
-					} else {
-						document.getElementById('betSingleInfo').textContent = ''; // 清空单型下注信息
-					}
-					
-					// 更新围骰下注信息
-					if (selectedTriples.length > 0) {
-						document.getElementById('betTripleInfo').textContent = `围骰下注: ${selectedTriples.join(', ')}, 花费: -${tripleCost}`;
-					} else {
-						document.getElementById('betTripleInfo').textContent = ''; // 清空围骰下注信息
-					}
-					
-					// 更新全围下注信息
-					if (selectedAllTriples.length > 0) {
-						document.getElementById('betAllTripleInfo').textContent = `全围下注: ${selectedAllTriples.join(', ')}, 花费: -${allTripleCost}`;
-					} else {
-						document.getElementById('betAllTripleInfo').textContent = ''; // 清空全围下注信息
-					}
+                    if (selectedSingles.length > 0) {
+                        document.getElementById('betSingleInfo').textContent = `单型下注: ${selectedSingles.join(', ')}, 花费: -${singleCost}`;
+                    } else {
+                        document.getElementById('betSingleInfo').textContent = '';
+                    }
+                    
+                    if (selectedPairs.length > 0) {
+                        document.getElementById('betPairInfo').textContent = `对子下注: ${selectedPairs.join(', ')}, 花费: -${pairCost}`;
+                    } else {
+                        document.getElementById('betPairInfo').textContent = '';
+                    }
+                    
+                    if (selectedTriples.length > 0) {
+                        document.getElementById('betTripleInfo').textContent = `围骰下注: ${selectedTriples.join(', ')}, 花费: -${tripleCost}`;
+                    } else {
+                        document.getElementById('betTripleInfo').textContent = '';
+                    }
+                    
+                    if (selectedAllTriples.length > 0) {
+                        document.getElementById('betAllTripleInfo').textContent = `全围下注: ${selectedAllTriples.join(', ')}, 花费: -${allTripleCost}`;
+                    } else {
+                        document.getElementById('betAllTripleInfo').textContent = '';
+                    }
 
-					// 清空输赢结果
-					document.getElementById('betTotalResultInfo').textContent = '';
+                    document.getElementById('betTotalResultInfo').textContent = '';
 
-					betModal.style.display = 'none';
-					betPoints = selectedDice; // 记录下注的点数
-					betSizes = selectedSizes; // 记录下注的大小
-					betQuads = selectedQuads; // 记录下注的四联
-					betDoubles = selectedDoubles; // 记录下注的双型
-					betSingles = selectedSingles; // 记录下注的单型
-					betTriples = selectedTriples; // 记录下注的围骰
-					betAllTriples = selectedAllTriples; // 记录下注的全围
-					betAmount = totalCost;   // 记录下注金额
+                    // 更新下注数据
+                    betPoints = selectedDice;
+                    betSizes = selectedSizes;
+                    betQuads = selectedQuads;
+                    betDoubles = selectedDoubles;
+                    betSingles = selectedSingles;
+                    betPairs = selectedPairs;
+                    betTriples = selectedTriples;
+                    betAllTriples = selectedAllTriples;
+                    betAmount = totalCost;
 
-					// 显示预扣除后的金额
-					balanceAmount.textContent = currentBalance - totalCost;
+                    // 更新余额
+                    balanceAmount.textContent = currentBalance - totalCost;
 
-					selectedDice = [];      // 清空已选择的点数
-					selectedSizes = [];     // 清空已选择的大小
-					selectedQuads = [];     // 清空已选择的四联
-					selectedDoubles = [];  // 清空已选择的双型
-					selectedSingles = [];  // 清空已选择的单型
-					selectedTriples = []; // 清空已选择的围骰
-					selectedAllTriples = []; // 清空已选择的全围
-					resetDiceOptions();    // 重置点数选择界面
-				} else {
+                    // 关闭模态框
+                    betModal.style.display = 'none';
+
+                    // 重置选择状态
+                    selectedDice = [];
+                    selectedSizes = [];
+                    selectedQuads = [];
+                    selectedDoubles = [];
+                    selectedSingles = [];
+                    selectedPairs = [];
+                    selectedTriples = [];
+                    selectedAllTriples = [];
+                    resetDiceOptions();
+                } else {
                     if (confirm('余额不足！是否重置金额为10000？')) {
-                        balanceAmount.textContent = 10000; // 重置金额为10000
+                        balanceAmount.textContent = 10000;
                     }
                 }
             } else {
-                alert('请选择至少一个点数、大小、四联、双型、单型、围骰或全围！');
+                alert('请选择至少一个点数、大小、四联、双型、单型、对子、围骰或全围！');
             }
         });
 
-        // 重置点数选项
-        function resetPointOptions() {
-            pointOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
+        // 取消下注
+        cancelBetButton.addEventListener('click', () => {
+            betModal.style.display = 'none';
+            resetDiceOptions();
+            selectedDice = [];
+            selectedSizes = [];
+            selectedQuads = [];
+            selectedDoubles = [];
+            selectedSingles = [];
+            selectedPairs = [];
+            selectedTriples = [];
+            selectedAllTriples = [];
+        });
 
-        // 重置大小选项
-        function resetSizeOptions() {
-            sizeOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
-        
-        // 重置四联选项
-        function resetQuadOptions() {
-            quadOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
+        // 关闭模态框
+        closeModal.addEventListener('click', () => {
+            betModal.style.display = 'none';
+            resetDiceOptions();
+            selectedDice = [];
+            selectedSizes = [];
+            selectedQuads = [];
+            selectedDoubles = [];
+            selectedSingles = [];
+            selectedPairs = [];
+            selectedTriples = [];
+            selectedAllTriples = [];
+        });
 
-        // 重置双型选项
-        function resetDoubleOptions() {
-            doubleOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
-
-        // 重置单型选项
-        function resetSingleOptions() {
-            singleOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
-        
-        // 重置围骰选项
-        function resetTripleOptions() {
-            tripleOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
-        
-        // 重置全围选项
-        function resetAllTripleOptions() {
-            allTripleOptions.forEach(option => {
-                option.classList.remove('selected');
-            });
-        }
-
-        // 重置所有选项
-        function resetDiceOptions() {
-            resetPointOptions();
-            resetSizeOptions();
-            resetQuadOptions();
-            resetDoubleOptions();
-            resetSingleOptions();
-            resetTripleOptions();
-            resetAllTripleOptions();
-        }
-
-        // 根据大小切换全选状态（保持切换功能，同时处理全选状态）
-        function selectAllBySize(optionType, sizeType) {
-            const options = document.querySelectorAll(`#${optionType} .dice-option`);
-            let selectedArray;
-            
-            if (optionType === 'doubleOptions') {
-                selectedArray = selectedDoubles;
-            } else if (optionType === 'singleOptions') {
-                selectedArray = selectedSingles;
-            }
-            
-            // 检查当前是否是全选状态
-            const isAllSelected = options.length === selectedArray.length;
-            
-            // 如果是全选状态，直接选中对应大小的选项
-            if (isAllSelected) {
-                // 先取消所有选择
-                options.forEach(option => {
-                    option.classList.remove('selected');
-                });
-                
-                // 清空对应的选择数组
-                if (optionType === 'doubleOptions') {
-                    selectedDoubles = [];
-                } else if (optionType === 'singleOptions') {
-                    selectedSingles = [];
-                }
-                
-                // 选中指定大小的选项
-                options.forEach(option => {
-                    const value = option.getAttribute('data-value');
-                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-                    
-                    if ((sizeType === 'big' && sum > 10) || 
-                        (sizeType === 'small' && sum <= 10)) {
-                        option.classList.add('selected');
-                        if (optionType === 'doubleOptions') {
-                            selectedDoubles.push(value);
-                        } else if (optionType === 'singleOptions') {
-                            selectedSingles.push(value);
-                        }
-                    }
-                });
-            } else {
-                // 如果不是全选状态，使用原来的切换逻辑
-                let allSizeSelected = true;
-                options.forEach(option => {
-                    const value = option.getAttribute('data-value');
-                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-                    
-                    const shouldBeSelected = (sizeType === 'big' && sum > 10) || 
-                                          (sizeType === 'small' && sum <= 10);
-                    
-                    if (shouldBeSelected && !selectedArray.includes(value)) {
-                        allSizeSelected = false;
-                    }
-                });
-                
-                // 根据当前状态决定是选中还是取消选中
-                options.forEach(option => {
-                    const value = option.getAttribute('data-value');
-                    const sum = value.split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
-                    
-                    const shouldBeSelected = (sizeType === 'big' && sum > 10) || 
-                                           (sizeType === 'small' && sum <= 10);
-                    
-                    if (shouldBeSelected) {
-                        if (allSizeSelected) {
-                            // 取消选中
-                            option.classList.remove('selected');
-                            if (optionType === 'doubleOptions') {
-                                selectedDoubles = selectedDoubles.filter(item => item !== value);
-                            } else if (optionType === 'singleOptions') {
-                                selectedSingles = selectedSingles.filter(item => item !== value);
-                            }
-                        } else {
-                            // 选中
-                            option.classList.add('selected');
-                            if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
-                                selectedDoubles.push(value);
-                            } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
-                                selectedSingles.push(value);
-                            }
-                        }
-                    } else {
-                        // 确保另一组选项被取消选中
-                        option.classList.remove('selected');
-                        if (optionType === 'doubleOptions') {
-                            selectedDoubles = selectedDoubles.filter(item => item !== value);
-                        } else if (optionType === 'singleOptions') {
-                            selectedSingles = selectedSingles.filter(item => item !== value);
-                        }
-                    }
-                });
-            }
-        }
-
-        // 切换全选状态（保持不变）
-        function selectAll(optionType) {
-            const options = document.querySelectorAll(`#${optionType} .dice-option`);
-            
-            // 检查是否已经全部选中
-            let allSelected = true;
-            options.forEach(option => {
-                if (!option.classList.contains('selected')) {
-                    allSelected = false;
-                }
-            });
-            
-            // 根据当前状态决定是选中还是取消选中
-            options.forEach(option => {
-                const value = option.getAttribute('data-value');
-                
-                if (allSelected) {
-                    option.classList.remove('selected');
-                    // 从对应的选择数组中移除
-                    if (optionType === 'pointOptions') {
-                        selectedDice = selectedDice.filter(item => item !== value);
-                    } else if (optionType === 'sizeOptions') {
-                        selectedSizes = selectedSizes.filter(item => item !== value);
-                    } else if (optionType === 'quadOptions') {
-                        selectedQuads = selectedQuads.filter(item => item !== value);
-                    } else if (optionType === 'doubleOptions') {
-                        selectedDoubles = selectedDoubles.filter(item => item !== value);
-                    } else if (optionType === 'singleOptions') {
-                        selectedSingles = selectedSingles.filter(item => item !== value);
-                    } else if (optionType === 'tripleOptions') {
-                        selectedTriples = selectedTriples.filter(item => item !== value);
-                    } else if (optionType === 'allTripleOptions') {
-                        selectedAllTriples = selectedAllTriples.filter(item => item !== value);
-                    }
-                } else {
-                    option.classList.add('selected');
-                    // 添加到对应的选择数组
-                    if (optionType === 'pointOptions' && !selectedDice.includes(value)) {
-                        selectedDice.push(value);
-                    } else if (optionType === 'sizeOptions' && !selectedSizes.includes(value)) {
-                        selectedSizes.push(value);
-                    } else if (optionType === 'quadOptions' && !selectedQuads.includes(value)) {
-                        selectedQuads.push(value);
-                    } else if (optionType === 'doubleOptions' && !selectedDoubles.includes(value)) {
-                        selectedDoubles.push(value);
-                    } else if (optionType === 'singleOptions' && !selectedSingles.includes(value)) {
-                        selectedSingles.push(value);
-                    } else if (optionType === 'tripleOptions' && !selectedTriples.includes(value)) {
-                        selectedTriples.push(value);
-                    } else if (optionType === 'allTripleOptions' && !selectedAllTriples.includes(value)) {
-                        selectedAllTriples.push(value);
-                    }
-                }
-            });
-        }
-        
-        // 滑动功能实现
+        // 统计滑动功能
         let currentSlide = 0;
         const statsSlider = document.getElementById('statsSlider');
         const navButtons = document.querySelectorAll('.stats-nav-btn');
 
         function goToSlide(index) {
-            // Handle looping
             if (index < 0) {
-                index = 3; // Last slide
-            } else if (index > 3) {
-                index = 0; // First slide
+                index = 4;
+            } else if (index > 4) {
+                index = 0;
             }
             
             currentSlide = index;
             statsSlider.style.transform = `translateX(-${currentSlide * 25}%)`;
             
-            // 更新导航点状态
             navButtons.forEach((btn, i) => {
                 btn.classList.toggle('active', i === currentSlide);
             });
         }
 
-        // 导航点点击事件
         navButtons.forEach((btn, index) => {
             btn.addEventListener('click', () => goToSlide(index));
         });
 
-        // 获取正确的DOM元素
         const statsContainer = document.querySelector('.stats-container');
 
-        // 触摸滑动功能
         let touchStartX = 0;
         let touchEndX = 0;
         let isSwiping = false;
@@ -1773,7 +1979,7 @@
 
         statsContainer.addEventListener('touchmove', (e) => {
             if (!isSwiping) return;
-            e.preventDefault(); // 阻止默认滚动行为
+            e.preventDefault();
         }, { passive: false });
 
         statsContainer.addEventListener('touchend', (e) => {
@@ -1787,13 +1993,15 @@
             const threshold = 30;
             
             if (touchStartX - touchEndX > threshold) {
-                // Swipe left - go to next slide (will loop)
                 goToSlide(currentSlide + 1);
             } else if (touchEndX - touchStartX > threshold) {
-                // Swipe right - go to previous slide (will loop)
                 goToSlide(currentSlide - 1);
             }
         }
+
+        // 初始化
+        displayRecords();
+        updateStats();
     </script>
 </body>
 </html>
