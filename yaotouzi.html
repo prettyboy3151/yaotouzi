@@ -207,16 +207,30 @@
         #rollButton {
             position: fixed;
             bottom: 5px;
-            left: 16%;
+            left: 15%;
             transform: translateX(-50%);
-            width: 120px;
+            width: 110px;
             height: 50px;
             border-radius: 100px;
             background-color: rgb(255, 193, 7);
-            font-size: 16px;
+            font-size: 13px;
             cursor: pointer;
             z-index: 1000;
         }
+	  #manualInputButton {
+            position: fixed;
+            bottom: 5px;
+            left: 44%;
+            transform: translateX(-50%);
+            width: 105px;
+            height: 50px;
+            border-radius: 100px;
+            background-color: #00bbd4;
+            font-size: 13px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
         #betButton {
             margin-left: 5px;
             margin-top: 0px;
@@ -437,36 +451,73 @@
         .record-number {
             color: #999;
             font-size: 10px;
-            margin-left: .control-button {
-            position: fixed;
-            left: 98%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background-color: #f0f0f0;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 5px;
-            cursor: pointer;
+            margin-left: 0px;
         }
         
-        .control-button {
-            position: fixed;
-            left: 98%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            background-color: #f0f0f0;
+        /* 手动输入模态框样式 */
+        #inputModal .modal-content {
+            width: 300px;
+            margin: 10% auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        #diceInput {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            padding-right: 40px;
+        }
+
+        .clear-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 40px;
+            color: #aaa;
+        }
+
+        .clear-icon:hover {
+            color: #000;
+        }
+
+        .number-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .number-row {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+
+        .number-button {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            background-color: #00bbd4;
+            color: white;
             border: none;
-            padding: 5px 8px;
             border-radius: 5px;
+            font-size: 24px;
             cursor: pointer;
         }
 
-        #muteButton {
-            top: 10px;
-        }
-
-        #clearButton {
-            top: 100px;
+        .number-button:hover {
+            background-color: #0097a7;
         }
     </style>
 </head>
@@ -686,6 +737,30 @@
                 </div>
             </div>
         </div>
+        <div id="inputModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <button id="deleteLastRecord" style="width: 100%; background: none; border: none; color: blue; font-size: 14px; text-align: center; margin-bottom: 0px; padding: 5px;">删除</button>
+                <h3 style="font-size: 16px;">请输入三个骰子的点数</h3>
+                <div class="input-container">
+                    <input type="text" id="diceInput" placeholder="例如：123" maxlength="3" style="width: 80%;">
+                    <span class="clear-icon" id="clearInput">×</span>
+                </div>
+                <div class="number-buttons">
+                    <div class="number-row">
+                        <button class="number-button" data-value="1">1</button>
+                        <button class="number-button" data-value="2">2</button>
+                        <button class="number-button" data-value="3">3</button>
+                    </div>
+                    <div class="number-row">
+                        <button class="number-button" data-value="4">4</button>
+                        <button class="number-button" data-value="5">5</button>
+                        <button class="number-button" data-value="6">6</button>
+                    </div>
+                </div>
+                <button id="confirmInput" style="width: 290px; height: 50px;">确定</button>
+            </div>
+        </div>
         <div class="dice-container">
             <div class="dice" id="dice1">
                 <div class="face front">1</div>
@@ -721,16 +796,101 @@
         </div>
     </div>
     <button id="rollButton" onclick="playAudio()">开始摇骰子</button>
+    <button id="manualInputButton">手动输入</button>
     </div>
     <div class="right-container">
         <div class="record-container" id="recordContainer">
         </div>		
-		<button id="muteButton" class="control-button">🔊 静音</button>
-		<button id="clearButton" class="control-button">🗑️ 清空</button>
-        </div>
+		<button id="muteButton" style="position: fixed; top: 10px; left: 98%; transform: translateX(-50%); z-index: 1000; background-color: #f0f0f0; border: none; padding: 5px 8px; border-radius: 5px;">🔊 静音</button>
+        <button id="clearButton" style="position: fixed; top: 150px; left: 98%; transform: translateX(-50%); z-index: 1000; background-color: #f0f0f0; border: none; padding: 5px 8px; border-radius: 5px;">🗑️ 清空</button>
+		</div>
 	</div>
 	
     <script>
+        // 手动输入相关变量
+        const manualInputButton = document.getElementById('manualInputButton');
+        const inputModal = document.getElementById('inputModal');
+        const diceInput = document.getElementById('diceInput');
+        const confirmInputButton = document.getElementById('confirmInput');
+        const closeInputModalButton = inputModal.querySelector('.close');
+        const numberButtons = document.querySelectorAll('.number-button');
+        const clearInputButton = document.getElementById('clearInput');
+        const deleteLastRecordButton = document.getElementById('deleteLastRecord');
+
+        // 打开手动输入点数的弹窗
+        manualInputButton.addEventListener('click', () => {
+            inputModal.style.display = 'block';
+        });
+
+        // 关闭弹窗
+        closeInputModalButton.addEventListener('click', () => {
+            inputModal.style.display = 'none';
+        });
+
+        // 数字按键点击事件
+        numberButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.getAttribute('data-value');
+                if (diceInput.value.length < 3) {
+                    diceInput.value += value;
+                }
+            });
+        });
+
+        // 清空输入框内容
+        clearInputButton.addEventListener('click', () => {
+            diceInput.value = '';
+        });
+
+        // 删除最新一次记录
+        deleteLastRecordButton.addEventListener('click', () => {
+            let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
+            if (records.length > 0) {
+                records.pop();
+                localStorage.setItem('diceRecords', JSON.stringify(records));
+                displayRecords();
+                updateStats();
+            }
+            inputModal.style.display = 'none';
+        });
+        
+        // 确认输入的点数
+        confirmInputButton.addEventListener('click', () => {
+            const inputValue = diceInput.value.trim();
+            if (inputValue.length === 3 && /^\d{3}$/.test(inputValue)) {
+                const value1 = parseInt(inputValue[0], 10);
+                const value2 = parseInt(inputValue[1], 10);
+                const value3 = parseInt(inputValue[2], 10);
+
+                if (value1 >= 1 && value1 <= 6 && value2 >= 1 && value2 <= 6 && value3 >= 1 && value3 <= 6) {
+                    // 更新骰子显示
+                    updateDice(dice1, value1);
+                    updateDice(dice2, value2);
+                    updateDice(dice3, value3);
+
+                    // 使用 rollOnce 计算下注输赢
+                    rollOnce([value1, value2, value3]);
+
+                    diceInput.value = '';
+                    inputModal.style.display = 'none';
+                } else {
+                    alert('请输入1到6之间的有效点数！');
+                }
+            } else {
+                alert('请输入3个数字（例如：123）！');
+            }
+        });
+
+        // 监听整个文档的点击事件，点击弹窗外部关闭弹窗
+        document.addEventListener('click', (event) => {
+            if (event.target === inputModal) {
+                inputModal.style.display = 'none';
+            }
+            if (event.target === betModal) {
+                betModal.style.display = 'none';
+            }
+        });
+        
         // 游戏变量声明
         const dice1 = document.getElementById('dice1');
         const dice2 = document.getElementById('dice2');
@@ -1290,6 +1450,41 @@
             resetTripleOptions();
             resetAllTripleOptions();
         }
+        
+        function rollOnce(diceResults = null) {
+            // 如果没有手动输入，则随机生成骰子点数
+            if (!diceResults) {
+                diceResults = [
+                    Math.floor(Math.random() * 6) + 1,
+                    Math.floor(Math.random() * 6) + 1,
+                    Math.floor(Math.random() * 6) + 1
+                ];
+            }
+
+            const [dice1, dice2, dice3] = diceResults;
+            updateDice(dice1El, dice1);
+            updateDice(dice2El, dice2);
+            updateDice(dice3El, dice3);
+
+            const sum = dice1 + dice2 + dice3;
+            const size = getSize(sum);
+            const isTripleResult = isTriple(dice1, dice2, dice3);
+            const oddEven = getOddEven(sum);
+            const diceType = getDiceType(dice1, dice2, dice3);
+
+            const record = {
+                dice1, dice2, dice3,
+                sum, size, isTriple: isTripleResult,
+                oddEven, diceType
+            };
+
+            saveRecord(record);
+            displayRecords();
+            updateStats();
+
+            // 计算下注输赢
+            calculateBetResults(dice1, dice2, dice3);
+        }
 
         function rollOnce() {
             rollButton.disabled = true;
@@ -1592,7 +1787,7 @@
                 rollButton.disabled = false;
             }, 3000);
         }
-
+        
         // 事件监听器
         rollButton.addEventListener('click', () => {
             if (autoRollCheckbox.checked) {
@@ -1987,10 +2182,6 @@
                 goToSlide(currentSlide - 1);
             }
         }
-
-        // 初始化
-        displayRecords();
-        updateStats();
         
         // 获取清空按钮
         const clearButton = document.getElementById('clearButton');
@@ -2001,6 +2192,10 @@
             displayRecords();
             updateStats();
         });
+
+        // 初始化
+        displayRecords();
+        updateStats();
     </script>
 </body>
 </html>
