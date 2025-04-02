@@ -1979,6 +1979,16 @@
         // 初始化
         displayRecords();
         updateStats();
+        
+        // 获取清空按钮
+        const clearButton = document.getElementById('clearButton');
+        
+        // 清空所有记录
+        clearButton.addEventListener('click', () => {
+            localStorage.removeItem('diceRecords');
+            displayRecords();
+            updateStats();
+        });
     </script>
 </body>
 </html>
