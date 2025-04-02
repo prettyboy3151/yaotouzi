@@ -1765,48 +1765,6 @@
         cancelBetButton.addEventListener('click', () => {
             betModal.style.display = 'none';
         });
-
-        pointOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-
-                if (selectedDice.includes(value)) {
-                    selectedDice = selectedDice.filter(dice => dice !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedDice.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-
-        sizeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-
-                if (selectedSizes.includes(value)) {
-                    selectedSizes = selectedSizes.filter(size => size !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedSizes.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
-
-        quadOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const value = option.getAttribute('data-value');
-
-                if (selectedQuads.includes(value)) {
-                    selectedQuads = selectedQuads.filter(quad => quad !== value);
-                    option.classList.remove('selected');
-                } else {
-                    selectedQuads.push(value);
-                    option.classList.add('selected');
-                }
-            });
-        });
         
         // 确认下注
         confirmBetButton.addEventListener('click', () => {
