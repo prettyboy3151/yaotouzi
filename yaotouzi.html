@@ -868,8 +868,26 @@
                     updateDice(dice2, value2);
                     updateDice(dice3, value3);
 
-                    // 使用 rollOnce 计算下注输赢
-                    rollOnce([value1, value2, value3]);
+                    const sum = value1 + value2 + value3;
+                    const size = getSize(sum);
+                    const isTripleResult = isTriple(value1, value2, value3);
+                    const oddEven = getOddEven(sum);
+                    const diceType = getDiceType(value1, value2, value3);
+        
+                    const record = {
+                        dice1: value1,
+                        dice2: value2,
+                        dice3: value3,
+                        sum: sum,
+                        size: size,
+                        isTriple: isTripleResult,
+                        oddEven: oddEven,
+                        diceType: diceType
+                    };
+        
+                    saveRecord(record);
+                    displayRecords();
+                    updateStats();
 
                     diceInput.value = '';
                     inputModal.style.display = 'none';
