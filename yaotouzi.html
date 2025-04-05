@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -150,6 +151,12 @@
             cursor: pointer;
             grid-column: span 3;
             justify-self: center;
+        }
+        button, [onclick], [data-value] {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
         .dice .face {
             position: absolute;
@@ -519,6 +526,23 @@
         .number-button:hover {
             background-color: #0097a7;
         }
+        
+        /* 添加计步器样式 */
+        #amountSelectorModal .modal-content {
+            padding: 15px;
+        }
+        #selectedAmount {
+            font-size: 16px;
+        }
+        
+        .amount-display {
+            font-size: 12px;
+            color: #fff;
+            background-color: #00bbd4;
+            border-radius: 10px;
+            padding: 2px 5px;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
@@ -570,6 +594,18 @@
                 <div id="betTripleInfo"></div>
                 <div id="betAllTripleInfo"></div>
                 <div id="betTotalResultInfo"></div>
+            </div>
+        </div>
+        <div id="amountSelectorModal" class="modal" style="display: none;">
+            <div class="modal-content" style="width: 200px; text-align: center;">
+                <h3>下注金额</h3>
+                <div style="display: flex; align-items: center; justify-content: center; margin: 15px 0;">
+                    <button id="decreaseAmount" style="padding: 5px 10px; font-size: 16px;">-</button>
+                    <input type="number" id="selectedAmount" min="100" step="100" value="100" 
+                           style="width: 80px; text-align: center; margin: 0 10px; padding: 5px;">
+                    <button id="increaseAmount" style="padding: 5px 10px; font-size: 16px;">+</button>
+                </div>
+                <button id="confirmAmount" style="padding: 5px 15px; margin: 5px;">确认</button>
             </div>
         </div>
         <div id="betModal" class="modal">
@@ -941,6 +977,10 @@
         let selectedPairs = [];
         let selectedTriples = [];
         let selectedAllTriples = [];
+        
+        // 金额选择器相关变量
+        let currentSelectedOption = null;
+        let amountSelectorTimeout = null;
 
         // 音频控制
         const audio = new Audio('dice-roll.mp3');
@@ -1027,6 +1067,38 @@
             }
         }
         
+        // 金额选择器功能
+        function showAmountSelector() {
+            const modal = document.getElementById('amountSelectorModal');
+            const amountInput = document.getElementById('selectedAmount');
+            
+            amountInput.value = "100";
+            modal.style.display = "block";
+            
+            if (amountSelectorTimeout) clearTimeout(amountSelectorTimeout);
+            amountSelectorTimeout = setTimeout(() => {
+                if (modal.style.display === "block") {
+                    confirmAmountSelection(100);
+                }
+            }, 3000);
+        }
+        
+        function confirmAmountSelection(amount) {
+            if (currentSelectedOption) {
+                currentSelectedOption.setAttribute('data-amount', amount);
+                currentSelectedOption.classList.add('selected');
+                
+                const amountDisplay = currentSelectedOption.querySelector('.amount-display') || 
+                                     document.createElement('div');
+                amountDisplay.className = 'amount-display';
+                amountDisplay.textContent = amount;
+                currentSelectedOption.appendChild(amountDisplay);
+                
+                document.getElementById('amountSelectorModal').style.display = "none";
+                currentSelectedOption = null;
+            }
+        }
+        
         // 记录和统计功能
         function saveRecord(record) {
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
@@ -1046,14 +1118,14 @@
             let records = JSON.parse(localStorage.getItem('diceRecords')) || [];
             recordContainer.innerHTML = '';
             
-            // 保持原始顺序（最新记录在最下方）
-            records.forEach((record, index) => {
+            // 修改这里：反转数组，使最新记录显示在最上面
+            records.reverse().forEach((record, index) => {
                 const sortedDice = [record.dice1, record.dice2, record.dice3].sort((a, b) => a - b);
                 const recordItem = document.createElement('div');
                 recordItem.className = `record-item ${record.isTriple ? 'green' : record.size === '大' ? 'red' : 'yellow'}`;
                 
-                // 计算期数序号（从1开始）
-                const recordNumber = records.length - index;
+                // 修改期数序号计算方式（从1开始，最新记录在最上面）
+                const recordNumber = index + 1;
                 
                 if (record.isTriple) {
                     recordItem.innerHTML = `${sortedDice[0]}${sortedDice[1]}${sortedDice[2]} <span class="record-number">#${recordNumber}</span>`;
@@ -1064,8 +1136,8 @@
                 recordContainer.appendChild(recordItem);
             });
             
-            // 滚动到底部显示最新记录
-            recordContainer.scrollTop = recordContainer.scrollHeight;
+            // 滚动到顶部显示最新记录
+            recordContainer.scrollTop = 0;
         }
         
         function updateStats() {
@@ -1468,41 +1540,6 @@
             resetTripleOptions();
             resetAllTripleOptions();
         }
-        
-        /*function rollOnce(diceResults = null) {
-            // 如果没有手动输入，则随机生成骰子点数
-            if (!diceResults) {
-                diceResults = [
-                    Math.floor(Math.random() * 6) + 1,
-                    Math.floor(Math.random() * 6) + 1,
-                    Math.floor(Math.random() * 6) + 1
-                ];
-            }
-
-            const [dice1, dice2, dice3] = diceResults;
-            updateDice(dice1El, dice1);
-            updateDice(dice2El, dice2);
-            updateDice(dice3El, dice3);
-
-            const sum = dice1 + dice2 + dice3;
-            const size = getSize(sum);
-            const isTripleResult = isTriple(dice1, dice2, dice3);
-            const oddEven = getOddEven(sum);
-            const diceType = getDiceType(dice1, dice2, dice3);
-
-            const record = {
-                dice1, dice2, dice3,
-                sum, size, isTriple: isTripleResult,
-                oddEven, diceType
-            };
-
-            saveRecord(record);
-            displayRecords();
-            updateStats();
-
-            // 计算下注输赢
-            calculateBetResults(dice1, dice2, dice3);
-        }*/
 
         function rollOnce() {
             rollButton.disabled = true;
